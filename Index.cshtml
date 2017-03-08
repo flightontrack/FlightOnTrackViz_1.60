@@ -1,0 +1,86 @@
+﻿@model MVC_Acft_Track.Models.SearchRequest
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            @*@ViewBag.FeaturedMessage*@
+            @ViewBag.Message
+        </div>
+    </section>
+}
+
+<div class="div_container_left">
+	    <fieldset class="fieldset_nobkgr">
+	        <legend class="legend_x">FONT Alpha Testing</legend>
+	            <p>
+	            Help wanted from pilots with Android phones who would like to participate in the application testing.
+	    		To join the testing team use detailed instruction on the @Html.ActionLink("[Be a Tester]", "HelpBeTester", "Home") page link.
+	        	</p>
+	    </fieldset>
+	    <fieldset class="fieldset_bkgr">
+	            <legend class="legend_x">Shared Flight Records</legend>
+	            <p>No login required</p>
+	       <ul>
+	            <li>@Html.ActionLink("[View most recent shared flights]", "GetLatestFlights", "PublicFlights")</li>
+	            <li>@Html.ActionLink("[Search for a flight by criteria]", "SearchByCriteria", "PublicFlights")</li>
+	       </ul>        		
+	    </fieldset>
+</div>
+<div class="div_container_right">
+    <fieldset class="fieldset_bkgr">
+        <legend class="legend_x">Flight On Track</legend>
+        <p>
+            <b>What is Flight On Track?</b>
+        </p>
+        <p>
+            <span style="font-weight: bold;">Flight On Track</span> (FONT hereinafter) is a near-real-time cloud-based system which tracks aircraft position, velocity and altitude based on the information received from a pilot's smartphone.
+            The detailed records are owned by a pilot, stored in the cloud and can be easily accessed via a browser, reviewed, downloaded to a file or shared with other users.
+            It is a simple, free, automated logbook for both an aircraft and a pilot.
+            More on FONT on @Html.ActionLink("[Help]", "Help", "Home") page.
+
+        </p>
+        <p>
+            <b>Why a smartphone?</b>
+        </p>
+        <p>
+            Your phone is a sophisticated computer that is always with you. It has an ID uniquely identifying the pilot and a GPS that tracks his flights.
+            The GPS has clear vision of all satellites in the sky, while the phone has unobscured access to ground mobile network.
+            There is no need to invest tons of money. All you need is the FONT app installed on your smartphone to start using it right away.
+        </p>
+        <p>
+            <b>Is there a need for this system and how it is different from others?</b>
+        </p>
+        <p>
+            A GA pilot keeps his flight history in a logbook. This process is still subjective, unreliable and if the logbook is lost, often there is no backup for it whether it paper or digital.
+            Any GA airplane keeps its maintenance, registration and damage records but not its flight history.
+            Unlike many other applications FONT maintains the detailed history of the pilot and the airplane flights in one place.
+            The FONT client is a simple app designed the way to avoid any distruction when a pilot is in flight. <i>It is not a navigation system of any kind or pilot's help in flight.</i>
+        </p>
+
+        <p>
+            <b>Typical scenarios of usage:</b>
+        </p>
+        <ul>
+            <li>Detailed digital log of pilot flights easily shared either with friends or potential employer.</li>
+            <li>Good presentation tool of an aircraft to the aircraft buyer.</li>
+            <li>Good learning, distraction free tool for a student and instructor to record flights for a post flight review.</li>
+            <li>A student pilot instructor or rental business can follow its flying airplane in real time.</li>
+            <li>An examiner is making sure all required flights have accomplished before a check ride.</li>
+            <li>Helpful tool to calculate hours and to complete the surveys conducted by FAA annually.</li>
+            <li>To rent an aircraft it is a prove to ensure the pilot has met the current experience requirements laid out by the operator's insurance policy.</li>
+            <li>Source of information for insurance companies, which often require minimum experience levels to get the right coverage.</li>
+            <li>Make sure your altimeter reading matches to actual gps reading.</li>
+            <li>Just share excitment of flight with friends and family.</li>
+        </ul>
+        <p>
+            <b>There are three components of the system:</b>
+        </p>
+        <ul>
+            <li>The app installed on a pilot's smartphone transmitting information to a remote server when the pilot is flying.</li>
+            <li>The cloud storage which stores all the flight data.</li>
+            <li>The browser application that provides access to the data.</li>
+            <li>Optional: A small NFC tag received from us and clipped inside your aircraft that uniquely identifying the plane. The information from this tag can be scanned by the pilot's phone.</li>
+        </ul>   
+    </fieldset>
+</div>
+

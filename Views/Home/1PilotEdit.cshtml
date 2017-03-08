@@ -1,0 +1,42 @@
+﻿@model MVC_Acft_Track.Models.Pilot
+
+@{
+    ViewBag.Title = "PilotEdit";
+
+}
+@*<p>
+    @Html.ActionLink("[_Back_]", "Index")
+</p>*@
+<h2>Pilot:  @ViewBag.PilotNickname/@ViewBag.Pilotphone</h2>
+<br>
+@*<i>Update your pilot information and click [Save Changes] button.</i>*@
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.PilotID)
+
+    <div class="row">
+        <div class="col-md-5">
+            <i>Update your pilot information and click [Save Changes] button.</i>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <colgroup> <col class="col-md-2"> <col class="col-md-3"> </colgroup>
+                        <tbody>
+                            <tr> <th scope="row"> <code>Last Name</code> </th> <td>@Html.EditorFor(model => model.NameLast)</td> </tr>
+                            <tr> <th scope="row"> <code>First Name</code> </th> <td>@Html.EditorFor(model => model.NameFirst)</td> </tr>
+                            <tr> <th scope="row"> <code>Base Airport Code</code> </th> <td>@Html.EditorFor(model => model.BaseAirport)</td> </tr>
+                            <tr class="hidden"> <th scope="row"> <code>Certificate</code> </th> <td>@Html.DropDownList("Certif")</td> </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+<p>
+    <input type="submit" class="btn btn-default" value="Save Changes" />
+</p>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

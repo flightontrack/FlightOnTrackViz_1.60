@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MVC_Acft_Track.Models.vAircraftPilot>
+
+@{
+    string msg = ViewBag.Msg;
+    var menuitem = 2;
+
+}
+@Html.AntiForgeryToken();
+@Html.Hidden("menuitem", menuitem)
+<div class="row">
+    @Html.Partial("_MemberMenu", new { menuitem = menuitem})
+    <div class="col-sm-5 col-sm-offset-1">
+        @{
+            var grid = new WebGrid(Model, defaultSort: "AcftID", canPage: true, rowsPerPage: 50);
+        }
+        @grid.GetHtml(tableStyle: "table-responsive  table-bordered table-striped table-condensed", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+        grid.Column(columnName: "AcftNumLocal", header: "Acft", style: "text-align-left", format: (item) => Html.ActionLink((string)item.AcftNumLocal, "FlightsByAcft", new { acftId = item.AcftID }, null)),
+        grid.Column(columnName: "AcftName", header: "Friendly Name", style: "text-align-left"),
+        grid.Column(columnName: "AcftRegNum", header: "Reg Num", style: "text-align-left"),
+        grid.Column(columnName: "FlightTime", header: "Hours Logged", style: "text-align-left"),
+        grid.Column(columnName: "AcftID", header: "Edit", style: "text-align-left", format: (item) => Html.ActionLink("edit", "AcftEdit", new { id = item.ID}))
+        ))
+    </div>
+</div>
+<div class="validation-summary-errors">@ViewBag.NotFoundMessage  </div>
+
+
+

@@ -1,0 +1,68 @@
+﻿@model MVC_Acft_Track.Models.Flight
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Flight</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FlightCode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FlightCode)
+            @Html.ValidationMessageFor(model => model.FlightCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FligntName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FligntName)
+            @Html.ValidationMessageFor(model => model.FligntName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PilotID)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PilotID)
+            @Html.ValidationMessageFor(model => model.PilotID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Attrib_1)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Attrib_1)
+            @Html.ValidationMessageFor(model => model.Attrib_1)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Attrib_2)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Attrib_2)
+            @Html.ValidationMessageFor(model => model.Attrib_2)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

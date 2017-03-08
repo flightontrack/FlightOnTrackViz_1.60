@@ -1,0 +1,121 @@
+﻿@{ 
+    Type t = Model.GetType();
+    var menuitem = t.GetProperty("menuitem").GetValue(Model, null);
+    //var pid = t.GetProperty("pilotid").GetValue(Model, null);
+    /// for c# 6.0
+    //var v = Model?.GetType().GetProperty("menuitem")?.GetValue(Model, null);
+    //Console.Write("somethinf");
+}
+<div class="col-sm-2  no-padding-column">
+    <div class="navbar  navbar-default navbar-default_nobkgr">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle navbar-toggle_left" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="navbar-collapse collapse no-padding-column" id="myNavbar">
+            <div class="left-menu">
+                <ul class="nav nav-pills nav-stacked">
+                    @{ if (menuitem == 1)
+                        {
+                            <li class="active"><a href="~/Member/IndexMember?menuitem=1">The Pilot</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=2">My Aircrafts</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=3">My Pilot LogBook</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=4">All My Flights</a></li>
+                        }
+                        else if (menuitem == 2)
+                        {
+                            <li><a href="~/Member/IndexMember?menuitem=1">The Pilot</a></li>
+                            <li class="active"><a href="~/Member/IndexMember?menuitem=2">My Aircrafts</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=3">My Pilot LogBook</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=4">All My Flights</a></li>
+                        }
+                        else if (menuitem == 3)
+                        {
+                            <li><a href="~/Member/IndexMember?menuitem=1">The Pilot</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=2">My Aircrafts</a></li>
+                            <li class="active"><a href="~/Member/IndexMember?menuitem=3">My Pilot LogBook</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=4">All My Flights</a></li>
+                        }
+                        else if (menuitem == 4)
+                        {
+                            <li><a href="~/Member/IndexMember?menuitem=1">The Pilot</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=2">My Aircrafts</a></li>
+                            <li><a href="~/Member/IndexMember?menuitem=3">My Pilot LogBook</a></li>
+                            <li class="active"><a href="~/Member/IndexMember?menuitem=4">All My Flights</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div>
+            <fieldset>
+                <legend>&nbsp;Quick Help</legend>
+                @{ if (menuitem == 1)
+                    {
+                    <ul>
+                        <li>
+                            Update your pilot information if needed and click <div class="code_ms">Save Changes</div> button.
+                        </li>
+                        <li>
+                            To modify pilot's Callsign change it on your FONT app.
+                        </li>
+                    </ul>
+                    }
+                    else if (menuitem == 2)
+                    {
+                        <ul>
+                            <li>
+                                Click on [Acft Num] to list the aircraft flights.
+                            </li>
+                            <li>
+                                Use [Edit] link to edit or delete the aircraft from your list.
+                            </li>
+                        </ul>
+                    }
+                    else if (menuitem == 3)
+                    {
+                        <ul>
+                            <li>
+                                To sort flights click on column header.
+                            </li>
+                            <li>
+                                To update totals, change the forwarded values if needed and click <div class="code_ms">Save Changes</div> button.
+                            </li>
+                            <li>
+                                To download logbook file in CSV file format click <div class="code_ms">Download LogBook</div> button.
+                            </li>
+                            <li>
+                                Request Visual LogBook file in Tableau format pressing <div class="code_ms">Request Visual...</div> button. More  @Html.ActionLink("[Help]", "HelpTableau", "Home") on Visual LogBook.
+                            </li>
+                        </ul>
+                    }
+                    else if (menuitem == 4)
+                    {
+                        <ul>
+                            <li>
+                                To sort flights click on column header.
+                            </li>
+                            <li>
+                                To view flight details click on [Flight ID] link.
+                            </li>
+                            <li>
+                                To delete a flight select checkbox and click <div class="code_ms">Delete Flights</div> button.
+                            </li>
+                            <li>
+                                To make a flight [Public] or mark it as [Garbage] select a checkbox first and click <div class="code_ms">Save Changes</div> button.
+                            </li>
+                            <li><b>Attention:</b> All flights are public by default. To make the flights private use [Public] checkbox on [The Pilot] menu.</li>
+                        </ul>
+                    }
+                }
+            </fieldset>
+</div>
+</div>
+</div>

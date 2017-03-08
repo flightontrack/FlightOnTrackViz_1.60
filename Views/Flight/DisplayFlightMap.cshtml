@@ -1,0 +1,105 @@
+﻿@model MVC_Acft_Track.Models.Flight
+
+@{  Layout = null;
+    ViewBag.Title = "DispayFlightMap";
+    var FlightID = ViewBag.FlightID;
+    var FlightOrRoute = ViewBag.FlightOrRoute;
+    }
+
+<!DOCTYPE html>
+<html>  
+    <head>    
+        <title>Flight Map</title>    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">    
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script src="~/Scripts/my_mapsjs.js"></script>
+        <link href="~/Content/newstyle.css" rel="stylesheet" type="text/css" />
+
+        <script>
+
+            var routeSelect;
+            var refreshSelect;
+            var messages;
+            var map;
+            var intervalID;
+            var newInterval;
+            var currentInterval;
+            var zoomLevelSelect;
+            //var zoomLevel;
+            var iconUrl;
+
+            function buttonback() {
+                var url = '@Url.Action("DisplayFlightData","Flight", new {id=@FlightID})';
+                window.location.assign(url);
+            }
+            function buttonAutoRefresh() {
+                var url = '@Url.Action("DisplayFlightMapRefresh", "Flight", new { id = @FlightID })';
+                window.location.assign(url);
+            }
+            function initialize() {
+                //refreshSelect = document.getElementById('selectRefresh');
+                //zoomLevelSelect = document.getElementById('selectZoomLevel');
+
+                messages = document.getElementById('messages');
+                //map = document.getElementById('map_div');
+
+                //google.maps.event.addListener(map,'zoom_changed', function () {
+                //    //infowindow.setContent('Zoom: ' + map.getZoom());
+                //    console.log('Zoom: ' + map.getZoom());
+                //});
+                //intervalID = 0;
+                //newInterval = 0;
+                //currentInterval = 0;
+                //zoomLevel = 15;
+
+                var url = '@Url.Action("GetFlightDataJson","Flight", new {id=@FlightID,idtype=@FlightOrRoute})';
+                //console.log(url);
+                //$.getJSON(
+                //    url, function (data) {
+                //        console.log("$.getJSON");
+                //        console.log(data);
+                //        CreatePolyLine(data);
+                //    });
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                                CreatePolyLine(data);
+                                //console.log(data);
+                      },
+                    error: function (xhr, status, errorThrown) {
+                        console.log("responseText: " + xhr.responseText);
+                        console.log("status: " + xhr.status);
+                        console.log("errorThrown: " + errorThrown);
+                    }
+                });
+            };
+
+            $(document).ready(function () {
+                initialize();
+            });
+     </script>  
+    </head>  
+    <body>    
+@*        <input onclick="buttonback()" type="button" value="Back to Flight Data Page"/>*@
+@*        <br>
+        <i>Click on waypoint marker to the see the data</i>*@
+<table>
+  <tr>
+    @*<td style="width:50px"><input onclick="buttonback()" type="button" value="Back"/></td>*@
+    <td style="width:50px"><input onclick="buttonAutoRefresh()" type="button" value="Auto Refresh"/></td>
+    <td style="text-align: right"><i>Click on a trackpoint marker to see the data</i></td>
+
+@*    <td style="text-align: right">
+      <input type="button" value="Clear points" onclick="reset()"/>
+    </td>*@
+  </tr>
+  </table>
+
+        <div id="map_div" ></div>
+    </body>
+</html>

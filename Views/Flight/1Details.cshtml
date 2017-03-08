@@ -1,0 +1,50 @@
+﻿@model MVC_Acft_Track.Models.Flight
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Flight</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FlightCode)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FlightCode)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FlightName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FlightName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PilotID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PilotID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Attrib_1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Attrib_1)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Attrib_2)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Attrib_2)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.FlightID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

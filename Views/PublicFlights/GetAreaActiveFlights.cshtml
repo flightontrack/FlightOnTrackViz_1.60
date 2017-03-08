@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>
+
+
+@*<div>
+        @Html.ActionLink("[__Up__]", "SearchByArea", "PublicFlights")
+</div>*@
+<h2>@ViewBag.areaName Active Flights</h2>
+<br>
+
+<div>
+    @{
+        var grid = new WebGrid(Model, defaultSort: "FlightID", rowsPerPage: 50);
+        grid.SortDirection = SortDirection.Descending;
+    }
+    <p>
+        <i>To call pilot phone click on [Pilot to Call] link.</i><br>
+        <i>To view a flight on the Google Maps check  [Display] checkbox and click [Display on Map] button.</i>
+        <br>
+    </p>
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" name="areaId" value="@ViewBag.areaId" />
+        <input type="submit" class="btn btn-default" name="submit" value="Update Page" />
+        <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
+        @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+        grid.Column(columnName: "FlightID", header: "Flight", style: "text-align-left"), //, style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID },null)),
+            //grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
+        grid.Column(columnName: "Updated", header: "Updated UTC", style: "text-align-left"),
+        grid.Column(columnName: "UpdateDelay", header: "Delay (sec)", style: "text-align-left"),
+        grid.Column(columnName: "AltitudeFt", header: "Alt (ft)", style: "text-align-left"),
+        grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left"),
+        grid.Column(columnName: "PilotCode", header: "Pilot to Call", style: "text-align-left", format: @<a href="tel:@item.PilotCode">@item.Pilot</a>),
+        grid.Column(columnName: "FlightID",  header: "Display", format: (item) => Html.CheckBox((string)item.FlightID.ToString())
+                  )))
+
+    }
+    <p class="message-error"> @ViewBag.Message</p>
+</div>

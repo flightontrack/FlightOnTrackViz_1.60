@@ -1,0 +1,49 @@
+﻿@model MVC_Acft_Track.Models.Flight
+
+@{
+    ViewBag.Title = "Edit";
+}
+<div>
+    @Html.ActionLink("[Back]", "GetAllFligts")
+</div>
+<br>
+<b>Flight  @Html.DisplayFor(model => model.FlightID)</b>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.FlightID)
+    <table class="webgrid">
+        <tr>
+            <td class="label"> Flight Name </td>
+            <td>@Html.EditorFor(model => model.FlightName)</td>
+        </tr>
+        <tr>
+            <td class="label">Comments</td>
+            <td>@Html.EditorFor(model => model.Comments)</td>
+        </tr>
+        <tr>
+            <td class="label">Aircraft</td>
+            <td>@Html.DropDownList("AircraftsSelList")</td>
+        </tr>
+        <tr>
+            <td class="label">Phone</td>
+            <td>@if (ViewBag.selectedPilotID == null) {
+                @Html.DropDownList("PhoneSelList","Select")
+            }
+            else {
+                @Html.DropDownList("PhoneSelList") 
+            }
+            </td>
+        </tr>
+    </table>
+    <p>
+        <input type="submit" value="Save Changes" />
+    </p>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

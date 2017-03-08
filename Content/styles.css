@@ -1,0 +1,130 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: arial, helvetica, sans-serif;
+    font-size: 17px;
+    height: 100%;
+}
+
+#test {
+    /*position:absolute;*/
+    /*left: 750px;
+    top: 50px;*/
+    width: 400px;
+}
+
+#messages {
+    /*position:absolute;*/
+    width: 950px;
+}
+
+#map_wrapper {
+    border: 2px;
+    border-color: brown;
+    border-style: solid;
+    height: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    /*position:relative;*/
+    top: 100px;
+    width: 100%;
+}
+
+#map_div {
+    border: 1px;
+    border-style: solid;
+    min-height: 100%;
+    padding-top: 10px;
+    position: absolute;
+    width: 100%;
+}
+
+#control_box {
+    background-color: #e6e5e5;
+    float: right;
+    min-height: 100%;
+    padding-left: 5px;
+    /*margin-top: 0px;*/
+    padding-top: 3px;
+    width: 14%;
+}
+
+#selectRoute {
+    /*position:absolute;
+    left: 10px;
+    top: 510px;*/
+    width: 50%;
+}
+
+#selectRefresh {
+    /*position:absolute;*/
+    /*left: 10px;
+    top: 550px;*/
+    width: 90%;
+}
+
+#selectZoomLevel {
+    /*position:absolute;*/
+    /*left: 360px;
+    top: 550px;*/
+    width: 90%;
+}
+
+#delete {
+    /*position:absolute;*/
+    /*left: 637px;
+    top: 510px;*/
+    width: 75px;
+}
+
+#refresh {
+    /*position:absolute;*/
+    /*left: 637px;
+    top: 550px;*/
+    width: 75px;
+}
+
+.box_right {
+    /*float: left;*/
+    border: solid;
+    margin-top: 0px;
+    padding-left: 0px;
+    /*width: 40%;*/
+    width: 300px;
+}
+
+.box_left {
+    float: left;
+    margin-top: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    /*border:solid;*/
+    /*border-left-style:none;
+    border-top-style:none;
+    border-bottom-style:none;*/
+    /*border-width:2px;*/
+    text-align: justify;
+    /*width: 45%;*/
+    width: 300px;
+}
+
+.bullet_square { list-style-type: square; }
+
+.bullet_none {
+    list-style-type: none;
+    padding-right: 5px;
+    text-align: justify;
+}
+
+/* column container */
+
+.colmask {
+    clear: both;
+    float: left;
+    overflow: hidden; /* This chops off any overhanging divs */
+    position: relative; /* This fixes the IE7 overflow hidden bug */
+    width: 100%; /* width of whole page */
+}

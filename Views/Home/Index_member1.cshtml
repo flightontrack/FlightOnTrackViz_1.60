@@ -1,0 +1,32 @@
+﻿
+
+@*@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        @ViewBag.Message
+    </div>
+</section>
+}*@
+
+<div class="container">
+    @*<div class="col-md-5">*@
+        <div>
+            @*<div class="collapse navbar-nav navbar-collapse">*@
+                <div class="list-group">
+                        <a href="~/Home/PilotEdit/4" class="list-group-item active">The Pilot</a>
+                        <a href="~/Home/AcftEdit/11" class="list-group-item">My Aircrafts</a>
+                        <a href="~/Flight/PilotLogBook?pilotId=4" class="list-group-item">My Pilot LogBook</a>
+                        <a href="~/Flight/Index?pilotId=4" class="list-group-item">All My Flights</a>
+                </div>
+            </div>
+        </div>
+    @*</div>*@
+    <div class="col-md-7">
+
+    </div>
+@*</div>*@
+
+<div class="validation-summary-errors">@ViewBag.NotFoundMessage  </div>
+
+
+

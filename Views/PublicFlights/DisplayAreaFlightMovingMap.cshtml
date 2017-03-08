@@ -1,0 +1,172 @@
+﻿
+@{  Layout = null;
+    var areaId = ViewBag.AreaId;
+    var cnt = 0;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flight Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="~/Scripts/getDrawActveFlights.js" type="text/javascript"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAIm-QyYK0jc3jyTMA6rgCTnx-9nWILiiQ"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/googlemap.css" rel="stylesheet" type="text/css" />
+
+    <script>
+
+    var routeSelect;
+    var refreshSelect;
+    var messages;
+    var map;
+    var intervalID;
+    var newInterval;
+    var currentInterval;
+    var iconUrl;
+    var INTERVAL = 5000;
+    var REQUEST_COUNT = 60;
+    var mapOptions;
+    var cookieName = "fontZoomLevel=";
+    var defaultZoomLevel = 13;
+    var markersStore = [];
+    var infowindowStore = [];
+    var flightPathStore = [];
+    var isRefresh = true;
+    var cnt =0;
+    var defaultCenter;
+    var centerOnDefault = false;
+    var currentCenter;
+    var greenControl;
+    var redControl;
+    //---------------------------------------------------------------
+    function init() {
+
+        greenControl = document.getElementById('GreenTextDiv');
+        redControl = document.getElementById('RedTextDiv');
+        greenControl.style.display = 'inline';
+
+        // set the map center dd zoom cookie
+        var zoomLevel = (getCookie(cookieName) == '' ? defaultZoomLevel : parseInt(getCookie(cookieName)));
+        defaultCenter = new google.maps.LatLng(@ViewBag.AreaCenterLat, @ViewBag.AreaCenterLong);
+        mapOptions = {
+            zoom: zoomLevel,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: defaultCenter
+        };
+        map = new google.maps.Map(document.getElementById('map_div'), mapOptions);
+        getMarkers();
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(greenControl);
+    }
+
+    //---------------------------------------------------------------
+    function getMarkers() {
+        //var url = '@Url.Action("GetAreaFlightsJson", new { areaId = areaId})';
+        //url changed every call to prevent caching
+        var url = '/PublicFlights/GetAreaFlightsJson?areaId=@areaId'+"&c="+cnt;
+        $.ajax({
+            url:url,
+            type: 'GET',
+            dataType: 'json',
+            //success: function (data) {
+            //    //set marker infowindow polyline for multiple flights
+            //    console.log(url);
+            //    MarkersUpdate(data);
+            //    if (cnt<REQUEST_COUNT){
+            //        //setup next getMarkers call
+            //        setTimeout(getMarkers,INTERVAL);
+            //        cnt++;
+            //    }
+            //    else{
+            //        greenControl.style.display = 'none';
+            //        redControl.style.display = 'inline';
+            //        map.controls[google.maps.ControlPosition.TOP_CENTER].push(redControl);
+            //    }
+            //},
+            //error: function (xhr, status, errorThrown) {
+            //    if (cnt<REQUEST_COUNT){
+            //        setTimeout(getMarkers,INTERVAL);
+            //        cnt++;
+            //    }
+            //    //url = "/PublicFlights/GetAreaFlightsJson?areaId=1&c="+cnt;
+            //    console.log("responseText: " + xhr.responseText);
+            //    console.log("status: " + xhr.status);
+            //    console.log("errorThrown: " + errorThrown);
+            //}
+        })
+           .fail (function (xhr, status, errorThrown) {
+            console.log("responseText: " + xhr.responseText);
+            console.log("status: " + xhr.status);
+            console.log("errorThrown: " + errorThrown);
+            })
+          .always(function( data ) {
+            //set marker infowindow polyline for multiple flights
+            console.log(url);
+            getDrawActveFlights(data);
+            if (cnt<REQUEST_COUNT){
+                //setup next getMarkers call
+                setTimeout(getMarkers,INTERVAL);
+                cnt++;
+            }
+            else{
+                greenControl.style.display = 'none';
+                redControl.style.display = 'inline';
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(redControl);
+            }
+          });
+    }
+    //---------------------------------------------------------------
+    function getCookie(cname) {
+        var cookieArray = document.cookie.split(';');
+        if (cookieArray[0].indexOf(cname) == 0) return cookieArray[0].split('=')[1];
+        return "";
+    }
+    //---------------------------------------------------------------
+    function buttonback() {
+        var url = '@Url.Action("SearchByArea", new { id = areaId })';
+        window.location.assign(url);
+    }
+    function buttonAutoRefresh() {
+        location.reload();
+    }
+    function buttonCenterOnDefault(element) {
+        //if (element.innerText=="Center On Area"){
+        //    element.innerText="Center On Plane";
+        currentCenter=map.getCenter(); 
+        map.setCenter(defaultCenter);
+        map.setZoom(defaultZoomLevel);
+    }
+
+    //---------------------------------------------------------------
+    $(document).ready(function () {
+        init();
+    });
+</script>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>
+                <td><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></td>
+                <td><button onclick="buttonCenterOnDefault(this)" class="btn btn-default" type="button" id="onCenter" value="Center">Center/Zoom Default</button></td>
+            </tr>
+        </table>
+    </div>
+    <div id="map_div"></div>
+    <div id="GreenTextDiv" style="color: green; position: absolute;display:none">
+        <h1>Update is On</h1>
+    </div>
+    <div id="RedTextDiv" style="color: red; position: absolute; display: none;">
+        <blink><h1><b>Update is Off. Refresh the page.</b></h1></blink>
+    </div>
+
+</body>
+</html>

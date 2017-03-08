@@ -1,0 +1,80 @@
+﻿@model MVC_Acft_Track.Models.SearchRequest
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            @*@ViewBag.FeaturedMessage*@
+            @ViewBag.Message
+        </div>
+    </section>
+}
+
+<div class="div_container_left">
+	    <fieldset class="fieldset_nobkgr">
+	        <legend class="legend_x">Alpha Testing</legend>
+	            <p>
+	            <span style="background-color:yellow">Help wanted from actively flying pilots </span> with Android phones who would like to participate in the application testing.
+	    		To join the testing team use detailed instruction on the @Html.ActionLink("[Be a Tester]", "HelpBeTester", "Home") page link.
+	        	</p>
+	    </fieldset>
+	    <fieldset class="fieldset_bkgr">
+	        <legend class="legend_x">Public Flight Records</legend>
+	        <p><i>No login required</i></p>
+            <p>
+                @Html.ActionLink("[View]", "GetLatestRoutes", "PublicFlights")  recent public flights
+            </p>
+            <p>
+                @Html.ActionLink("[Search]", "SearchByCriteria", "PublicFlights")  flight history by criteria
+            </p>
+            <p>
+                @Html.ActionLink("[View]", "SearchByArea", "PublicFlights") area active flights
+            </p>       		
+	    </fieldset>
+</div>
+<div class="div_container_right">
+    <fieldset class="fieldset_bkgr">
+        <legend class="legend_x">Flight On Track</legend>
+        <p>
+            <b>What is the FONT?</b>
+        </p>
+        <p>
+            <ul>
+                <li><span style="font-weight: bold;">Flight On Track</span> (the <span style="font-weight: bold;">FONT</span>) is simple but fun application. Fly airplane , glider, trike or hot balloon with it.</li>
+                <li>FONT maintains a detailed history of a pilot's flights in cloud repository making it easy comparing and sharing.</li>
+                <li>The FONT Android client is a simple app designed the way to avoid any destruction when the pilot is flying.</li>
+                <li>You do not need even to create account to start using it. The registration process is automated.</li>
+                <li>The records are owned by the pilot and can be easily accessed via a browser, reviewed, downloaded to a file or shared with other users.</li>
+                <li>Like many other applications it builds automated logbook for both an aircraft and a pilot.</li>
+                <li>Your wife or a friend on the ground or in neighboring plane can follow you in real time on a map while you are up flying.</li>
+                <li>FBOs can monitor activity in airport area if pilots have FONT working on their phones and can even send a message to the pilot's phone.</li>
+                <li>A CFI or rental businesses can follow their flying students/airplanes in close to real time.</li>
+                <li>Flight debriefing  is easy with Google Earth style 3D flight diagram.</li>
+                <li>FONT is free and  doesn't add any weight to your aircraft. Just make memories of your flights and share excitement of flying with your friends and family. </li>
+            </ul>
+
+
+        </p>
+        <p>
+            <span style="font-weight: bold;">How does it work?</span>
+        </p>
+        <p>
+            FONT is a near-real-time cloud-based system which tracks aircraft position, velocity and altitude based on the information received from a pilot's smartphone.
+            Your phone is a sophisticated computer that is always with you. It has an ID uniquely identifying the pilot and a GPS that tracks his flights.
+            The GPS has clear vision of all satellites in the sky, while the phone has unobscured access to ground mobile network.
+
+            <br>There are three components of the system:
+            <ul>
+                <li>The app installed on a pilot's smartphone transmitting information to a remote server when the pilot is flying.</li>
+                <li>Cloud storage which records and stores all the flight data.</li>
+                <li>A website that provides access to the data.</li>
+                @*<li>Optional: A small NFC tag received from us and clipped inside your aircraft that uniquely identifying the plane. The information from this tag can be scanned by the pilot's phone.</li>*@
+            </ul>
+        </p>
+        <p>
+            There is no need to invest tons of money. All you need is the FONT app installed on your smartphone to start using it right away. More on FONT on @Html.ActionLink("[Help]", "Help", "Home") page.
+        </p>
+
+ 
+    </fieldset>
+</div>
+

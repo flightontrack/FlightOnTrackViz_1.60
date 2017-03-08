@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@model MVC_Acft_Track.Models.SearchRequest
+
+<h2>System Management</h2>
+
+@if (Request.IsAuthenticated)
+{
+    //@Html.AntiForgeryToken()
+    using (Html.BeginForm())
+    {
+        <div class="div_container_left">
+            <fieldset class="fieldset_nobkgr">
+                <legend class="legend_x">Password Reset</legend>
+                <table class="tablegrid">
+                    <tr>
+                        <td class="table-first-col">Select Pilot</td>
+                        <td>@Html.DropDownListFor(model => model.PilotID, ViewBag.PilotSelList as SelectList, "Select")</td>
+                    </tr>
+                    <tr>
+                        <td class="table-first-col">User</td>
+                        <td>@ViewBag.User</td>
+                    </tr>
+                    <tr>
+                        <td class="table-first-col">User Password</td>
+                        <td>@ViewBag.UserPsw</td>
+                    </tr>
+                    <tr>
+                        <td class="table-first-col"><input type="submit" name="submit" id="getuser" value="Get User"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="table-first-col"><input type="submit" name="submit" id="getuser" value="Reset User Psw"></td>
+                        <td>@ViewBag.ErrorMsg</td>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset class="fieldset_bkgr">
+                <legend class="legend_x">All Flight Records</legend>
+                <p>
+                    @Html.ActionLink("[View]", "GetAllFligts")  All recent flights
+                </p>
+                <p>
+                    @Html.ActionLink("[Search]", "SearchByCriteria")  Flights by criteria
+                </p>
+            </fieldset>
+            <fieldset class="fieldset_bkgr">
+                <legend class="legend_x">Clean Flight Records</legend>
+                            <input type="button" value="Mark Junk Records" onclick="location.href='@Url.Action("MarkJunkRecords")'" />
+            </fieldset>
+        </div>
+    }
+}
+
+

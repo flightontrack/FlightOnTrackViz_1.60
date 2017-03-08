@@ -1,0 +1,32 @@
+﻿@model IEnumerable<MVC_Acft_Track.Models.vAircraftPilot>
+@*@model MVC_Acft_Track.Models.vAircraftPilot*@
+
+@{
+    string msg = ViewBag.Msg;
+    var menuitem = 2;
+    var pilotid = Model.FirstOrDefault().PilotID;
+}
+
+<div class="row">
+    @Html.Partial("_MemberMenu", new { menuitem = menuitem, pilotid = pilotid })
+    <div class="col-sm-5 col-sm-offset-1">
+        <i>Click on [Acft Num] to see the aircraft flights. Use [Edit] link to edit or delete the aircraft from your list.</i>
+        @{
+            var grid = new WebGrid(Model, defaultSort: "AcftID", canPage: true, rowsPerPage: 50);
+        }
+        @grid.GetHtml(tableStyle: "table-responsive  table-bordered table-striped table-condensed", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+        grid.Column(columnName: "AcftNumLocal", header: "Acft", style: "text-align-left", format: (item) => Html.ActionLink((string)item.AcftNumLocal, "FlightsByAcft", "Flight", new { acftId = item.AcftID }, null)),
+        grid.Column(columnName: "AcftName", header: "Friendly Name", style: "text-align-left"),
+        grid.Column(columnName: "AcftRegNum", header: "Reg Num", style: "text-align-left"),
+        grid.Column(columnName: "FlightTime", header: "Hours Logged", style: "text-align-left"),
+        grid.Column(columnName: "AcftID", header: "Edit", style: "text-align-left", format: (item) => Html.ActionLink("edit", "AcftEdit", new { id = item.ID, pilotid= @pilotid }))
+        ))
+    </div>
+    <input type="hidden" name="menuitem" value="2" />
+    <input type="hidden" name="pilotid" value=@pilotid />
+</div>
+<div class="validation-summary-errors">@ViewBag.NotFoundMessage  </div>
+
+
+

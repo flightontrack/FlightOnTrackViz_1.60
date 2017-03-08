@@ -1,0 +1,114 @@
+﻿@*@model IEnumerable<MVC_Acft_Track.Models.vAircraftPilot>*@
+@model MVC_Acft_Track.ViewModels.vmPilotLogBook
+
+@{
+    var menuitem = 3;
+    var successFlg = ViewBag.successFlg;
+    string msg = ViewBag.Msg;
+    bool sortdirAsc = ViewBag.SortDir == "ASC";
+    //int pilotid = Model.pilotId;
+}
+@*<script>
+$(document).ready(function () {
+    window.scrollTo(0,200);
+});
+</script>*@
+<div class="row">
+    @Html.Partial("_MemberMenu", new { menuitem = menuitem})
+
+    <div class="col-sm-5">
+        @{
+            var grid = new WebGrid(
+                           Model.flightsLogBook, 
+                           canSort: true, 
+                           defaultSort: "FlightDateOnly", 
+                           canPage: true, 
+                           rowsPerPage: 10);
+            grid.SortDirection = sortdirAsc?SortDirection.Ascending: SortDirection.Descending;
+        }
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken();
+            @Html.HiddenFor(model => model.pilotId)
+            @Html.Hidden("menuitem", menuitem)
+            @*<input type="hidden" name="menuitem" value="3" />
+            <input type="hidden" name="pilotId" value=@pilotid />*@
+            <p>
+                <div class="row">
+
+                    <div class="col-sm-5">
+                        @Html.Label("Time Forwarded (hr) :", new { @class = "control-label" })
+                        @Html.EditorFor(model => model.timeForward, new { htmlAttributes = new { @class = "form-control  input-sm" } })
+                    </div>
+                    <div class="col-sm-5">
+                        @Html.Label("Landings Forwarded :", new { @class = "control-label" })
+                        @Html.EditorFor(model => model.landForward, new { htmlAttributes = new { @class = "form-control  input-sm" } })
+                    </div>
+                </div>
+            </p>
+            <p>
+                <input type="submit" class="btn btn-default active" name="UpdateForwards" value="Save Changes" />
+                @if (successFlg != null)
+                {
+                if ((bool)successFlg) {<i>@msg</i> }
+                else if (!(bool)successFlg){
+                <div class="validation-summary-errors text-danger"> @msg  </div>
+                }
+                }
+            </p>
+            <div>
+                @Html.Label("Logbook Time (hr):", new { @style = "display:inline-block" })
+                <div style="display:inline-block">@ViewBag.LogBookTimeHours</div> <b>\</b>
+                @Html.Label("Logbook Landings:", new { @style = "display:inline-block" })
+                <div style="display:inline-block">@ViewBag.LandNumLogBook</div>
+
+                <br>
+                @Html.Label("Total Time To Date (hr):", new { @style = "display:inline-block" })
+                <div style="display:inline-block">@ViewBag.TotalTimeHours</div> <b>\</b>
+                @Html.Label("Total Landings To Date:", new { @style = "display:inline-block" })
+                <div style="display:inline-block">@ViewBag.LandNumTotal</div>
+
+                @*<input type="hidden" id="pilotid" name="pilotid" value="@Model.pilotId" />*@
+            </div>
+            //}
+            if (@ViewBag.VLBReadyToDownload)
+            {
+                <i> Visual LogBook file is ready to download.</i>
+                <input type="submit" class="btn btn-primary active" name="DownloadVLB" value="Download Tableau Workbook">
+            }
+            @grid.GetHtml(
+           mode: WebGridPagerModes.All,
+           tableStyle: "webgrid",
+           //tableStyle: "table table-striped table-condensed table-responsive table-hover",
+           headerStyle: "webgrid-header",
+           footerStyle: "table-pager",
+     //rowStyle: "webgrid-row-style",
+     columns: grid.Columns(
+     grid.Column(columnName: "FlightDateOnly", header: "Date", style: "text-align-left"),
+     grid.Column(columnName: "AcftMMS", header: "Acft MMS", style: "text-align-left"),
+     grid.Column(columnName: "Acft", header: "Acft", style: "text-align-left"),
+     grid.Column(columnName: "RouteName", header: "Airports", style: "text-align-left"),
+     grid.Column(columnName: "NoLandings", header: "Landings", style: "text-align-left"),
+     grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
+     grid.Column(columnName: "Comments", header: "Comments", style: "text-align-left")
+ ))
+            <br>
+            <input class="btn btn-default active" type="submit" name="DownloadFlightCSV" value="Download CSV File LogBook" />
+            if (@ViewBag.VLBReadyToDownload)
+            {
+
+            }
+            else
+            {
+                <input class="btn btn-default active" type="submit" name="RequestVisualLogBook" value="Request Visual LogBook" />
+                @*<button type="button" class="btn btn-default">Download Tableau Workbook</button>*@
+            }
+        }
+    </div>
+</div>
+<div class="validation-summary-errors">@ViewBag.NotFoundMessage  </div>
+
+
+
+

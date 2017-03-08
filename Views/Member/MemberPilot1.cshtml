@@ -1,0 +1,43 @@
+﻿@model MVC_Acft_Track.Models.Pilot
+@{
+    int menuitem = 1;
+    var successFlg = ViewBag.successFlg;
+    string  msg = ViewBag.Msg;
+}
+
+<div class="row">
+    @Html.Partial("_MemberMenu",new {menuitem=menuitem})
+        <div class="col-sm-5 col-sm-offset-1">
+            @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken();
+            @Html.HiddenFor(model => model.PilotID)
+            @Html.Hidden("menuitem",menuitem)
+
+            <table class="table-responsive">
+                <colgroup> <col class="col-sm-4"> <col class="col-sm-2"> </colgroup>
+                <tbody>
+                    <tr> <th scope="row"> Phone </th> <td>@Html.DisplayFor(model => model.PilotCode)</td> </tr>
+                    <tr> <th scope="row"> Callsign </th> <td>@Html.DisplayFor(model => model.PilotName)</td> </tr>
+                    <tr> <th scope="row"> Last Name </th> <td>@Html.EditorFor(model => model.NameLast)</td> </tr>
+                    <tr> <th scope="row"> First Name </th> <td>@Html.EditorFor(model => model.NameFirst)</td> </tr>
+                    <tr> <th scope="row"> Base Airport Code </th> <td>@Html.EditorFor(model => model.BaseAirport)</td> </tr>
+                </tbody>
+            </table>
+            <br>
+                    <input type="submit" class="btn btn-default active" value="Save Changes" />
+                <br>
+                if (successFlg != null)
+                {
+                    if ((bool)successFlg) {<i>@msg</i> }
+                    else if (!(bool)successFlg){
+                        <div class="validation-summary-errors text-danger"> @msg  </div>
+                    }
+                }
+            }
+        </div>
+</div>
+<div class="validation-summary-errors">@ViewBag.NotFoundMessage  </div>
+
+
+

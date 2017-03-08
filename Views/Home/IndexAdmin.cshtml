@@ -1,0 +1,99 @@
+﻿@model IEnumerable<MVC_Acft_Track.Models.Aircraft>
+
+@{
+    ViewBag.Title = "IndexAdmin";
+}
+
+<h2>IndexAdmin</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftTagID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Created)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftMake)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftModel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftSeries)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftRegNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcftMMS)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PilotID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SerNum)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftTagID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Created)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftMake)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftModel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftSeries)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftRegNum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcftMMS)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PilotID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SerNum)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

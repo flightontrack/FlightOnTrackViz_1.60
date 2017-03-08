@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <span class="label">@ViewBag.Message</span>
+    </div>
+</section>
+}
+<div id=col1>
+    <p><span class="label">To become a tester, you need to install Flight On Track app on your smartphone.</span></p>
+
+<div>
+    The current requirements are:
+<ul>
+    <li>Android-powered GPS smartphone with Android version 4.1 or higher</li>
+    <li>Data access over mobile network</li>
+</ul>
+</div>
+<p>
+    For those of you who have iPhone or Windows phone there is still a way to test. Check the @Html.ActionLink("[link]", "HelpiPhoneUser", "Home").
+</p>
+<div>
+There are two ways to install:
+<ul>
+    <li>Normally if you have Android phone the chances are that you have  Google(Gmail)  account. 
+    You can download and install the app from Google Play. The user who installs the app through Google Play gets all new updates on this app automatically.</li>
+    <li>If for some reason you do not have Google account or just want to play with the app without joining the testers group, the application will be sent to your email, and can be installed from the mailbox on your smartphone. 
+    Google Play will not update this beta and your have to check the app new updates manually.</li>
+</ul>
+</div>
+<div>
+Installation from Google Play:
+<ol>
+    <li>Send email request for the FONT app by clicking on the link <a href="mailto:beta@flightontrack.com?subject=[Get%20FONT%20from%20Google%20Play]&body=Please%20provide%0D%0AMy%20Gmail%20address%20:%0D%0AMy%20name%20:%0D%0AMy%20phone%20number%20and%20phone%20model%20:">[beta@flightontrack.com]</a> and providing your Gmail address.</li>
+    <li>The invitation to join the app testers group will be emailed to you with a link.</li>
+    <li>Follow the link on your smartphone, click BECOME A TESTER button and click 'Download the FONT app' link thereafter.</li>
+    <li>Any new updates to the application will be automatically installed on you device from now on.</li>
+    <li>Not recommended. Can't wait?  Here is a direct link to download <a href="https://play.google.com/apps/testing/com.flightontrack">https://play.google.com/apps/testing/com.flightontrack</a> </li>
+    
+</ol>
+</div>
+<div>
+Installation through email:
+<ol>
+<li>Configure your device to allow installation from 'Unknown source'. Android protects users from inadvertent download and install of apps from locations other than Google Play. 
+It blocks such installs until the user opts-in Unknown sources in Settings > More > Security. 
+To allow the installation of applications from email, enable the Unknown sources setting on the device.</li>
+<li>Send email requesting the Flight On Track app from this link <a href="mailto:beta@flightontrack.com?subject=[Get%20FONT%20in%20Email%20Attachment]&body=Please%20provide%0D%0AMy%20Email%20address%20:%0D%0AMy%20name%20:%0D%0AMy%20phone%20number%20and%20phone%20model%20:">[beta@flightontrack.com]</a></li>
+<li>You will get an email with attachment. When the email message is opened on Android-powered device the Android system recognizes the app and displays an Install Now button in the email message.</li>
+<li>Touch this button and the application will be installed on your device</li>
+</ol>
+</div>
+<div>
+<span class="label">Way to test</span>
+<ul>
+    <li>Once the FONT app is installed on your device you are good to go.</li>
+    <li>To get familiar with the system try it first on the ground driving a car. Ground tracking will be disabled in production release but for testing purposed it works.
+<ol>
+    <li>Start the FONT application on your phone and set it up using the @Html.ActionLink("[Help]", "HelpTracking", "Home") page. Do not check the Multileg box.</li>
+    <li>Start driving. When you stop or slow down, the app stops tracking your route.</li>
+    <li>From your home computer go to this website, log in using instruction on the @Html.ActionLink("[Help]", "HelpTracking", "Home") page and check the recorded route.</li>
+</ol>
+</li>
+<li>Once you satisfied with the result do the same in your plane. Make sure you done all the preparations before you start engine. Put the smartphone in your aircraft in a place where gps signal is not blocked.</li>
+</ul>
+<span class="label">There are two ways to report bugs/provide feedback:</span>
+<ul>
+    <li>You can report bugs sending an email from <a href="mailto:beta@flightontrack.com?subject=[Bug%20report]&body=Pease%20include%0D%0AName%20:%0D%0APhone%20type:">[Report a bug]</a> link. </li>
+    <li>Alternatively you can communicate by sending email from your phone using envelope icon on FONT menu bar.</li>
+
+</ul>
+
+</div>
+</div>
+
+
+
+
+
+

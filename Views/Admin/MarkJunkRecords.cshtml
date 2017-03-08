@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MVC_Acft_Track.Models.Flight>
+
+@{
+    ViewBag.Title = "MarkJunkRecords";
+}
+
+<h2>Junk Records</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FlightID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FlightID)
+        </td>
+    </tr>
+}
+
+</table>

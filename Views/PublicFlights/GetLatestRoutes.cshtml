@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MVC_Acft_Track.Models.vPilotLogBook>
+
+@*<div>
+    @if (ViewBag.ActionBack == "Index")
+    {@Html.ActionLink("[__Up__]", "Index", "Home")}
+    @if (ViewBag.ActionBack == "SearchByCriteria")
+    {@Html.ActionLink("[__Up__]", "SearchByCriteria", "PublicFlights")}
+</div>*@
+<h2>@ViewBag.ViewTitle</h2>
+
+<div>
+    @{
+        var grid = new WebGrid(Model, defaultSort: "FlightID", rowsPerPage: 50);
+        grid.SortDirection = SortDirection.Descending;
+    }
+    <p>
+    <i>Public flights are the records that pilots shares with everybody.<br>
+    To view flights in the route on Google Maps check [Display] checkbox and click [Display on Map] button.</i>
+    </p>
+
+    @using (Html.BeginForm())
+    {
+        <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
+        @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+        grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.RouteID.ToString(), "CheckRouteFlightsCount", new { id = item.RouteID, actionBack = "GetLatestRoutes" }, null)),
+        grid.Column(columnName: "RouteName", header: "Flight", style: "text-align-left", format: item => (item.RouteName == null ? "" : item.RouteName.ToString().Substring(0, Math.Min(15, item.RouteName.ToString().Length)) + (item.RouteName.ToString().Length < 15 ? "" : ".."))),
+        grid.Column(columnName: "FlightDateOnly", header: "Date", style: "text-align-left"),
+        grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
+        grid.Column(columnName: "AcftMMS", header: "Aircraft", style: "text-align-left"),
+        grid.Column(columnName: "Acft", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.Acft : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=" + item.AcftRegNum + "\">" + item.AcftRegNum + "</a>")),
+        grid.Column(columnName: "RouteID", header: "Display", format: (item) => Html.CheckBox((string)item.RouteID.ToString(), false))
+
+             ))
+        
+    }
+
+</div>
+
+
+

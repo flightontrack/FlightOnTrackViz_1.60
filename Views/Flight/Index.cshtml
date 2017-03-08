@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>
+
+@*<div>
+    @if (ViewBag.ActionBack == "Index"){@Html.ActionLink("[__Up__]", "Index", "Home")}
+    @if (ViewBag.ActionBack == "FlightsByAcft"){@Html.ActionLink("[__Up__]", "Index", "Home")}
+</div>*@
+
+@*@Html.ActionLink("[__Up__]", "Index", "Home")*@
+<h2>@ViewBag.ViewTitle</h2>
+
+@{
+    var grid = new WebGrid(Model, defaultSort: "FlightID", rowsPerPage: 50);
+    grid.SortDirection = SortDirection.Descending;
+}
+<p>
+    <i>
+        To sort flights click on a column title.<br>  
+        To view flight details click on [Flight ID] link.<br>
+        To delete or share selected flights use the buttons below.<br> 
+        <b>Attention:</b> All flights are public by default. To make a flight private uncheck [Public] checkbox and click [Save changes] button.
+    </i>
+</p>
+
+@if (Request.IsAuthenticated||ViewBag.isRouteShared) {
+
+using (Html.BeginForm()){
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="acftId" value="@ViewBag.AcftID" />
+    <input type="submit" class="btn btn-default" name="submit" value="Save changes" />
+    <input type="submit" class="btn btn-default" name="submit" value="Delete selected flights" />  
+    <input type="submit" class="btn btn-default" name="submit" value="Update page" />    
+@grid.GetHtml(tableStyle: "webgrid",headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+     columns:  grid.Columns(
+        grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", new { id = item.FlightID, actionBack = @ViewBag.ActionBack })),
+        grid.Column(columnName: "RouteID",header: "Route ID",style: "text-align-left",format: (item) => Html.DropDownList("FlightIdDropDown:"+(string)item.FlightID.ToString(), new SelectList(Model.OrderByDescending(m => m.FlightID),"FlightID","FlightID",item.RouteID==null?item.FlightID:item.RouteID ))),
+        grid.Column(columnName: "FlightName",header: "Flight/Arpt",style: "text-align-left"),
+        grid.Column(columnName: "FlightTimeStart",header: "Start Time Local",style: "text-align-left"),
+        //grid.Column(columnName: "FlightDateUTC",header: "Date UTC",style: "text-align-left",format: (item) => item.FlightDateUTC.ToString("d",(new System.Globalization.CultureInfo("ja-JP")).DateTimeFormat)),
+        //grid.Column(columnName: "FlightDateUTC",header: "Start Time UTC",style: "text-align-left",format: (item) => item.FlightDateUTC.ToString("t",(new System.Globalization.CultureInfo("hr-HR")).DateTimeFormat)),
+        grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
+        grid.Column(columnName: "Points",header: "Points",style: "text-align-left"),
+        grid.Column(columnName: "AcftNumLocal", header: "Aircraft", style: "text-align-left"),
+        grid.Column(columnName: "IsShared",header: "Public", format: (item) => Html.CheckBox("IsShare:"+(string)item.FlightID.ToString(), (bool)(item.IsShared!=null?item.IsShared:false), new { id = item.FlightID })),
+        //grid.Column(columnName: "IsJunk", header: "Garbage", style: "text-align-left"),
+        grid.Column(columnName: "IsJunk", header: "Garbage",format: (item) => Html.CheckBox("IsJunk:"+(string)item.FlightID.ToString(), (bool)(item.IsJunk != null ? item.IsJunk : false))),
+        grid.Column(columnName: "IsChecked",header: "To Delete", format: (item) => Html.CheckBox("IsDelete"+(string)item.FlightID.ToString(), (bool)(item.IsChecked!=null?item.IsChecked:false), new { id = item.FlightID })),
+        //grid.Column(columnName: "Comments",header: "Comments",style: "text-align-left"),
+        grid.Column(columnName: "FlightID",header: "Edit",style: "text-align-left",format:(item) =>@Html.ActionLink("edit", "Edit", new { id=item.FlightID }) )
+ ))
+
+}
+}
+
+@section scripts{
+    <script type="text/javascript">
+        window.formChanged = false;
+        $(document).ready(function(){
+            $(':input').change(function () {
+                //alert("form changed!")
+                window.formChanged = true;
+            });
+
+            $('form').submit(function () {
+                //alert("form submitted!")
+                window.formChanged = false;
+                window.onbeforeunload = null;
+            });
+
+        });
+
+        $(window).bind('beforeunload', function () {
+            if (window.formChanged == true) { alert('You have unsaved changes!'); return false; }
+            //else return true;
+        });
+
+    </script>
+}
+
+
+
+

@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@*@section featured {
+    <section class="text-center">
+        Member Area
+    </section>
+}*@
+<div class="row">
+    <div class="col-md-4">
+        <fieldset>
+            <legend>What is the FONT?</legend>
+            <ul>
+                <li><span style="font-weight: bold;">Flight On Track</span> (the <span style="font-weight: bold;">FONT</span>) is simple but fun application. Fly airplane , glider, trike or hot balloon with it.</li>
+                <li>FONT maintains a detailed history of a pilot's flights in cloud repository making it easy reviewing and sharing.</li>
+                <li>The FONT Android client is designed the way to avoid any destruction when the pilot is flying.</li>
+                <li>You do not need even to create account to start using it. The registration process is automated.</li>
+                <li>The records are owned by the pilot and can be easily accessed via a browser, reviewed, downloaded to a file or shared with other users. Other people can follow you in real time while you are up flying.</li>
+                <li>FONT doesn't add any weight to your aircraft. Just make memories of your flights and share excitement of flying with your friends and family. </li>
+                <li>FONT is free, no need to invest tons of money. All you need is the FONT app installed on your smartphone to start using it right away. More on FONT on @Html.ActionLink("[Help]", "Help", "Home") page.  </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>How does it work?</legend>
+            <ul>
+                <li>
+                    FONT is a near-real-time cloud-based system which tracks aircraft position, velocity and altitude based on the GPS signal received from a pilot's smartphone.
+                    Your phone is a sophisticated computer that is always with you. It has an ID uniquely identifying the pilot and a GPS that tracks his flights.
+                    The GPS has clear vision of all satellites in the sky, while the phone has unobscured access to ground mobile network. The app installed on a pilot's smartphone transmits information to a remote server when the pilot is flying.
+                    A cloud website provides access to the data.
+                </li>
+            </ul>
+        </fieldset>
+        <br>
+        <fieldset>
+            <legend>Public flights</legend>
+            <ul>
+                <li>@Html.ActionLink("[View]", "GetLatestRoutes", "PublicFlights")  most recent flights.</li>
+                <li>@Html.ActionLink("[Search]", "SearchByCriteria", "PublicFlights")  flight history by criteria. </li>
+                <li>@Html.ActionLink("[View]", "SearchByArea", "PublicFlights") area active flights.</li>
+            </ul>
+        </fieldset>
+        </div>
+    <div class="col-md-8">
+        <fieldset>
+            <legend> FONT Visual LogBook</legend>
+                FONT visualizes flight data in the form of Google Maps flight trajectories or 3D Google Earth kml files.
+                <p>
+                    <img src="~/Images/kml_korh.png" />
+                    <img src="~/Images/flight5804.png" />
+                </p>
+                <div class="row just_ex">
+                    <div class="col-md-10 just_ex">
+                        <a href="http://www.tableau.com/">Tableau</a> software helps to make FONT LogBook visual. The visual logbook can be published and shared with friends or other pilots on Tableau Public clouds. @Html.ActionLink("Learn more", "HelpTableau", "Home").
+                        <br>
+                    </div>
+                </div>
+                <p></p>
+        </fieldset>
+                    <p>
+                        <div class='tableauPlaceholder' id='viz1483811502822' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Vi&#47;VisualLogBook800x650&#47;VisualLogBook_1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='site_root' value='' /><param name='name' value='VisualLogBook800x650&#47;VisualLogBook_1' /><param name='tabs' value='yes' /><param name='toolbar' value='no' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Vi&#47;VisualLogBook800x650&#47;VisualLogBook_1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>
+                        <script type='text/javascript'>                    var divElement = document.getElementById('viz1483811502822'); var vizElement = divElement.getElementsByTagName('object')[0]; vizElement.style.width = '804px'; vizElement.style.height = '745px'; var scriptElement = document.createElement('script'); scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js'; vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+                        @*<div class='tableauPlaceholder' id='viz1483644018437' style='position: relative'>
+                <noscript>
+                    <a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Vi&#47;VisualLogBook800x800&#47;VisualLogBook&#47;1_rss.png' style='border: none' /></a>
+                    </noscript>
+                <object class='tableauViz' style='display:none;'>
+                    <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                    <param name='site_root' value='' />
+                    <param name='name' value='VisualLogBook800x800&#47;VisualLogBook' />
+                    <param name='tabs' value='yes' />
+                    <param name='toolbar' value='no' />
+                    <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Vi&#47;VisualLogBook800x800&#47;VisualLogBook&#47;1.png' />
+                    <param name='animate_transition' value='yes' />
+                    <param name='display_static_image' value='yes' />
+                    <param name='display_spinner' value='yes' />
+                    <param name='display_overlay' value='yes' />
+                    <param name='display_count' value='yes' />
+                    </object></div>
+                <script type='text/javascript'>                    var divElement = document.getElementById('viz1483644018437');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='804px';vizElement.style.height='895px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>*@
+                    </p>
+                </div>
+    </div>
+
+

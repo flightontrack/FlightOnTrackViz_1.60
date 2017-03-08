@@ -1,0 +1,87 @@
+﻿@model IEnumerable<MVC_Acft_Track.Models.vAircraftPilot>
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        @*@ViewBag.FeaturedMessage*@
+        @ViewBag.Message
+    </div>
+</section>
+}
+
+@*<h3>@ViewBag.Message</h3>*@
+@*<div id=col_container>*@
+<div>
+    <fieldset class="fieldset_bkgr">
+        <legend class="legend_x">My Flight History</legend>
+        <p>
+            @Html.ActionLink("[My Pilot LogBook]", "PilotLogBook", "Flight", new { pilotId = @ViewBag.PilotID }, null)
+        </p>
+        <p>
+            @Html.ActionLink("[All My Flights]", "Index", "Flight")  there are @ViewBag.PilotFlightNum.ToString() recorded flights in my history.
+        </p>
+
+    </fieldset>
+</div>
+    <div class="div_container_left">
+        <fieldset class="fieldset_nobkgr">
+            <legend class="legend_x">Pilot</legend>
+            <i>Update your pilot information clicking on Phone link.</i>
+            <table class="tablegrid">
+                <tr>
+                    <td class="table-first-col">Phone</td>
+                    <td>@Html.ActionLink((string)@ViewBag.PilotCode.ToString(), "PilotEdit", new { id = @ViewBag.PilotID })</td>
+                </tr>
+                <tr>
+                    <td class="table-first-col">Pilot Callsign</td>
+                    <td>@ViewBag.PilotName</td>
+                </tr>
+                <tr>
+                    <td class="table-first-col">First Name</td>
+                    <td>@ViewBag.NameFirst </td>
+                </tr>
+                <tr>
+                    <td class="table-first-col">Last Name</td>
+                    <td>@ViewBag.NameLast </td>
+                </tr>
+                <tr>
+                    <td class="table-first-col">Base Airport Code</td>
+                    <td>@ViewBag.BaseAirport </td>
+                </tr>
+                <tr>
+                    <td class="table-first-col">Certificate</td>
+                    <td>@ViewBag.PilotCert </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+
+    <fieldset class="fieldset_nobkgr">
+        <legend class="legend_x">My Aircrafts</legend>
+        <i>Click on [Acft Num] to see the aircraft flights. Use [Edit] link to edit or delete the aircraft from your list.</i>
+        @{
+            var grid = new WebGrid(Model, defaultSort: "AcftID", canPage: true, rowsPerPage: 50);
+        }
+        @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+        //grid.Column(columnName: "AcftID", header: "ID", style: "text-align-left",format: (item) => Html.ActionLink((string) item.AcftID.ToString(), "AcftEdit", new { id = item.AcftID })),
+        grid.Column(columnName: "AcftNumLocal", header: "Acft Num", style: "text-align-left", format: (item) => Html.ActionLink((string)item.AcftNumLocal, "FlightsByAcft", "Flight", new { acftId = item.AcftID }, null)),
+        grid.Column(columnName: "AcftName", header: "Name", style: "text-align-left"),
+        grid.Column(columnName: "AcftRegNum", header: "Reg Num", style: "text-align-left"),
+        //grid.Column(columnName: "SerNum", header: "Serial Num", style: "text-align-left"),
+        grid.Column(columnName: "FlightTime", header: "Time Logged (hr)", style: "text-align-left"),
+        grid.Column(columnName: "AcftID", header: "Edit", style: "text-align-left", format: (item) => Html.ActionLink("edit", "AcftEdit", new { id = item.ID }))
+            
+                )
+)
+
+    </fieldset>
+
+
+
+    @*</div>*@
+
+    <div class="validation-summary-errors">@ViewBag.NotFoundMessage  </div>
+
+
+

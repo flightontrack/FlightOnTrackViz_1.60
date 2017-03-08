@@ -1,0 +1,59 @@
+﻿<section class="featured">
+    <div class="content-wrapper">
+        <span class="label">@ViewBag.Message</span>
+    </div>
+</section>
+@* @Html.ActionLink("[Back]", "Help", "Home")*@
+
+<p></p>
+<div id="col1">
+<p></p>
+<b>Preflight:</b>
+        <ul>
+                <li>In order to avoid distraction make sure you do all the checks before engine start.</li>
+                <li>Launch <span style="font-weight: bold; font-style: italic;">Flight On Track</span> application on your phone.</li>
+                <li>Make sure the <span style="font-weight: bold; font-style: italic;">Pilot Phone ID</span> field is populated with your phone number or another number that uniquely represents your pilot ID. If it is not, edit the field manually.</li>
+                <li>Update <span style="font-weight: bold; font-style: italic;">Aircraft</span> field. Click on the airplane icon located on bottom right corner of the main screen. Update aircraft Make/Model/Series/N Number and scan the aircraft NFC tag if available. Alternatively, edit the fields manually. To save changes press 'Save' button.</li>
+                <li>Set <span style="font-weight: bold; font-style: italic;">Update Frequency</span> interval ranging from 3 seconds for flying in pattern to 5 minutes for long flights.</li>
+                <li>Check <span style="font-weight: bold; font-style: italic;">Multi Leg</span> box if you are flying in patterns or on a flight with more than one landing.</li>
+                <li>Press the red button before you start taxiing. It is important to have a connection to your mobile network at this time.
+                The app starts communicating with remote server, requesting a new <span style="font-weight: bold; font-style: italic;">Flight ID</span>.
+                If the communication went out successfully the button switches to yellow <span style="font-weight: bold; font-style: italic;">Cleared For Takeoff</span> state with the new flight number allocated. If the application failed to set up connection try again.
+                <li>Place the phone in your aircraft where the gps signal is not blocked though it may work absolutely fine in your pocket.</li>
+                
+        </ul>
+<b>Checklist:</b>
+    <ul>
+        <li>Pilot Phone ID</li>
+        <li>Aircraft N number</li>
+        <li>Update Frequency</li>
+        <li>Multi Leg</li>
+        <li>Tracking speed set to 40</li>
+
+    </ul>
+<b>In flight:</b>
+        <ul>
+                <li>No action required from the pilot in flight.</li>
+                <li>Upon reaching 40 mph speed on takeoff the button automatically changes from yellow to green <span style="font-weight: bold; font-style: italic;">Flight On Track</span> state indicating the start of the tracking. 
+                The tracking automatically stops when speed slows down to 40 mph on landing unless it's been set differently in the <span style="font-weight: bold;">Settings</span> screen. 
+                If <span style="font-weight: bold; font-style: italic;">Multi Leg</span> box is checked the application automatically allocates a new flight id and starts another flight recording on the next takeoff.
+                <li>To stop tracking press the green button.</li>
+                <li>The flight tracking is terminated automatically when the number of waypoints reaches a limit which is currently is set to 100 points per a flight leg.</li>
+        </ul>
+<b>Changing/resetting application preferences:</b>
+        <ul>
+                <li>Use the <span style="font-weight: bold; font-style: italic;">Settings</span> icon on the bottom of Action bar.</li>
+                <li>Change bottom threshold of <span style="font-weight: bold; font-style: italic;">Tracking Speed</span> if needed. The default is set to 40mph meaning the actual recording starts upon reaching this speed. If the setting reads 0 the recording starts in 10 sec of pressing  red button.</li>
+                <li>To revert all settings to default values press <span style="font-weight: bold; font-style: italic;">Reset</span> button.</li> 
+                <li>This screen also shows the current url where your routes can be accessed along with the password to log into your data. To see the password press <span style="font-weight: bold; font-style: italic;">Show Psw</span> button.</li>
+        </ul>
+<b>Reporting issues/bugs:</b>
+    <ul>
+        <li>Use <span style="font-weight: bold; font-style: italic;">Report Problem</span> envelope icon  on the bottom of Action bar.
+    </ul>
+</div>
+
+
+
+
+

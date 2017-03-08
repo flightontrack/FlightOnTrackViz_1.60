@@ -1,0 +1,56 @@
+﻿@{ 
+    Type t = Model.GetType();
+    var menuitem = t.GetProperty("menuitem").GetValue(Model, null);
+    var pid = t.GetProperty("pilotid").GetValue(Model, null);
+    /// for c# 6.0
+    //var v = Model?.GetType().GetProperty("menuitem")?.GetValue(Model, null);
+    //Console.Write("somethinf");
+}
+<div class="col-sm-2  no-padding-column">
+    <div class="navbar  navbar-default navbar-default_nobkgr">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle navbar-toggle_left" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="navbar-collapse collapse no-padding-column" id="myNavbar">
+            <div class="left-menu">
+                <ul class="nav nav-pills nav-stacked">
+                    @{ if (menuitem == 1)
+                        {
+                            <li class="active"><a href="~/Home/Index_member_menu?menuitem=1&pilotid=@pid">The Pilot</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=2&pilotid=@pid">My Aircrafts</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=3&pilotid=@pid">My Pilot LogBook</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=4&pilotid=@pid">All My Flights</a></li>
+                        }
+                        else if (menuitem == 2)
+                        {
+                            <li><a href="~/Home/Index_member_menu?menuitem=1&pilotid=@pid">The Pilot</a></li>
+                            <li class="active"><a href="~/Home/Index_member_menu?menuitem=2&pilotid=@pid">My Aircrafts</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=3&pilotid=@pid">My Pilot LogBook</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=4&pilotid=@pid">All My Flights</a></li>
+                        }
+                        else if (menuitem == 3)
+                        {
+                            <li><a href="~/Home/Index_member_menu?menuitem=1&pilotid=@pid">The Pilot</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=2&pilotid=@pid">My Aircrafts</a></li>
+                            <li class="active"><a href="~/Home/Index_member_menu?menuitem=3&pilotid=@pid">My Pilot LogBook</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=4&pilotid=@pid">All My Flights</a></li>
+                        }
+                        else if (menuitem == 4)
+                        {
+                            <li><a href="~/Home/Index_member_menu?menuitem=1&pilotid=@pid">The Pilot</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=2&pilotid=@pid">My Aircrafts</a></li>
+                            <li><a href="~/Home/Index_member_menu?menuitem=3&pilotid=@pid">My Pilot LogBook</a></li>
+                            <li class="active"><a href="~/Home/Index_member_menu?menuitem=4&pilotid=@pid">All My Flights</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

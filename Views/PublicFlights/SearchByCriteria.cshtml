@@ -1,0 +1,54 @@
+﻿@model MVC_Acft_Track.Models.SearchRequest
+
+
+@*<div>
+    @Html.ActionLink("[__Up__]", "Index", "Home")
+</div>*@
+
+@using (Html.BeginForm())
+{
+    @*@Html.AntiForgeryToken()*@
+    @Html.ValidationSummary(true)
+
+    <div class="row">
+        <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+                <fieldset>
+                    <h2> Search Flight By:</h2>
+                    <p>
+                        <i>
+                            Only public records are included in the search result.
+                        </i>
+                    </p>
+                <div class="table-responsive">
+                    <table class="table table-striped table-condensed">
+                        <tbody>
+                            <tr> <th scope="row">@Html.LabelFor(model => model.FlightID)</th> <td>@Html.EditorFor(model => model.FlightID)</td></tr>
+                            <tr> <th scope="row">@Html.LabelFor(model => model.AcftNumLocal)</th> <td>@Html.DropDownListFor(model => model.AcftNumLocal, ViewBag.AircraftsSelList as SelectList, "Select")</td> </tr>
+                            <tr> <th scope="row">@Html.LabelFor(model => model.PilotCode)</th> <td>@Html.DropDownListFor(model => model.PilotID, ViewBag.PilotSelList as SelectList, "Select")</td> </tr>
+                            <tr> <th scope="row">@Html.LabelFor(model => model.FlightDate)</th> <td class="datefield">@Html.EditorFor(model => model.FlightDate) </td> </tr>
+                        </tbody>
+                    </table>
+        </div>
+                    <p>
+                        <input type="submit" class="btn btn-default" id="submit" name="submit" value="Search" />
+                    </p>
+
+                </fieldset>
+
+                <p class="message-error"> @ViewBag.Message</p>
+            </div>
+        </div>
+
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+}
+
+

@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+@{
+    const string APP_TITLE = "My Flight On Track";
+    const string COMPANY_NAME = "PostNGet";
+    const string APP_MODIFIER = "- build a history of your flights";
+    const string SITE_TITLE = "FlightOnTrack";
+    const string TITLELINK_BACK = "[_BACK_]";
+    const string TITLELINK_UP = "[_UP_]";
+    ViewBag.LinkBack = null;
+    string LinkBackLabel = null;
+    if (ViewBag.LinkBack == 'b') { LinkBackLabel = TITLELINK_BACK; }
+    else if (ViewBag.LinkBack == 'u') { LinkBackLabel = TITLELINK_UP; }
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@SITE_TITLE</title>
+    <link href="~/favicon.ico" rel="icon" type="image/x-icon" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-inverse_ex navbar-fixed-top">
+        <div class="container no-padding-column">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_layout">
+                    <span class="icon-bar"></span>
+                    @if (!Request.IsAuthenticated)
+                    {
+                        @*<span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>*@
+                    }
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(@APP_TITLE, "Index", "Home", new { area = "" }, new { @class = "navbar-brand navbar-brand_ex" })
+            </div>
+            <div class="navbar-collapse collapse" id="navbar_layout">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Flights", "GetLatestRoutes", "PublicFlights")</li>
+                        <li>@Html.ActionLink("Search", "SearchByCriteria", "PublicFlights")</li>
+                        <li>@Html.ActionLink("Area", "SearchByArea", "PublicFlights")</li>
+                    }
+                    <li>@Html.ActionLink("Help", "Help", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                   @{if (!(ViewBag.LinkBack == null)) {<li> @Html.ActionLink(@LinkBackLabel, "Index", "Home") </li>} }
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    <div class="featured_ex navbar-fixed-top_ex">
+    </div>
+        @*<div class="navbar-inverse_ex navbar-fixed-ex_back">
+            <ul class="navbar-nav">
+
+                    @Html.ActionLink("[_Back_]", "Index", "Home", new { area = "" }, new { @class = "navbar-nav" })
+
+            </ul>
+</div>*@
+
+    </div>
+    <div class="container-fluid body-content">
+
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - @COMPANY_NAME</p>
+        </footer>
+    </div>
+
+    @*//@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/bootstrap")
+    @*//@RenderSection("scripts", required: false)*@
+</body>
+</html>

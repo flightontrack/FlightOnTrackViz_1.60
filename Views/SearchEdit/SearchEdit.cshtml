@@ -1,0 +1,63 @@
+﻿@model MVC_Acft_Track.Models.SearchRequest
+
+@{
+ 
+    //ViewBag.Title = "Flight Search";
+
+}
+
+<h2>Search Flight By:</h2>
+<br>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>SearchFlight</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AirportCode)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.AirportID,ViewBag.AirportSelList as SelectList,"Select")
+        </div>
+        <br>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AcftRegNum)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.AircraftID,ViewBag.AircraftsSelList as SelectList,"Select")
+        </div>
+        <br>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PilotCode)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.PilotID,ViewBag.PilotSelList as SelectList,"Select")
+        </div>
+        <br>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FlightDate)
+        </div>
+        <div class="datefield">
+            @Html.EditorFor(model => model.FlightDate)
+        </div>
+        <p>
+            <input type="submit" value="Search" />
+        </p>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+}
+
+
