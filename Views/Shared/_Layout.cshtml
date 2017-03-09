@@ -1,7 +1,8 @@
 ﻿<!DOCTYPE html>
 <html>
 @{
-    const string APP_TITLE = "My Flight On Track";
+    const string APP_TITLE = "Flight On Track";
+    const string APP_TITLE_MY = "My Flight On Track";
     const string COMPANY_NAME = "PostNGet";
     const string APP_MODIFIER = "- build a history of your flights";
     const string SITE_TITLE = "FlightOnTrack";
@@ -39,7 +40,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink(@APP_TITLE, "Index", "Home", new { area = "" }, new { @class = "navbar-brand navbar-brand_ex" })
+                @Html.ActionLink(@Request.IsAuthenticated?APP_TITLE_MY:APP_TITLE, "Index", "Home", new { area = "" }, new { @class = "navbar-brand navbar-brand_ex" })
             </div>
             <div class="navbar-collapse collapse" id="navbar_layout">
                 <ul class="nav navbar-nav">

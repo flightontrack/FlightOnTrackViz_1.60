@@ -701,7 +701,7 @@ namespace MVC_Acft_Track.Controllers
 
                     zip.Save(outputStream);
                     outputStream.Position = 0;
-                    return File(outputStream.ToArray(), "application/zip", "VisualLogBook.twbx");
+                    return File(outputStream.ToArray(), "application/zip", "VisualLogBook.twbxz");
                 }
             };
 
