@@ -3,7 +3,8 @@
     int menuitem = 1;
     var successFlg = ViewBag.successFlg;
     string msg = ViewBag.Msg;
-    string msgArpt = ViewBag.MsgArpt;
+    var msgArpt = Html.Raw(ViewBag.MsgArpt);
+    var aiprtList = ViewBag.AirportList;
     string chbxValue = Model.IsShared.ToString() ?? "false";
     //var pilotCall = Model.PilotName;
     //var placeholdLastNa = Model.NameLast ?? "Last Name";
@@ -35,9 +36,11 @@
                     {
                             <div class="col-sm-offset-2 validation-summary-errors text-danger"> @msgArpt  </div>
                     }
-                    <div class="form-group">
+                    <div class="form-group  row has-danger">
                         <label for="BaseAirport" class="col-sm-2 control-label">Base Airport Code</label>
                         <div class="col-sm-8">
+                            <small class="form-text text-muted">Please enter at least 3 symbols.</small>
+                            <div class="form-control-feedback">Sorry, at least 3 symbols ar required to enter. Try again.</div>
                             <input type="text" class="form-control" id="BaseAirport" name="BaseAirport" value="@Model.BaseAirport">
                         </div>
                     </div>

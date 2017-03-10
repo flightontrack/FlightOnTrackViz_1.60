@@ -44,10 +44,15 @@ namespace MVC_Acft_Track.Helpers
             {
                 _airportCode = value;
                 if (_airportCode != null) {
-                    var arpt = db.AirportCoordinates.Where(r => r.Code.Equals(_airportCode)).FirstOrDefault();
-                    if (arpt != null) _airportId = arpt.ID;
+                    var arpts = db.AirportCoordinates.Where(r => r.Code.Contains(_airportCode));
+                    if (arpts != null && arpts.Count() == 1)
+                    {
+                        _airportId = arpts.FirstOrDefault().ID;
+                        _airportCode = arpts.FirstOrDefault().Code;
+                    }
                 }
             }
+            get { return _airportCode; }
         }
 
         public int flightId { set { _flightId = value; } }
@@ -90,6 +95,13 @@ namespace MVC_Acft_Track.Helpers
             get
             {
                 return db.Pilots.OrderBy(p=>p.PilotUserName);
+            }
+        }
+        public IQueryable<AirportCoordinates> airportEntity
+        {
+            get
+            {
+                return db.AirportCoordinates.Where(r => r.Code.Contains(_airportCode));
             }
         }
     }

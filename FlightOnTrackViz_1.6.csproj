@@ -601,10 +601,10 @@
     <Content Include="Views\Member\PilotLogBookMobile - Copy.cshtml" />
     <Content Include="Views\Shared\ExceptionPage.cshtml" />
     <Content Include="Views\Home\IndexMobile.cshtml" />
+    <Content Include="Tableau\VisualLogBook.twb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Tableau\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

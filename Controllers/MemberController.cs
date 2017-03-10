@@ -52,7 +52,18 @@ namespace MVC_Acft_Track.Controllers
                 q.pilotUserName = User.Identity.Name;
                 var p = q.pilotEntity;
                 if(successFlg.HasValue) ViewBag.Msg = ((bool)successFlg? MSG_SAVESUCCESS: MSG_SAVEFAIL);
-                if (successAirpt.HasValue) ViewBag.MsgArpt = MSG_ARPTNOTFOUND;
+                if (successAirpt.HasValue) {
+                    q.airportCode = p.BaseAirport;
+                    if (q.airportId == null)
+                    {
+                        var airpts = q.airportEntity.Select(r => new { Code = r.Code }).ToList();
+                        if (airpts.Count() > 1) {
+                            //ViewBag.AirportList = airpts.ToString();
+                            ViewBag.MsgArpt=MSG_ARPTNOTFOUNDMULTIPLE+ airpts.ToString();
+                        }
+                        else ViewBag.MsgArpt = MSG_ARPTNOTFOUND;
+                    }
+                }
                 ViewBag.successFlg = successFlg;
                 ViewBag.SortDir = sortdir;
                 switch (menuitem)
@@ -119,11 +130,17 @@ namespace MVC_Acft_Track.Controllers
                                     q.airportCode = pilot.BaseAirport;
                                     if (q.airportId == null)
                                     {
-                                        successFlg = false;
-                                        successAirpt = false;
-                                        break;
+                                        ViewBag.successFlg = successFlg;
+                                        ViewBag.MsgArpt = MSG_ARPTNOTFOUND;
+                                        var airpts = q.airportEntity.Select(r => new {Airport=r.Code });
+                                        if (airpts.Count() > 1)
+                                        {
+                                            ViewBag.MsgArpt = MSG_ARPTNOTFOUNDMULTIPLE + String.Join(",  ", airpts);
+                                        }
+                                        return View("MemberPilot", pilot);
                                     }
                                 }
+                                pilot.BaseAirport = q.airportCode;
                                 db.Pilots.Attach(pilot);
                                 db.Entry(pilot).Property(p => p.NameLast).IsModified = true;
                                 db.Entry(pilot).Property(p => p.NameFirst).IsModified = true;
