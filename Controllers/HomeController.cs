@@ -49,43 +49,6 @@ namespace MVC_Acft_Track.Controllers
                     return RedirectToAction("IndexMember","Member", new { menuitem = 1});
 
                     //Trace.WriteLine(pilotid);
-                    ViewBag.PilotCode = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().PilotCode;
-                    ViewBag.NameLast = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().NameLast;
-                    ViewBag.NameFirst = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().NameFirst;
-                    string c = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().CertType;
-                    ViewBag.PilotCert = c == null ? c : c.Replace('_', ' ');
-                    //Trace.WriteLine("Point10");
-                    ViewBag.Raiting = "";
-                    ViewBag.BaseAirport = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().BaseAirport;
-                    ViewBag.PilotName = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().PilotName;
-                    ViewBag.PilotID = pilotid;
-                    ViewBag.PilotFlightNum = q_flightsByPilot.Count();
-                    //db.Flights.Where(p => p.PilotID == pilotid).Count();
-                    //var aircraftids = db.Flights.Where(p => p.PilotID == pilotid).Select(p => p.AcftID).Distinct().ToList();
-                    //var aircrafts = db.vAircraftPilots.Where(a => aircraftids.Contains(a.AcftID)).ToList();
-                    var aircrafts = db.vAircraftPilots.Where(p => p.PilotID == pilotid).ToList();
-
-                    q.pilotId = pilotid;
-                    var pt = q.pilotEntity;
-                    var logBookList = q.pilotLogBook.ToList();
-
-                    var timeLogBook = logBookList.Sum(item => item.FlightDurationMin) / 60;
-                    var timeForward = pt.TimeForward;// q.pilotTimeForwarded;
-
-                    ViewBag.TimeForward = timeForward;
-                    ViewBag.LogBookTimeHours = timeLogBook;
-                    ViewBag.TotalTimeHours = timeForward + timeLogBook;
-
-                    var landNumForward = pt.LandingsForward;// q.pilotLandingsForwarded;
-                    var landNumLogBook = logBookList.Sum(item => item.NoLandings);
-
-                    ViewBag.LandNumForward = landNumForward;
-                    ViewBag.LandNumLogBook = landNumLogBook;
-                    ViewBag.LandNumTotal = landNumForward + landNumLogBook;
-
-                    var vmPilotLogBookCombined = new vmPilotLogBookCombined(logBookList, aircrafts, pilotid, timeForward, landNumForward);
-
-                    return View("Index_member_menu", vmPilotLogBookCombined);
                 }
                 catch (Exception e)
                 {
@@ -222,46 +185,7 @@ namespace MVC_Acft_Track.Controllers
             }
             return View(pilot);
         }
-        //public ActionResult AcftEdit(int id = 0, int pilotid=0)
-        //{
-        //    var acft = db.vAircraftPilots.Find(id);
-        //    ViewBag.PilotId = pilotid;
-        //    if (acft == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(acft);
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult AcftEdit(AircraftPilot acft)
-        //{
-        //    if (Request.IsAuthenticated && ModelState.IsValid)
-        //    {
-        //        int pid = Request["pilotid"] == null ? 0 : Int32.Parse(Request["pilotId"]);
-        //        if (Request["submit"] == "Save Changes")
-        //        {
-        //            db.AircraftPilots.Attach(acft);
-        //            db.Entry(acft).Property(p => p.AcftName).IsModified = true;
-        //            db.Entry(acft).Property(p => p.AcftNumLocal).IsModified = true;
-        //            //db.Entry(acft).Property(p => p.AcftMMS).IsModified = true;
-        //            //db.Entry(acft).Property(p => p.AcftMake).IsModified = true;
-        //            //db.Entry(acft).Property(p => p.AcftModel).IsModified = true;
-        //            //db.Entry(acft).Property(p => p.AcftSeries).IsModified = true;
-        //            db.SaveChanges();
-        //        }
-        //        if (Request["submit"] == "Delete the Aircraft")
-        //        {
-        //            db.AircraftPilots.Attach(acft);
-        //            db.AircraftPilots.Remove(acft);
-        //            db.SaveChanges();
-        //        }
-        //        //return RedirectToAction("Index");
-        //        return RedirectToAction("index_member_menu", new { menuitem = 2, pilotid = pid});
 
-        //    }
-        //    return View(acft);
-        //}
         public ActionResult IndexLogBook()
         {
             //ViewBag.FeaturedMessage = "The aircraft tracking system records the GPS locations of your phone while on a flight ";

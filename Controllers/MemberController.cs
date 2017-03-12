@@ -19,49 +19,31 @@ namespace MVC_Acft_Track.Controllers
         private qLINQ q;
         private int pilotid;
 
-        //public IEnumerable<Pilot> u_pilot;
-        //private IEnumerable<Pilot> q_pilot;
-        //private IEnumerable<vFlightAcftPilot> q_flightsByPilot;
-        //private IEnumerable<vFlightAcftPilot> q_flightsByRoute;
-        //private IEnumerable<vFlightAcftPilot> q_flightsAll;
-        //private IEnumerable<vPilotLogBook> q_flightsLogBook;
-
         public MemberController()
         {
             db = new Entities();
             q = new qLINQ(db);
-//q.pilotUserName = User.Identity.Name;
-            //var v = db.Pilots.Where(row => row.PilotUserName == User.Identity.Name);
-            //var vv = v.Single();
-            //pilotid = db.Pilots.Where(row => row.PilotUserName == User.Identity.Name).First().PilotID;
-            ////pilotid = u_pilot.First().PilotID;
-            //q.pilotId = pilotid;
-            //q_pilot = db.Pilots.Where(row => row.PilotUserName == User.Identity.Name);
-            //q_flightsByPilot = db.vFlightAcftPilots.Where(row => row.PilotID == pilotid);
-            //q_flightsByRoute = db.vFlightAcftPilots.Where(row => (row.RouteID == routeid));
-            //q_flightsAll = db.vFlightAcftPilots;
-            //q_flightsLogBook = db.vPilotLogBooks.Where(row => row.PilotID == pilotid).OrderByDescending(row => row.RouteID);
         }
 
-        public ActionResult indexMember(int menuitem=1, bool? buttonEnable = null,bool? successFlg = null, bool? successAirpt =null, string sort= "", string sortdir = "")
+        public ActionResult indexMember(int menuitem=1, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "")
         {
             if (Request.IsAuthenticated)
             {
                 q.pilotUserName = User.Identity.Name;
                 var p = q.pilotEntity;
                 if(successFlg.HasValue) ViewBag.Msg = ((bool)successFlg? MSG_SAVESUCCESS: MSG_SAVEFAIL);
-                if (successAirpt.HasValue) {
-                    q.airportCode = p.BaseAirport;
-                    if (q.airportId == null)
-                    {
-                        var airpts = q.airportEntity.Select(r => new { Code = r.Code }).ToList();
-                        if (airpts.Count() > 1) {
-                            //ViewBag.AirportList = airpts.ToString();
-                            ViewBag.MsgArpt=MSG_ARPTNOTFOUNDMULTIPLE+ airpts.ToString();
-                        }
-                        else ViewBag.MsgArpt = MSG_ARPTNOTFOUND;
-                    }
-                }
+                //if (successAirpt.HasValue) {
+                //    q.airportCode = p.BaseAirport;
+                //    if (q.airportId == null)
+                //    {
+                //        var airpts = q.airportEntity.Select(r => new { Code = r.Code }).ToList();
+                //        if (airpts.Count() > 1) {
+                //            //ViewBag.AirportList = airpts.ToString();
+                //            ViewBag.MsgArpt=MSG_ARPTNOTFOUNDMULTIPLE+ airpts.ToString();
+                //        }
+                //        else ViewBag.MsgArpt = MSG_ARPTNOTFOUND;
+                //    }
+                //}
                 ViewBag.successFlg = successFlg;
                 ViewBag.SortDir = sortdir;
                 switch (menuitem)
@@ -127,24 +109,30 @@ namespace MVC_Acft_Track.Controllers
                                 {
                                     if (pilot.BaseAirport.Length < 3)
                                         {
-                                            ViewBag.MsgArpt = MSG_ARPTVALIDATION_FAILED ;
                                         successFlg = false;
-                                        ViewBag.successFlg = successFlg;
-                                        if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
-                                        return View("MemberPilot", pilot);
+                                        ViewBag.MsgArpt = MSG_ARPTVALIDATION_FAILED ;
+                                        //ViewBag.successFlg = successFlg;
+                                        //if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
+                                        //return View("MemberPilot", pilot);
                                     }
-                                    q.airportCode = pilot.BaseAirport;
-                                    if (q.airportId == null)
+                                    else
                                     {
-                                        successFlg = false;
-                                        ViewBag.successFlg = successFlg;
-                                        ViewBag.MsgArpt = MSG_ARPTNOTFOUND;
-                                        var airpts = q.airportEntity.Select(r => new {Airport=r.Code });
-                                        if (airpts.Count() > 1)
+                                        q.airportCode = pilot.BaseAirport;
+                                        if (q.airportId == null)
                                         {
-                                            ViewBag.MsgArpt = MSG_ARPTNOTFOUNDMULTIPLE + String.Join(",  ", airpts);
+                                            successFlg = false;
+                                            //ViewBag.successFlg = successFlg;                                            
+                                            var airpts = q.airportEntity.Select(r => new {Airport=r.Code });
+                                            if (airpts.Count() > 1)
+                                            {
+                                                ViewBag.MsgArpt = MSG_ARPTNOTFOUNDMULTIPLE + String.Join(",  ", airpts);
+                                            }
+                                            else ViewBag.MsgArpt = MSG_ARPTNOTFOUND;
                                         }
-                                        if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
+                                    }
+                                    if (successFlg.HasValue)
+                                    {
+                                        ViewBag.Msg = MSG_SAVEFAIL;
                                         return View("MemberPilot", pilot);
                                     }
                                 }
@@ -208,7 +196,7 @@ namespace MVC_Acft_Track.Controllers
                     }
                 }
                 else { successFlg = false; }
-                return RedirectToAction("indexMember", new { menuitem = i, successFlg = successFlg, successAirpt= successAirpt, buttonEnable = btnEnabl });
+                return RedirectToAction("indexMember", new { menuitem = i, successFlg = successFlg, buttonEnable = btnEnabl });
             }
             else return RedirectToAction("Login", "Account");
         }
