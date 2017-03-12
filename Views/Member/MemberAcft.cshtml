@@ -3,9 +3,9 @@
 @{
     string msg = ViewBag.Msg;
     var menuitem = 2;
-
 }
-@Html.AntiForgeryToken();
+
+@Html.AntiForgeryToken()
 @Html.Hidden("menuitem", menuitem)
 <div class="row">
     @Html.Partial("_MemberMenu", new { menuitem = menuitem})

@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using MVC_Acft_Track.Filters;
 using MVC_Acft_Track.Models;
+using static MVC_Acft_Track.Finals;
 
 namespace MVC_Acft_Track.Controllers
 {
@@ -26,7 +27,7 @@ namespace MVC_Acft_Track.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            ViewBag.Message = "Use the User ID from your FONT app (Settings screen) to log in.";
+            ViewBag.Message = MSG_LOGINHINT;
             return View();
         }
 

@@ -95,12 +95,13 @@ namespace MVC_Acft_Track.Controllers
             }
             else
             {
-                ViewBag.Message = MSG_NOTLOGGED;
-                var dd = new ListsDD();
-                ViewBag.AircraftsSelList = dd.getAllAcftList();
-                ViewBag.PilotSelList = dd.getAllPilotList();
-                ViewBag.AirportSelList = dd.getAllAirportList();
-                return View("IndexMobile");
+                ViewBag.Message = MSG_LOGINHINT;
+                //var dd = new ListsDD();
+                //ViewBag.AircraftsSelList = dd.getAllAcftList();
+                //ViewBag.PilotSelList = dd.getAllPilotList();
+                //ViewBag.AirportSelList = dd.getAllAirportList();
+                //return View(Request.Browser.IsMobileDevice?"IndexMobile":"Index");
+                return View(Request.Browser.IsMobileDevice ? "IndexMobile" : "IndexMobile");
             }
         }
         //POST: 

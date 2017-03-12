@@ -45,8 +45,6 @@ namespace MVC_Acft_Track.Controllers
 
         public ActionResult indexMember(int menuitem=1, bool? buttonEnable = null,bool? successFlg = null, bool? successAirpt =null, string sort= "", string sortdir = "")
         {
-            if (Request.Browser.IsMobileDevice) { };
-
             if (Request.IsAuthenticated)
             {
                 q.pilotUserName = User.Identity.Name;
@@ -127,9 +125,18 @@ namespace MVC_Acft_Track.Controllers
                             case "1":
                                 if (pilot.BaseAirport != null)
                                 {
+                                    if (pilot.BaseAirport.Length < 3)
+                                        {
+                                            ViewBag.MsgArpt = MSG_ARPTVALIDATION_FAILED ;
+                                        successFlg = false;
+                                        ViewBag.successFlg = successFlg;
+                                        if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
+                                        return View("MemberPilot", pilot);
+                                    }
                                     q.airportCode = pilot.BaseAirport;
                                     if (q.airportId == null)
                                     {
+                                        successFlg = false;
                                         ViewBag.successFlg = successFlg;
                                         ViewBag.MsgArpt = MSG_ARPTNOTFOUND;
                                         var airpts = q.airportEntity.Select(r => new {Airport=r.Code });
@@ -137,6 +144,7 @@ namespace MVC_Acft_Track.Controllers
                                         {
                                             ViewBag.MsgArpt = MSG_ARPTNOTFOUNDMULTIPLE + String.Join(",  ", airpts);
                                         }
+                                        if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
                                         return View("MemberPilot", pilot);
                                     }
                                 }

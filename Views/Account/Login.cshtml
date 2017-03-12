@@ -1,19 +1,12 @@
 ﻿@model MVC_Acft_Track.Models.LoginModel
 
-@*<section class="featured">
-    <div class="content-wrapper">
-        @ViewBag.Message
-    </div>
-</section>*@
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
-            @*@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))*@
-@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 <h4>@ViewBag.Message</h4>
-                <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
@@ -43,30 +36,6 @@
                         <input type="submit" value="Log in" class="btn btn-default" />
                     </div>
                 </div>
-
-
-
-
-                @*<fieldset class="fieldset_bkgr">
-                    <legend class="legend_x">Log in Form</legend>
-                    <ol>
-                        <li>
-                                @Html.LabelFor(m => m.UserName)
-                                @Html.TextBoxFor(m => m.UserName)
-                                @Html.ValidationMessageFor(m => m.UserName)
-                            </li>
-                        <li>
-                            @Html.LabelFor(m => m.Password)
-                            @Html.PasswordFor(m => m.Password)
-                            @Html.ValidationMessageFor(m => m.Password)
-                        </li>
-                        <li>
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-                        </li>
-                    </ol>
-                    <input type="submit" value="Log in" />
-                </fieldset>*@
             }
         </section>
     </div>
