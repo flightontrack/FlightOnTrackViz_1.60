@@ -104,4 +104,34 @@
             </div>
         </div>
     </div>
+    <div id="vizContainer">
+    </div>
 </div>
+@section Scripts
+{
+    <script src="https://public.tableau.com/javascripts/api/tableau-2.1.2.js"></script>
+    <script>
+        function initializeViz() {
+
+            var containerDiv = document.getElementById("vizContainer");
+            var url = "https://public.tableau.com/views/VisualLogBook800x650r/Dashboard2?:embed=y&:display_count=no&:toolbar=no";
+            var options = {
+                width: "100%",
+                height: containerDiv.offsetWidth * 1,
+                minHeight: containerDiv.offsetWidth * 0.8,
+                maxHeight: containerDiv.offsetWidth * 1.2,
+                hideTabs: true,
+                hideToolbar: true,
+                onFirstInteractive: function () {
+                    workbook = viz.getWorkbook();
+                    activeSheet = workbook.getActiveSheet();
+                }
+            }
+            viz = new tableau.Viz(containerDiv, url, options);
+        }
+        $(window).on("load", function () {
+            // alert("Window is loaded");
+            initializeViz();
+        });
+    </script>
+}
