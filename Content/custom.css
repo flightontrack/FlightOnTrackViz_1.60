@@ -47,12 +47,6 @@ header_x
     background-color: #F5F5F5;
 }
 
-.fieldset_nobkgr_green {
-	margin: auto;
-	border: 4px groove ##2ea27c;
-    border-radius: 10px;
-}
-
 .navbar-inverse_ex {
     /*background-image:url(/Images/chart.PNG);*/
       background-color: #2d4b65;
