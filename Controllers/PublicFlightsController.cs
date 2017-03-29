@@ -84,8 +84,11 @@ namespace MVC_Acft_Track.Controllers
             ViewBag.FlightsJsonData = serializer.Serialize(gpslocations);
             ViewBag.AreaCenterLat = gpslocations.FirstOrDefault().latitude;
             ViewBag.AreaCenterLong = gpslocations.FirstOrDefault().longitude;
-            ViewBag.ActionBack = "GetLatestRoutes";
-            return View("DisplayLatestFlightsStaticMap");
+            //ViewBag.ActionBack = "GetLatestRoutes";
+            //return View("DisplayLatestFlightsStaticMap");
+            var flightIdsString = string.Join(",", flightIds);
+            return RedirectToAction("GetRouteFlights", "Flight", new { flightIds = flightIdsString });
+
         }
         
         public ActionResult CheckRouteFlightsCount(int id = 0, string actionBack = "")
@@ -131,13 +134,6 @@ namespace MVC_Acft_Track.Controllers
             }
             if (flightIds.Count == 0) return RedirectToAction("GetRouteFlights",new { message = SELECTSOMTHING });
             var flightIdsString=string.Join(",", flightIds);
-            ////var gpslocations = db.GpsLocations.Where(row => flightIds.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenByDescending(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
-            //var gpslocations = db.GpsLocations.Where(row => flightIds.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
-            //JavaScriptSerializer serializer = new JavaScriptSerializer();
-            //ViewBag.FlightsJsonData = serializer.Serialize(gpslocations);
-            //ViewBag.AreaCenterLat = gpslocations.FirstOrDefault().latitude;
-            //ViewBag.AreaCenterLong = gpslocations.FirstOrDefault().longitude;
-            //ViewBag.ActionBack = "GetRouteFlights";
             return RedirectToAction("GetRouteFlights", "Flight", new { flightIds = flightIdsString });
             //return View("DisplayLatestFlightsStaticMap");
         }
@@ -171,9 +167,7 @@ namespace MVC_Acft_Track.Controllers
         [HttpGet]
         public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate)
         {
-            //try
-            //{
-            var flights = db.vFlightAcftPilots.ToList();
+            List<vFlightAcftPilot> flights = new List<vFlightAcftPilot>();
 
             if (string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate))
             {
@@ -183,11 +177,11 @@ namespace MVC_Acft_Track.Controllers
             {
                 if (!string.IsNullOrEmpty(flightID))
                 {
-                    flights = flights.Where(row => row.FlightID == int.Parse(flightID)).ToList();
+                    flights = db.vFlightAcftPilots.Where(row => row.FlightID == int.Parse(flightID)).ToList();
                 }
                 if (!string.IsNullOrEmpty(flightDate))
                 {
-                    flights = flights.Where(row => row.FlightDateOnly.Contains(flightDate)).ToList();
+                    flights = db.vFlightAcftPilots.Where(row => row.FlightDateOnly.Contains(flightDate)).ToList();
                 }
                 if (!string.IsNullOrEmpty(airportID))
                 {
@@ -195,13 +189,12 @@ namespace MVC_Acft_Track.Controllers
                 }
                 if (!string.IsNullOrEmpty(acftNumLocal))
                 {
-                    //var acftids = new List<int>();
                     var acftids = db.AircraftPilots.Where(row => row.AcftNumLocal == acftNumLocal).Select(row => row.AcftID).ToList();
-                    flights = flights.Where(row => acftids.Contains(row.AcftID.Value)).ToList();
+                    flights = db.vFlightAcftPilots.Where(row => acftids.Contains(row.AcftID.Value)).ToList();
                 }
                 if (!string.IsNullOrEmpty(pilotID))
                 {
-                    flights = flights.Where(row => row.PilotID == int.Parse(pilotID)).ToList();
+                    flights = db.vFlightAcftPilots.Where(row => row.PilotID == int.Parse(pilotID)).ToList();
                 }
                 flights = flights.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
             }
