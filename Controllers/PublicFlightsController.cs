@@ -145,7 +145,7 @@ namespace MVC_Acft_Track.Controllers
             ViewBag.PilotSelList = new SelectList(db.vListPilots.OrderBy(row => row.PilotCode), "PilotID", "PilotCode");
             ViewBag.AirportSelList = new SelectList(db.vListAirports.OrderBy(row => row.AirportCode), "AirportID", "AirportCode");
             ViewBag.Message = message;
-            return View("SearchByCriteria");
+            return View("SearchByCriteria_New");
         }
         [HttpPost]
         public ActionResult SearchByCriteria(FormCollection form)
