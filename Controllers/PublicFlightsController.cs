@@ -208,17 +208,9 @@ namespace MVC_Acft_Track.Controllers
                     var pilotIDint = int.Parse(pilotID);
                     f = f.Where(row => row.PilotID == pilotIDint);
                 }
-                flights = f.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
+                flights = f.Where(row=>!row.IsJunk).Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
             }
-            //    }
-            //catch (Exception e)
-            //{
-            //    ViewBag.ErrorMessage = "SearchByCriteria()";
-            //    ViewBag.ExceptionErrorMessage = e.Message;
-            //    return View("ErrorPage");
-            //};
-            //ViewBag.ViewTitle = "Public Flights";
-            //ViewBag.ActionBack = "SearchByCriteria";
+
             return View("IndexFlightsPublic", flights);
         }
         [HttpPost]
