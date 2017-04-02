@@ -14,6 +14,7 @@
           <Property Name="AcftNumLocal" Type="nvarchar" MaxLength="50" />
           <Property Name="AcftName" Type="nvarchar" MaxLength="100" />
           <Property Name="PilotID" Type="int" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
           <Property Name="Created" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="AirportCoordinates">
@@ -54,6 +55,13 @@ warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primar
           <Property Name="Radius" Type="int" />
           <Property Name="Area" Type="geography" StoreGeneratedPattern="Computed" />
           <Property Name="GeoLocBuffer" Type="geography" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="DimCompany">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Flight">
           <Key>
@@ -163,6 +171,8 @@ warning 6002: The table/view 'flighttrack-db.dbo.SearchRequest' does not have a 
           <Property Name="PilotCode" Type="varchar" MaxLength="50" />
           <Property Name="FlightID" Type="int" />
           <Property Name="AreaID" Type="int" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'flighttrack-db.dbo.vAircraftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -386,6 +396,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <EntitySet Name="AircraftPilot" EntityType="Self.AircraftPilot" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AirportCoordinates" EntityType="Self.AirportCoordinates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimAircraftRemote" EntityType="Self.DimAircraftRemote" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DimCompany" EntityType="Self.DimCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flight" EntityType="Self.Flight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GpsLocation" EntityType="Self.GpsLocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pilot" EntityType="Self.Pilot" Schema="dbo" store:Type="Tables" />
@@ -413,7 +424,9 @@ FROM [dbo].[DimArea] AS [DimArea]</DefiningQuery>
 [SearchRequest].[AcftNumLocal] AS [AcftNumLocal], 
 [SearchRequest].[PilotCode] AS [PilotCode], 
 [SearchRequest].[FlightID] AS [FlightID], 
-[SearchRequest].[AreaID] AS [AreaID]
+[SearchRequest].[AreaID] AS [AreaID], 
+[SearchRequest].[CompanyID] AS [CompanyID], 
+[SearchRequest].[CompanyName] AS [CompanyName]
 FROM [dbo].[SearchRequest] AS [SearchRequest]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vAircraftPilot" EntityType="Self.vAircraftPilot" store:Type="Views" store:Schema="dbo">
@@ -579,6 +592,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Parameter Name="pilotId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="AirportCoordinates" EntityType="FlightTrackMVCModel.AirportCoordinates" />
+          <EntitySet Name="DimCompany" EntityType="FlightTrackMVCModel.DimCompany" />
         </EntityContainer>
         <EntityType Name="DimArea">
           <Key>
@@ -608,6 +622,8 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="FlightID" Type="Int32" />
           <Property Name="AreaID" Type="Int32" />
           <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="CompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="vListAirport">
           <Key>
@@ -634,6 +650,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="PilotID" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyID" Type="Int32" />
         </EntityType>
         <EntityType Name="vAircraftPilot">
           <Key>
@@ -902,6 +919,13 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="AltDecimal" Type="Int32" />
           <Property Name="GeoLocBuffer" Type="Geography" />
         </EntityType>
+        <EntityType Name="DimCompany">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -925,6 +949,8 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySetMapping Name="SearchRequests">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.SearchRequest">
               <MappingFragment StoreEntitySet="SearchRequest">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="AcftNumLocal" ColumnName="AcftNumLocal" />
                 <ScalarProperty Name="AreaID" ColumnName="AreaID" />
                 <ScalarProperty Name="FlightID" ColumnName="FlightID" />
@@ -959,6 +985,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySetMapping Name="AircraftPilots">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.AircraftPilot">
               <MappingFragment StoreEntitySet="AircraftPilot">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="AcftNumLocal" ColumnName="AcftNumLocal" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="PilotID" ColumnName="PilotID" />
@@ -1247,6 +1274,14 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
                 <ScalarProperty Name="Lat" ColumnName="Lat" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DimCompany">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.DimCompany">
+              <MappingFragment StoreEntitySet="DimCompany">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

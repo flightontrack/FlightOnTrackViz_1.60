@@ -12,14 +12,9 @@ namespace MVC_Acft_Track.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AircraftPilot
+    public partial class DimCompany
     {
-        public int ID { get; set; }
-        public int AcftID { get; set; }
-        public string AcftName { get; set; }
-        public int PilotID { get; set; }
-        public System.DateTime Created { get; set; }
-        public string AcftNumLocal { get; set; }
-        public Nullable<int> CompanyID { get; set; }
+        public int CompanyID { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using MVC_Acft_Track.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -144,32 +145,34 @@ namespace MVC_Acft_Track.Controllers
             ViewBag.AircraftsSelList = new SelectList(db.vListAircrafts.OrderBy(row => row.AcftNumLocal), "AcftID", "AcftNumLocal");
             ViewBag.PilotSelList = new SelectList(db.vListPilots.OrderBy(row => row.PilotCode), "PilotID", "PilotCode");
             ViewBag.AirportSelList = new SelectList(db.vListAirports.OrderBy(row => row.AirportCode), "AirportID", "AirportCode");
+            ViewBag.CompanySelList = new SelectList(db.DimCompany.OrderBy(row => row.Name), "CompanyID", "Name");
             ViewBag.Message = message;
-            return View("SearchByCriteria_New");
+            return View("SearchByCriteria");
         }
         [HttpPost]
         public ActionResult SearchByCriteria(FormCollection form)
         {
-            var flights = db.vFlightAcftPilots.ToList();
             if (form["submit"] == "Search")
             {
+                if (form["FlightID"].Equals("") && form["AcftNumLocal"].Equals("") && form["PilotID"].Equals("") && form["FlightDate"].Equals("") && form["CompanyID"].Equals("")) return RedirectToAction("SearchByCriteria", new { message = SELECTSOMTHING });
                 var flightID = form["FlightID"];
                 var airportID = form["AirportID"];
                 var acftNumLocal = form["AcftNumLocal"];
                 var pilotID = form["PilotID"];
                 var flightDate = form["FlightDate"];
-                if (form["FlightID"].Equals("") && form["AcftNumLocal"].Equals("") && form["PilotID"].Equals("") && form["FlightDate"].Equals("")) return RedirectToAction("SearchByCriteria", new { message = SELECTSOMTHING });
-                return RedirectToAction("SearchByCriteriaResult", new { flightID = flightID, airportID = airportID, acftNumLocal = acftNumLocal, pilotID = pilotID, flightDate = flightDate });
+                var companyID = form["CompanyID"];
+                return RedirectToAction("SearchByCriteriaResult", new { flightID = flightID, airportID = airportID, acftNumLocal = acftNumLocal, pilotID = pilotID, flightDate = flightDate,companyID= companyID });
             }
             return View();
         }
 
         [HttpGet]
-        public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate)
+        public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID)
         {
             List<vFlightAcftPilot> flights = new List<vFlightAcftPilot>();
+            var f = db.vFlightAcftPilots.Where(row => 1==1);
 
-            if (string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate))
+            if (string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate+ companyID))
             {
                 return RedirectToAction("SearchByCriteria");
             }
@@ -177,26 +180,35 @@ namespace MVC_Acft_Track.Controllers
             {
                 if (!string.IsNullOrEmpty(flightID))
                 {
-                    flights = db.vFlightAcftPilots.Where(row => row.FlightID == int.Parse(flightID)).ToList();
+                    int flightIDint = int.Parse(flightID);
+                    f = f.Where(row => row.FlightID == flightIDint);
                 }
                 if (!string.IsNullOrEmpty(flightDate))
                 {
-                    flights = db.vFlightAcftPilots.Where(row => row.FlightDateOnly.Contains(flightDate)).ToList();
+                    var flightDatedate = DateTime.Parse(flightDate);
+                    f = f.Where(row => DbFunctions.TruncateTime(row.FlightDate)== flightDatedate);
                 }
-                if (!string.IsNullOrEmpty(airportID))
-                {
-                    //flights = flights.Where(row => row.AcftID == int.Parse(aircraftID)).ToList();
-                }
+                //if (!string.IsNullOrEmpty(airportID))
+                //{
+                //    //flights = flights.Where(row => row.AcftID == int.Parse(aircraftID)).ToList();
+                //}
                 if (!string.IsNullOrEmpty(acftNumLocal))
                 {
                     var acftids = db.AircraftPilots.Where(row => row.AcftNumLocal == acftNumLocal).Select(row => row.AcftID).ToList();
-                    flights = db.vFlightAcftPilots.Where(row => acftids.Contains(row.AcftID.Value)).ToList();
+                    f = f.Where(row => acftids.Contains(row.AcftID.Value));
+                }
+                if (!string.IsNullOrEmpty(companyID))
+                {
+                    var companyIDint = int.Parse(companyID);
+                    var acftids = db.AircraftPilots.Where(row => row.CompanyID == companyIDint).Select(row => row.AcftID).ToList();
+                    f = f.Where(row => acftids.Contains(row.AcftID.Value));
                 }
                 if (!string.IsNullOrEmpty(pilotID))
                 {
-                    flights = db.vFlightAcftPilots.Where(row => row.PilotID == int.Parse(pilotID)).ToList();
+                    var pilotIDint = int.Parse(pilotID);
+                    f = f.Where(row => row.PilotID == pilotIDint);
                 }
-                flights = flights.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
+                flights = f.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
             }
             //    }
             //catch (Exception e)
@@ -205,8 +217,8 @@ namespace MVC_Acft_Track.Controllers
             //    ViewBag.ExceptionErrorMessage = e.Message;
             //    return View("ErrorPage");
             //};
-            ViewBag.ViewTitle = "Public Flights";
-            ViewBag.ActionBack = "SearchByCriteria";
+            //ViewBag.ViewTitle = "Public Flights";
+            //ViewBag.ActionBack = "SearchByCriteria";
             return View("IndexFlightsPublic", flights);
         }
         [HttpPost]

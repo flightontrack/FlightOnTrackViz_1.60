@@ -20,5 +20,9 @@ namespace MVC_Acft_Track.Models
         public Nullable<int> AreaID;
         [Display(Name = "Aircraft Number")]
         public string AcftNumLocal;
+        public Nullable<int> CompanyID { get; set; }
+
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
     }
 }
