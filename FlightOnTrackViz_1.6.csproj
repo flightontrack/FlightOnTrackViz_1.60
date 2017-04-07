@@ -418,6 +418,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>FlightTrackMVC.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="HtmlPage1.html" />
     <Content Include="Images\1484008023_f-hexagon_128.png" />
     <Content Include="Images\1484008304_Circle_Red.png" />
     <Content Include="Images\1484008306_Circle_Red.png" />
@@ -436,6 +437,8 @@
     <Content Include="Images\1484270764_Pin_right.png" />
     <Content Include="Images\1484298852_blue-pin.png" />
     <Content Include="Images\alcatel.jpg" />
+    <Content Include="Images\app_red.png" />
+    <Content Include="Images\app_yellow.png" />
     <Content Include="Images\Capture_flight4.PNG" />
     <Content Include="Images\Capture_flight4_data.PNG" />
     <Content Include="Images\chart.PNG" />
@@ -454,6 +457,7 @@
     <Content Include="Images\Screenshot_green_180.png" />
     <Content Include="Images\Screenshot_red_180.png" />
     <Content Include="Images\Screenshot_yellow_180.png" />
+    <Content Include="Images\sprites.png" />
     <Content Include="Models\FlightTrackMVC.edmx.diagram">
       <DependentUpon>FlightTrackMVC.edmx</DependentUpon>
     </Content>
