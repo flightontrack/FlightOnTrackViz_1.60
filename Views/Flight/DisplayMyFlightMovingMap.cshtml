@@ -69,17 +69,17 @@
     });
     getMarkers();
 
-    greenControl = document.getElementById('GreenTextDiv');
+    @*greenControl = document.getElementById('GreenTextDiv');
     redControl = document.getElementById('RedTextDiv');
     redControl.style.display = @isAutoUpdate==0 ?'inline':'none';
-    greenControl.style.display = @isAutoUpdate==1 ?'inline':'none';
+    greenControl.style.display = @isAutoUpdate==1 ?'inline':'none';*@
         if(@isAutoUpdate==1) map.controls[google.maps.ControlPosition.TOP_CENTER].push(greenControl);
         else map.controls[google.maps.ControlPosition.TOP_CENTER].push(redControl);
     }
 
     //---------------------------------------------------------------
     function getMarkers() {
-        var url = '@Html.Raw(@Url.Action("GetFlightDataJson", new { id = FlightId, idtype = @FlightOrRoute}))';
+        var url = '@Html.Raw(@Url.Action("GetFlightDataJson", new { id = FlightId, idtype = @FlightOrRoute }))';
         //url changed every call to prevent caching
         var c = "&c="+cnt
         url+=c;
@@ -106,7 +106,7 @@
                 //greenControl.style.display = 'none';
                 //redControl.style.display = 'inline';
                 //map.controls[google.maps.ControlPosition.TOP_CENTER].push(redControl);
-                var urlAction = '@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId,FlightOrRoute=@FlightOrRoute})';
+                var urlAction = '@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId, FlightOrRoute = @FlightOrRoute })';
                 window.location.assign(urlAction);
             }
         });
@@ -124,10 +124,10 @@
     }*@
     function buttonAutoRefresh(el) {
         if (el.value=="1") {
-            var urlAction = '@Html.Raw(@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId,FlightOrRoute=@FlightOrRoute}))';
+            var urlAction = '@Html.Raw(@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId, FlightOrRoute = @FlightOrRoute }))';
         }
         else {
-            var urlAction = '@Html.Raw(@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId,FlightOrRoute=@FlightOrRoute, isAutoUpdate ="1"}))';
+            var urlAction = '@Html.Raw(@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId, FlightOrRoute = @FlightOrRoute, isAutoUpdate = "1" }))';
 
         }
         window.location.assign(urlAction);
@@ -143,18 +143,31 @@
     </script>
 </head>
 <body>
-    <table>
-        <tr>
-            @*<td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>*@
-            <td><button onclick="buttonAutoRefresh(this)" class="btn btn-default" type="submit" value="@isAutoUpdate">@buttonText</button></td>
-        </tr>
-    </table>
-    <div id="map_div"></div>
-    <div id="GreenTextDiv" style="color: green; position: absolute;display:none">
-        <h1>Update is On</h1>
+@if (isAutoUpdate == 1)
+{
+    <div class="row">
+        <div class="col-md-2">
+            <div class="text-danger"><h4><b>Refresh is ON</b></h4></div>
+        </div>
+        <div>
+            <button onclick="buttonAutoRefresh(this)" class="btn btn-success" type="submit" value="@isAutoUpdate">@buttonText</button>
+        </div>
+     </div>
+}
+else
+{
+<div class="row">
+    <div class="text-danger">
+        <div class="col-md-2">
+            <h4><b>Refresh is OFF</b></h4>
+        </div>
+        <div>
+            <button onclick="buttonAutoRefresh(this)" class="btn btn-default" type="submit" value="@isAutoUpdate">@buttonText</button>
+        </div>
     </div>
-    <div id="RedTextDiv" style="color: red; position: absolute; display: none;">
-        <blink><h1><b>Update is Off. Start Auto Refresh.</b></h1></blink>
-    </div>
+</div>
+}
+            <div id="map_div"></div>
+
 </body>
 </html>
