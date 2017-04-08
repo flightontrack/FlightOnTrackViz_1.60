@@ -7,13 +7,13 @@
     </section>
 }*@
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <fieldset>
             <legend>What is the FONT?</legend>
         </fieldset>
-        <div class="col-md-6"> <img src="~/Images/app_red.png" class="img-responsive" style="padding-right:10px" /></div>
+        <div class="col-md-4" > <img src="~/Images/app_red.png" maxwith="10px" class="img-responsive" style="padding-right:10px" /></div>
 
-                <ul class="text-justify">
+                <ul class="text-justify" style="list-style-type:none">
                     <li><span style="font-weight: bold;">Flight On Track</span> (the <span style="font-weight: bold;">FONT</span>) is simple but fun application. Fly airplane , glider, trike or hot balloon with it.</li>
                     <li>FONT maintains a detailed history of a pilot's flights in cloud repository making it easy reviewing and sharing.</li>
                     <li>The FONT Android client is designed the way to avoid any destruction when the pilot is flying.</li>
@@ -25,7 +25,8 @@
 
             <fieldset>
                 <legend>How does it work?</legend>
-                <ul>
+            </fieldset>
+                <ul class="text-justify" style="list-style-type:none">
                     <li>
                         FONT is a near-real-time cloud-based system which tracks aircraft position, velocity and altitude based on the GPS signal received from a pilot's smartphone.
                         Your phone is a sophisticated computer that is always with you. It has an ID uniquely identifying the pilot and a GPS that tracks his flights.
@@ -33,35 +34,30 @@
                         A cloud website provides access to the data.
                     </li>
                 </ul>
-            </fieldset>
             <br>
-            <fieldset>
+            @*<fieldset>
                 <legend>Recent public flights</legend>
                 <ul>
                     <li>@Html.ActionLink("[View]", "GetLatestRoutes", "PublicFlights")  most recent flights.</li>
                     <li>@Html.ActionLink("[Search]", "SearchByCriteria", "PublicFlights")  flight history by criteria. </li>
                     <li>@Html.ActionLink("[View]", "SearchByArea", "PublicFlights") area active flights.</li>
                 </ul>
-            </fieldset>
+            </fieldset>*@
         </div>
-    <div class="col-md-8">
+    <div class="col-md-7">
         <fieldset>
             <legend> FONT Visual LogBook</legend>
-                FONT visualizes flight data in the form of Google Maps flight trajectories or 3D Google Earth kml files.
-                @*<p>
-                    <img src="~/Images/kml_korh.png" />
-                    <img src="~/Images/flight5804.png" />
-                </p>*@
+                
                 <div class="row just_ex">
-                    <div class="col-md-8 just_ex">
-                        <a href="http://www.tableau.com/">Tableau</a> Software helps to make FONT LogBook visual. The visual logbook can be published and shared with friends or other pilots on Tableau Public clouds. @Html.ActionLink("Learn more", "HelpTableau", "Home").
+                    <div class="col-md-10 just_ex">
+                        FONT visualizes flight data in the form of Google Maps flight trajectories or 3D Google Earth kml files.<a href="http://www.tableau.com/"> Tableau</a> Software helps to make FONT LogBook visual. The visual logbook can be published and shared with friends or other pilots on Tableau Public clouds. @Html.ActionLink("Learn more", "HelpTableau", "Home").
                         <br>
                     </div>
                 </div>
                 <p></p>
         </fieldset>
 
-            <div class="col-md-8" id="vizContainer"  style="border: 5px groove #2ea27c; border-radius: 5px;">
+            <div class="col-md-10" id="vizContainer"  style="border: 5px groove #2ea27c; border-radius: 5px;">
             </div>
 
     </div>

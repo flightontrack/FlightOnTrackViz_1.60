@@ -9,7 +9,7 @@
     var imgendpoint = Url.Content("~/Images/1484079792_orange-pin.png");
     var imgtracepoint = Url.Content("~/Images/1484009648_circle_blue.png");
     var imgintermpoint = Url.Content("~/Images/1484298852_blue-pin.png");
-    var cnt = 0;
+    //var cnt = 0;
 }
 
 <!DOCTYPE html>
@@ -79,8 +79,10 @@
 
     //---------------------------------------------------------------
     function getMarkers() {
+        var url = '@Html.Raw(@Url.Action("GetFlightDataJson", new { id = FlightId, idtype = @FlightOrRoute}))';
         //url changed every call to prevent caching
-        var url = '@Url.Action("GetFlightDataJson", new { id = FlightId, idtype = @FlightOrRoute,c=cnt })';
+        var c = "&c="+cnt
+        url+=c;
         $.ajax({
             url: url,
             type: 'GET',
@@ -116,17 +118,17 @@
         return "";
     }
     //---------------------------------------------------------------
-    function buttonback() {
+    @*function buttonback() {
 
         window.location.assign('@Url.Action(@ViewBag.backUrl, new { id = FlightId, actionBack = @ViewBag.linkUp })' );
-    }
+    }*@
     function buttonAutoRefresh(el) {
         if (el.value=="1") {
-            var urlAction = '@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId,FlightOrRoute=@FlightOrRoute})';
+            var urlAction = '@Html.Raw(@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId,FlightOrRoute=@FlightOrRoute}))';
         }
         else {
-            var urlAction = '@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId,FlightOrRoute=@FlightOrRoute, isAutoUpdate =1})';
-            //var urlAction = '/Member/DisplayMyFlightMovingMap?id=@FlightId'+"&FlightOrRoute="+'@FlightOrRoute'+"&isAutoUpdate=1";
+            var urlAction = '@Html.Raw(@Url.Action("DisplayMyFlightMovingMap", new { id = FlightId,FlightOrRoute=@FlightOrRoute, isAutoUpdate ="1"}))';
+
         }
         window.location.assign(urlAction);
     }
