@@ -1,0 +1,25 @@
+﻿@model MVC_Acft_Track.Models.SearchRequest
+
+@*<div>
+    @Html.ActionLink("[__Up__]", "Index", "Home")
+</div>*@
+    @using (Html.BeginForm())
+    {
+        @*@Html.AntiForgeryToken()*@
+        @Html.ValidationSummary(true)
+
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+                <fieldset>
+                <h2>Group Flying Page is under constraction. Check back soon.</h2>
+                </fieldset>
+                <p class="message-error"> @ViewBag.Message</p>
+            </div>
+            </div>
+    }
+
+
+
+

@@ -63,8 +63,8 @@ namespace MVC_Acft_Track.Controllers
                 //ViewBag.AircraftsSelList = dd.getAllAcftList();
                 //ViewBag.PilotSelList = dd.getAllPilotList();
                 //ViewBag.AirportSelList = dd.getAllAirportList();
-                //return View(Request.Browser.IsMobileDevice?"IndexMobile":"Index");
-                return View(Request.Browser.IsMobileDevice ? "IndexMobile" : "Index");
+                return View(Request.Browser.IsMobileDevice? "Index" : "Index");
+                //return View(Request.Browser.IsMobileDevice ? "IndexMobile" : "Index");
             }
         }
         //POST: 

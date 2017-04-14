@@ -17,6 +17,7 @@ namespace MVC_Acft_Track.Models
         public string PilotCode;
         [Display(Name = "Flight ID")]
         public Nullable<int> FlightID;
+        [Display(Name = "Area")]
         public Nullable<int> AreaID;
         [Display(Name = "Aircraft Number")]
         public string AcftNumLocal;

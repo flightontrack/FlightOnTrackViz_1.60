@@ -265,32 +265,6 @@ namespace MVC_Acft_Track.Controllers
             //else return RedirectToAction("Login", "Account"); ;
         }
 
-        public ActionResult DisplayMyFlightMovingMap(int id = 0, string FlightOrRoute = "Flight", int isAutoUpdate = 0, string linkUp = "Index")
-        {
-            ViewBag.FlightID = id;
-            ViewBag.FlightOrRoute = FlightOrRoute;
-            ViewBag.backUrl = "DisplayFlightData";
-            ViewBag.linkUp = linkUp;
-            ViewBag.isAutoUpdate = isAutoUpdate;
-            return View();
-        }
-
-        public JsonResult GetFlightDataJson(int id = 0,string idtype = "Flight",int c = 0)
-        {
-            if (idtype == "Flight")
-            {
-                var gpslocations = db.GpsLocations.Where(row => row.FlightID == id).OrderBy(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
-                return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
-            }
-            else if (idtype == "Route")
-            {
-                var routeID = db.Flights.Where(row => row.FlightID == id).Select(row => row.RouteID == null ? row.FlightID : row.RouteID).First();
-                var flightIDs = db.Flights.Where(row => row.RouteID == routeID || row.FlightID == routeID).OrderBy(row => row.FlightID).Select(row => row.FlightID).ToArray();
-                var gpslocations = db.GpsLocations.Where(row => flightIDs.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum).Select(g => new { routeID, g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
-                return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
-            }
-            return null;
-        }
         //public ActionResult CheckRouteFlightsCount(int id = 0, string actionBack = "")
         //{
         //    bool i = db.Flights.Where(row => (row.RouteID == id)).Count()>1;
@@ -559,6 +533,33 @@ namespace MVC_Acft_Track.Controllers
             ViewBag.AreaCenterLong = gpslocations.FirstOrDefault().longitude;
             //ViewBag.ActionBack = "GetRouteFlights";
             return View("DisplayLatestFlightsStaticMap");
+        }
+
+        public ActionResult DisplayMyFlightMovingMap(int id = 0, string FlightOrRoute = "Flight", int isAutoUpdate = 0, string linkUp = "Index")
+        {
+            ViewBag.FlightID = id;
+            ViewBag.FlightOrRoute = FlightOrRoute;
+            ViewBag.backUrl = "DisplayFlightData";
+            ViewBag.linkUp = linkUp;
+            ViewBag.isAutoUpdate = isAutoUpdate;
+            return View();
+        }
+
+        public JsonResult GetFlightDataJson(int id = 0, string idtype = "Flight", int c = 0)
+        {
+            if (idtype == "Flight")
+            {
+                var gpslocations = db.GpsLocations.Where(row => row.FlightID == id).OrderBy(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
+                return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
+            }
+            else if (idtype == "Route")
+            {
+                var routeID = db.Flights.Where(row => row.FlightID == id).Select(row => row.RouteID == null ? row.FlightID : row.RouteID).First();
+                var flightIDs = db.Flights.Where(row => row.RouteID == routeID || row.FlightID == routeID).OrderBy(row => row.FlightID).Select(row => row.FlightID).ToArray();
+                var gpslocations = db.GpsLocations.Where(row => flightIDs.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum).Select(g => new { routeID, g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
+                return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
+            }
+            return null;
         }
         protected override void Dispose(bool disposing)
         {

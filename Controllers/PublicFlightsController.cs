@@ -258,19 +258,19 @@ namespace MVC_Acft_Track.Controllers
             return RedirectToAction("SearchByArea");
         }
 
-        //[HttpGet]
-        //public ActionResult DisplayAreaFlightMovingMap(int aId)
-        //{
-        //    areaId = aId;
-        //    var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
-        //    //var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong });
-        //    ViewBag.areaId = areaId;
-        //    JavaScriptSerializer serializer = new JavaScriptSerializer();
-        //    //ViewBag.AreaCenter = this.Json(areaCenter, JsonRequestBehavior.AllowGet);
-        //    ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
-        //    ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
-        //    return View();
-        //}
+        [HttpGet]
+        public ActionResult DisplayAreaFlightMovingMap(int aId)
+        {
+            areaId = aId;
+            var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
+            //var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong });
+            ViewBag.areaId = areaId;
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            //ViewBag.AreaCenter = this.Json(areaCenter, JsonRequestBehavior.AllowGet);
+            ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
+            ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
+            return View();
+        }
 
         [HttpGet]
         public ActionResult GetAreaActiveFlights(int areaId, string message = "")
@@ -379,6 +379,14 @@ namespace MVC_Acft_Track.Controllers
                                select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.Acft };
 
             return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult SearchByGroup(int? id = null, string message = "")
+        {
+            //ViewBag.AreaSelList = new SelectList(db.DimAreas.OrderBy(row => row.AreaName), "AreaID", "AreaName", id);
+            //ViewBag.Message = message;
+            return View();
         }
     }
 

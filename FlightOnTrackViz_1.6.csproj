@@ -584,7 +584,7 @@
     <Content Include="Views\Member\AcftEdit.cshtml" />
     <Content Include="Views\Member\FlightEdit.cshtml" />
     <Content Include="Views\Shared\DisplayFlightData.cshtml" />
-    <Content Include="Views\Flight\DisplayLatestFlightsStaticMap.cshtml" />
+    <Content Include="Views\Flight\1DisplayLatestFlightsStaticMap.cshtml" />
     <Content Include="Views\Member\LogBookNotFound.cshtml" />
     <Content Include="Views\Member\PilotLogBookMobile.cshtml" />
     <Content Include="Views\Shared\ExceptionPage.cshtml" />
@@ -592,6 +592,8 @@
     <Content Include="Tableau\VisualLogBook.twb" />
     <Content Include="Views\Shared\DisplayLatestFlightsStaticMap.cshtml" />
     <Content Include="Views\PublicFlights\SearchByCriteria.cshtml" />
+    <Content Include="Views\Account\LoginGroup.cshtml" />
+    <Content Include="Views\PublicFlights\SearchByGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
