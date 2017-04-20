@@ -1,7 +1,6 @@
 ﻿
 @{  Layout = null;
     var areaId = ViewBag.AreaId;
-    var cnt = 0;
 }
 
 <!DOCTYPE html>
@@ -46,6 +45,8 @@
     var currentCenter;
     var greenControl;
     var redControl;
+    var areaRadius =5000;
+
     //---------------------------------------------------------------
     function init() {
 
@@ -62,44 +63,30 @@
             center: defaultCenter
         };
         map = new google.maps.Map(document.getElementById('map_div'), mapOptions);
+        var circle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.4,
+            strokeWeight: 2,
+            fillColor: 'FEFEFE',
+            fillOpacity: 0.1,
+            map: map,
+            center: defaultCenter,
+            radius: areaRadius
+        });
         getMarkers();
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(greenControl);
     }
 
     //---------------------------------------------------------------
-    function getMarkers() {
-        //var url = '@Url.Action("GetAreaFlightsJson", new { areaId = areaId})';
-        //url changed every call to prevent caching
-        var url = '/PublicFlights/GetAreaFlightsJson?areaId=@areaId'+"&c="+cnt;
+        function getMarkers() {
+
+        var url = '@Html.Raw(@Url.Action("GetAreaFlightsJson", new { areaId = areaId}))';
+        url +="&c="+cnt;
+
         $.ajax({
             url:url,
             type: 'GET',
             dataType: 'json',
-            //success: function (data) {
-            //    //set marker infowindow polyline for multiple flights
-            //    console.log(url);
-            //    MarkersUpdate(data);
-            //    if (cnt<REQUEST_COUNT){
-            //        //setup next getMarkers call
-            //        setTimeout(getMarkers,INTERVAL);
-            //        cnt++;
-            //    }
-            //    else{
-            //        greenControl.style.display = 'none';
-            //        redControl.style.display = 'inline';
-            //        map.controls[google.maps.ControlPosition.TOP_CENTER].push(redControl);
-            //    }
-            //},
-            //error: function (xhr, status, errorThrown) {
-            //    if (cnt<REQUEST_COUNT){
-            //        setTimeout(getMarkers,INTERVAL);
-            //        cnt++;
-            //    }
-            //    //url = "/PublicFlights/GetAreaFlightsJson?areaId=1&c="+cnt;
-            //    console.log("responseText: " + xhr.responseText);
-            //    console.log("status: " + xhr.status);
-            //    console.log("errorThrown: " + errorThrown);
-            //}
         })
            .fail (function (xhr, status, errorThrown) {
             console.log("responseText: " + xhr.responseText);
@@ -113,7 +100,7 @@
             if (cnt<REQUEST_COUNT){
                 //setup next getMarkers call
                 setTimeout(getMarkers,INTERVAL);
-                cnt++;
+                //cnt++;
             }
             else{
                 greenControl.style.display = 'none';
@@ -134,12 +121,14 @@
         window.location.assign(url);
     }
     function buttonAutoRefresh() {
+        var ri = document.getElementById("RadiusSelList");
+        areaRadius = parseInt(ri.options[ri.selectedIndex].value)*1000;
         location.reload();
     }
     function buttonCenterOnDefault(element) {
         //if (element.innerText=="Center On Area"){
         //    element.innerText="Center On Plane";
-        currentCenter=map.getCenter(); 
+        currentCenter=map.getCenter();
         map.setCenter(defaultCenter);
         map.setZoom(defaultZoomLevel);
     }
@@ -155,6 +144,8 @@
         <table>
             <tr>
                 <td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>
+                <td>&nbsp;&nbsp;Select area radius(km):&nbsp;</td>
+                <td>@Html.DropDownList("RadiusSelList", @ViewBag.RadiusSelList as SelectList, new { @class = "form-control" })</td>
                 <td><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></td>
                 <td><button onclick="buttonCenterOnDefault(this)" class="btn btn-default" type="button" id="onCenter" value="Center">Center/Zoom Default</button></td>
             </tr>

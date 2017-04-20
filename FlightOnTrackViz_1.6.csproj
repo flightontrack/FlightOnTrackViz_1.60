@@ -561,9 +561,9 @@
     <Content Include="Views\Home\HelpiPhoneUser.cshtml" />
     <Content Include="Views\PublicFlights\GetAreaActiveFlights.cshtml" />
     <Content Include="Views\PublicFlights\SearchByArea.cshtml" />
-    <Content Include="Views\PublicFlights\DisplayAreaFlightMovingMap.cshtml" />
+    <Content Include="Views\PublicFlights\DisplayAreaMovingMap.cshtml" />
     <Content Include="Views\Flight\DisplayMyFlightMovingMap.cshtml" />
-    <Content Include="Views\PublicFlights\DisplayAreaFlightMovingMap2.cshtml" />
+    <Content Include="Views\PublicFlights\DisplayAreaSelFlightsMovingMap.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\MarkJunkRecords.cshtml" />
     <Content Include="Views\PublicFlights\GetLatestRoutes.cshtml" />

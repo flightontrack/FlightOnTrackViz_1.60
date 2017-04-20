@@ -249,7 +249,7 @@ namespace MVC_Acft_Track.Controllers
             var areaId = int.Parse(form["AreaID"]);
             if (form["submit_map"] == "Display Map")
             {
-                return RedirectToAction("DisplayAreaFlightMovingMap", new { aId = areaId });
+                return RedirectToAction("DisplayAreaMovingMap", new { aId = areaId });
             }
             if (form["submit_list"] == "Display List")
             {
@@ -259,16 +259,17 @@ namespace MVC_Acft_Track.Controllers
         }
 
         [HttpGet]
-        public ActionResult DisplayAreaFlightMovingMap(int aId)
+        public ActionResult DisplayAreaMovingMap(int aId)
         {
             areaId = aId;
             var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
             //var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong });
             ViewBag.areaId = areaId;
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            //JavaScriptSerializer serializer = new JavaScriptSerializer();
             //ViewBag.AreaCenter = this.Json(areaCenter, JsonRequestBehavior.AllowGet);
             ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
             ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
+            ViewBag.RadiusSelList = ListsDD.getRadius();
             return View();
         }
 
@@ -319,10 +320,10 @@ namespace MVC_Acft_Track.Controllers
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             var flightsSer = serializer.Serialize(flightIds);
-            return RedirectToAction("DisplayAreaFlightMovingMap2", new { aId = areaId, fs = flightsSer });
+            return RedirectToAction("DisplayAreaSelFlightsMovingMap", new { aId = areaId, fs = flightsSer });
         }
 
-        public ActionResult DisplayAreaFlightMovingMap2(int aId, string fs, int isAutoUpdate = 0)
+        public ActionResult DisplayAreaSelFlightsMovingMap(int aId, string fs, int isAutoUpdate = 0)
         {
             areaId = aId;
             //JavaScriptSerializer serializer = new JavaScriptSerializer();

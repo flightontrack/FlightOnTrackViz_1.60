@@ -53,7 +53,7 @@
     var redControl;
     //---------------------------------------------------------------
     function init() {
-        
+
         greenControl = document.getElementById('GreenTextDiv');
         redControl = document.getElementById('RedTextDiv');
         greenControl.style.display = 'inline';
@@ -73,10 +73,11 @@
 
     //---------------------------------------------------------------
     function getMarkers() {
-        @*setTimeout(getMarkers,@INTERVAL);*@
+        var url = '@Html.Raw(@Url.Action("GetMultipleFlightsDataJson", new { fs = @ViewBag.Flights }))';
+        url +="&c="+cnt;
 
         //url changed every call to prevent caching
-        var url = "/PublicFlights/GetMultipleFlightsDataJson?fs="+'@ViewBag.Flights'+"&c="+cnt;
+        //var url = "/PublicFlights/GetMultipleFlightsDataJson?fs="+'@ViewBag.Flights'+"&c="+cnt;
         $.ajax({
             url:url,
             type: 'GET',
@@ -118,10 +119,10 @@
     }
     @*function buttonAutoRefresh(el) {
         if (el.value=="1") {
-            var urlAction = "@Html.Raw(@Url.Action("DisplayAreaFlightMovingMap2", new { aId = @ViewBag.areaId, fs = @ViewBag.Flights, isAutoUpdate = 0 }))";
+            var urlAction = "@Html.Raw(@Url.Action("DisplayAreaSelFlightsMovingMap", new { aId = @ViewBag.areaId, fs = @ViewBag.Flights, isAutoUpdate = 0 }))";
         }
         else {
-            var urlAction = '/PublicFlights/DisplayAreaFlightMovingMap2?aId=@ViewBag.areaId'+"&fs="+'@ViewBag.Flights'+"&isAutoUpdate=1";
+            var urlAction = '/PublicFlights/DisplayAreaSelFlightsMovingMap?aId=@ViewBag.areaId'+"&fs="+'@ViewBag.Flights'+"&isAutoUpdate=1";
         }
         window.location.assign(urlAction);
     }*@
