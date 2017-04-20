@@ -259,7 +259,7 @@ namespace MVC_Acft_Track.Controllers
         }
 
         [HttpGet]
-        public ActionResult DisplayAreaMovingMap(int aId)
+        public ActionResult DisplayAreaMovingMap(int aId,int aRadius =5)
         {
             areaId = aId;
             var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
@@ -270,6 +270,7 @@ namespace MVC_Acft_Track.Controllers
             ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
             ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
             ViewBag.RadiusSelList = ListsDD.getRadius();
+            ViewBag.ARadius = aRadius*1000;
             return View();
         }
 

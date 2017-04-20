@@ -1,6 +1,7 @@
 ﻿
 @{  Layout = null;
     var areaId = ViewBag.AreaId;
+    
 }
 
 <!DOCTYPE html>
@@ -22,108 +23,112 @@
 
     <script>
 
-    var routeSelect;
-    var refreshSelect;
-    var messages;
-    var map;
-    var intervalID;
-    var newInterval;
-    var currentInterval;
-    var iconUrl;
-    var INTERVAL = 5000;
-    var REQUEST_COUNT = 60;
-    var mapOptions;
-    var cookieName = "fontZoomLevel=";
-    var defaultZoomLevel = 13;
-    var markersStore = [];
-    var infowindowStore = [];
-    var flightPathStore = [];
-    var isRefresh = true;
-    var cnt =0;
-    var defaultCenter;
-    var centerOnDefault = false;
-    var currentCenter;
-    var greenControl;
-    var redControl;
-    var areaRadius =5000;
+        var routeSelect;
+        var refreshSelect;
+        var messages;
+        var map;
+        var intervalID;
+        var newInterval;
+        var currentInterval;
+        var iconUrl;
+        var INTERVAL = 5000;
+        var REQUEST_COUNT = 60;
+        var mapOptions;
+        var cookieName = "fontZoomLevel=";
+        var defaultZoomLevel = 13;
+        var markersStore = [];
+        var infowindowStore = [];
+        var flightPathStore = [];
+        var isRefresh = true;
+        var cnt =0;
+        var defaultCenter;
+        var centerOnDefault = false;
+        var currentCenter;
+        var greenControl;
+        var redControl;
+        var areaRadius = @ViewBag.ARadius;
 
-    //---------------------------------------------------------------
-    function init() {
+        //---------------------------------------------------------------
+        function init() {
 
-        greenControl = document.getElementById('GreenTextDiv');
-        redControl = document.getElementById('RedTextDiv');
-        greenControl.style.display = 'inline';
+            greenControl = document.getElementById('GreenTextDiv');
+            redControl = document.getElementById('RedTextDiv');
+            greenControl.style.display = 'inline';
 
-        // set the map center dd zoom cookie
-        var zoomLevel = (getCookie(cookieName) == '' ? defaultZoomLevel : parseInt(getCookie(cookieName)));
-        defaultCenter = new google.maps.LatLng(@ViewBag.AreaCenterLat, @ViewBag.AreaCenterLong);
-        mapOptions = {
-            zoom: zoomLevel,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            center: defaultCenter
-        };
-        map = new google.maps.Map(document.getElementById('map_div'), mapOptions);
-        var circle = new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.4,
-            strokeWeight: 2,
-            fillColor: 'FEFEFE',
-            fillOpacity: 0.1,
-            map: map,
-            center: defaultCenter,
-            radius: areaRadius
-        });
-        getMarkers();
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(greenControl);
-    }
+            // set the map center dd zoom cookie
+            var zoomLevel = (getCookie(cookieName) == '' ? defaultZoomLevel : parseInt(getCookie(cookieName)));
+            defaultCenter = new google.maps.LatLng(@ViewBag.AreaCenterLat, @ViewBag.AreaCenterLong);
+            mapOptions = {
+                zoom: zoomLevel,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                center: defaultCenter
+            };
+            map = new google.maps.Map(document.getElementById('map_div'), mapOptions);
+            var circle = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.4,
+                strokeWeight: 2,
+                fillColor: 'FEFEFE',
+                fillOpacity: 0.1,
+                map: map,
+                center: defaultCenter,
+                radius: areaRadius
+            });
+            getMarkers();
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(greenControl);
+        }
 
-    //---------------------------------------------------------------
+        //---------------------------------------------------------------
         function getMarkers() {
 
-        var url = '@Html.Raw(@Url.Action("GetAreaFlightsJson", new { areaId = areaId}))';
-        url +="&c="+cnt;
+            var url = '@Html.Raw(@Url.Action("GetAreaFlightsJson", new { areaId = areaId}))';
+            url +="&c="+cnt;
 
-        $.ajax({
-            url:url,
-            type: 'GET',
-            dataType: 'json',
-        })
-           .fail (function (xhr, status, errorThrown) {
-            console.log("responseText: " + xhr.responseText);
-            console.log("status: " + xhr.status);
-            console.log("errorThrown: " + errorThrown);
+            $.ajax({
+                url:url,
+                type: 'GET',
+                dataType: 'json',
             })
-          .always(function( data ) {
-            //set marker infowindow polyline for multiple flights
-            console.log(url);
-            getDrawActveFlights(data);
-            if (cnt<REQUEST_COUNT){
-                //setup next getMarkers call
-                setTimeout(getMarkers,INTERVAL);
-                //cnt++;
-            }
-            else{
-                greenControl.style.display = 'none';
-                redControl.style.display = 'inline';
-                map.controls[google.maps.ControlPosition.TOP_CENTER].push(redControl);
-            }
-          });
-    }
-    //---------------------------------------------------------------
-    function getCookie(cname) {
-        var cookieArray = document.cookie.split(';');
-        if (cookieArray[0].indexOf(cname) == 0) return cookieArray[0].split('=')[1];
-        return "";
-    }
-    //---------------------------------------------------------------
-    function buttonback() {
-        var url = '@Url.Action("SearchByArea", new { id = areaId })';
-        window.location.assign(url);
-    }
-    function buttonAutoRefresh() {
-        var ri = document.getElementById("RadiusSelList");
-        areaRadius = parseInt(ri.options[ri.selectedIndex].value)*1000;
-        location.reload();
+               .fail (function (xhr, status, errorThrown) {
+                   console.log("responseText: " + xhr.responseText);
+                   console.log("status: " + xhr.status);
+                   console.log("errorThrown: " + errorThrown);
+               })
+              .always(function( data ) {
+                  //set marker infowindow polyline for multiple flights
+                  console.log(url);
+                  getDrawActveFlights(data);
+                  if (cnt<REQUEST_COUNT){
+                      //setup next getMarkers call
+                      setTimeout(getMarkers,INTERVAL);
+                      //cnt++;
+                  }
+                  else{
+                      greenControl.style.display = 'none';
+                      redControl.style.display = 'inline';
+                      map.controls[google.maps.ControlPosition.TOP_CENTER].push(redControl);
+                  }
+              });
+        }
+        //---------------------------------------------------------------
+        function getCookie(cname) {
+            var cookieArray = document.cookie.split(';');
+            if (cookieArray[0].indexOf(cname) == 0) return cookieArray[0].split('=')[1];
+            return "";
+        }
+        //---------------------------------------------------------------
+        function buttonback() {
+            var url = '@Url.Action("SearchByArea", new { id = areaId })';
+            window.location.assign(url);
+        }
+        function buttonAutoRefresh() {
+            var ri = document.getElementById("RadiusSelList");
+            //areaRadius = parseInt(ri.options[ri.selectedIndex].value)*1000;
+            r = ri.options[ri.selectedIndex].value;
+            var url = '@Html.Raw(@Url.Action("DisplayAreaMovingMap", new { aId = areaId }))';
+            url= url+="&aRadius="+r;
+            window.location.assign(url);
+        //location.reload();
     }
     function buttonCenterOnDefault(element) {
         //if (element.innerText=="Center On Area"){
