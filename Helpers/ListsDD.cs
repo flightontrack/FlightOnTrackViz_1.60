@@ -85,14 +85,14 @@ namespace MVC_Acft_Track.Helpers
 
         }
 
-        public static IEnumerable<SelectListItem> getRadius()
+        public static IEnumerable<SelectListItem> getRadius(string selected)
         {
             List<SelectListItem> listItems = new List<SelectListItem>();
 
-            listItems.Add(new SelectListItem { Text = "3", Value = "3" });
-            listItems.Add(new SelectListItem { Text = "5", Value = "5" });
-            listItems.Add(new SelectListItem { Text = "10", Value = "10", Selected = true });
-            listItems.Add(new SelectListItem { Text = "15", Value = "15" });
+            listItems.Add(new SelectListItem { Text = "3", Value = "3", Selected = (selected == "3") });
+            listItems.Add(new SelectListItem { Text = "5", Value = "5", Selected = (selected == "5") });
+            listItems.Add(new SelectListItem { Text = "10", Value = "10", Selected=(selected=="10") });
+            listItems.Add(new SelectListItem { Text = "15", Value = "15", Selected = (selected == "15") });
             return listItems;
         }
 

@@ -1,7 +1,9 @@
 ﻿
 @{  Layout = null;
     var areaId = ViewBag.AreaId;
-    
+    var flights = ViewBag.Flights;
+    var isArea = true;
+    var methodBack = ViewBag.backUrl;
 }
 
 <!DOCTYPE html>
@@ -35,7 +37,6 @@
         var REQUEST_COUNT = 60;
         var mapOptions;
         var cookieName = "fontZoomLevel=";
-        var defaultZoomLevel = 13;
         var markersStore = [];
         var infowindowStore = [];
         var flightPathStore = [];
@@ -47,6 +48,10 @@
         var greenControl;
         var redControl;
         var areaRadius = @ViewBag.ARadius;
+        var defaultZoomLevel =(areaRadius>=10000?12:13);
+        var alertText;
+        var greenAlertText = "Update is On";
+        var redAlertText = "Update is Off. Refresh the page."
 
         //---------------------------------------------------------------
         function init() {
@@ -81,7 +86,7 @@
         //---------------------------------------------------------------
         function getMarkers() {
 
-            var url = '@Html.Raw(@Url.Action("GetAreaFlightsJson", new { areaId = areaId}))';
+            var url = @isArea?'@Html.Raw(@Url.Action("GetAreaFlightsJson", new { areaId = areaId}))':'@Html.Raw(@Url.Action("GetMultipleFlightsDataJson", new { fs = @ViewBag.Flights }))';
             url +="&c="+cnt;
 
             $.ajax({
@@ -123,12 +128,10 @@
         }
         function buttonAutoRefresh() {
             var ri = document.getElementById("RadiusSelList");
-            //areaRadius = parseInt(ri.options[ri.selectedIndex].value)*1000;
             r = ri.options[ri.selectedIndex].value;
             var url = '@Html.Raw(@Url.Action("DisplayAreaMovingMap", new { aId = areaId }))';
             url= url+="&aRadius="+r;
             window.location.assign(url);
-        //location.reload();
     }
     function buttonCenterOnDefault(element) {
         //if (element.innerText=="Center On Area"){
@@ -153,6 +156,9 @@
                 <td>@Html.DropDownList("RadiusSelList", @ViewBag.RadiusSelList as SelectList, new { @class = "form-control" })</td>
                 <td><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></td>
                 <td><button onclick="buttonCenterOnDefault(this)" class="btn btn-default" type="button" id="onCenter" value="Center">Center/Zoom Default</button></td>
+                <td>&nbsp;&nbsp;</td>
+
+                <td>&nbsp;&nbsp;</td>
             </tr>
         </table>
     </div>
