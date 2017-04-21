@@ -12,9 +12,10 @@ namespace MVC_Acft_Track.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DimCompany
+    public partial class DimAcftGroup
     {
-        public int CompanyID { get; set; }
-        public string Name { get; set; }
+        public int GroupID { get; set; }
+        public string GroupName { get; set; }
+        public string GroupType { get; set; }
     }
 }
