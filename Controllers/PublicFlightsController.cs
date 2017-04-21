@@ -263,14 +263,12 @@ namespace MVC_Acft_Track.Controllers
         {
             areaId = aId;
             var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
-            //var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong });
             ViewBag.areaId = areaId;
-            //JavaScriptSerializer serializer = new JavaScriptSerializer();
-            //ViewBag.AreaCenter = this.Json(areaCenter, JsonRequestBehavior.AllowGet);
             ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
             ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
             ViewBag.RadiusSelList = ListsDD.getRadius(aRadius);
             ViewBag.ARadius = Int32.Parse(aRadius)*1000;
+            ViewBag.IsArea = true;
             return View();
         }
 
