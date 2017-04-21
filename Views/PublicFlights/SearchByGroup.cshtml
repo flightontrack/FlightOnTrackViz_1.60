@@ -1,24 +1,36 @@
 ﻿@model MVC_Acft_Track.Models.SearchRequest
 
-@*<div>
-    @Html.ActionLink("[__Up__]", "Index", "Home")
-</div>*@
-    @using (Html.BeginForm())
-    {
-        @*@Html.AntiForgeryToken()*@
-        @Html.ValidationSummary(true)
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
 
-        <div class="row">
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-4">
-                <fieldset>
-                <h2>Group Flying Page is under constraction. Check back soon.</h2>
-                </fieldset>
-                <p class="message-error"> @ViewBag.Message</p>
-            </div>
-            </div>
-    }
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-4">
+            <fieldset>
+                <h2>Search Area Active Flights</h2>
+                <br>
+                <div class="form-group">
+                    @*<label class="col-md-3">@Html.LabelFor(model => model.AreaID, new { @class = "control-label" })</label>*@
+                    <div>
+                        @Html.DropDownListFor(model => model.AreaID, ViewBag.AreaSelList as SelectList, "Select Area", new { @class = "form-control" })
+                    </div>
+                </div>
+
+                @*@Html.DropDownListFor(model => model.AreaID, ViewBag.AreaSelList as SelectList, "Select")*@
+                <br>
+                <br>
+                <input type="submit" class="btn btn-default" name="submit_map" id="submit_map" value="Display Map" />
+                <input type="submit" class="btn btn-default" name="submit_list" id="submit_list" value="Display List" />
+            </fieldset>
+            <p class="message-error"> @ViewBag.Message</p>
+        </div>
+    </div>
+}
+
+
+
 
 
 
