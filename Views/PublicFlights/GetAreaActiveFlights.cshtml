@@ -29,11 +29,11 @@
         grid.Column(columnName: "Updated", header: "Updated UTC", style: "text-align-left"),
         grid.Column(columnName: "UpdateDelay", header: "Delay (sec)", style: "text-align-left"),
         grid.Column(columnName: "AltitudeFt", header: "Alt (ft)", style: "text-align-left"),
-        grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left"),
+        grid.Column(columnName: "AcftNumLocal", header: "Aircraft", style: "text-align-left"),
         grid.Column(columnName: "PilotCode", header: "Pilot to Call", style: "text-align-left", format: @<a href="tel:@item.PilotCode">@item.Pilot</a>),
         grid.Column(columnName: "FlightID",  header: "Display", format: (item) => Html.CheckBox((string)item.FlightID.ToString())
                   )))
 
     }
-    <p class="message-error"> @ViewBag.Message</p>
+                    <p class="message-error"> <div class="validation-summary-errors text-danger"> @ViewBag.Message  </div></p>
 </div>

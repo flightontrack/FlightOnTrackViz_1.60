@@ -44,6 +44,7 @@ namespace MVC_Acft_Track.Models
         public virtual DbSet<vVisualPilotLogDestinations> vVisualPilotLogDestinations { get; set; }
         public virtual DbSet<AirportCoordinates> AirportCoordinates { get; set; }
         public virtual DbSet<DimAcftGroup> DimAcftGroups { get; set; }
+        public virtual DbSet<AircraftGroup> AircraftGroups { get; set; }
     
         public virtual ObjectResult<Nullable<bool>> get_isArea(Nullable<int> gpsLocationID, Nullable<int> areaID)
         {

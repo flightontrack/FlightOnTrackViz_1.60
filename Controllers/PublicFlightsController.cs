@@ -18,6 +18,7 @@ namespace MVC_Acft_Track.Controllers
         private Entities db = new Entities();
         private IEnumerable<vFlightAcftPilot> q_flightsRecent;
         private IEnumerable<vFlightAcftPilot> q_flightsActive;
+        private IEnumerable<vFlightAcftPilot> q_acftGroupFlightsActive;
         private IEnumerable<GpsLocation> q_gpslocationsActive;
         private IEnumerable<DimArea> q_getAreaCenter;
         private IEnumerable<vPilotLogBook> q_flightsLogBook;
@@ -34,6 +35,7 @@ namespace MVC_Acft_Track.Controllers
             q_flightsLogBook = db.vPilotLogBooks.OrderByDescending(row => row.RouteID).Take(TIMESPANFLIGHTS);
 
             q_flightsActive = db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => r.Points > 0);
+
             q_gpslocationsActive = db.GpsLocations.Where(row => row.FlightID == flightId).OrderBy(g => g.FlightID).ThenByDescending(g => g.onSessionPointNum);
             //q_gpslocationsActive = db.GpsLocations.Where(row => row.FlightID.Value == flightId).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum);
             q_getAreaCenter = db.DimAreas.Where(r => r.AreaID.Equals(areaId));
@@ -154,7 +156,7 @@ namespace MVC_Acft_Track.Controllers
         {
             if (form["submit"] == "Search")
             {
-                if (form["FlightID"].Equals("") && form["AcftNumLocal"].Equals("") && form["PilotID"].Equals("") && form["FlightDate"].Equals("") && form["CompanyID"].Equals("")) return RedirectToAction("SearchByCriteria", new { message = SELECTSOMTHING });
+                if (form["FlightID"].Equals("") && form["AcftNumLocal"].Equals("") && form["PilotID"].Equals("") && form["FlightDate"].Equals("") && form["GroupID"].Equals("")) return RedirectToAction("SearchByCriteria", new { message = SELECTSOMTHING });
                 var flightID = form["FlightID"];
                 var airportID = form["AirportID"];
                 var acftNumLocal = form["AcftNumLocal"];
@@ -259,20 +261,6 @@ namespace MVC_Acft_Track.Controllers
         }
 
         [HttpGet]
-        public ActionResult DisplayAreaMovingMap(int aId,string aRadius ="5")
-        {
-            areaId = aId;
-            var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
-            ViewBag.areaId = areaId;
-            ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
-            ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
-            ViewBag.RadiusSelList = ListsDD.getRadius(aRadius);
-            ViewBag.ARadius = Int32.Parse(aRadius)*1000;
-            ViewBag.IsArea = true;
-            return View();
-        }
-
-        [HttpGet]
         public ActionResult GetAreaActiveFlights(int areaId, string message = "")
         {
             ViewBag.Message = message;
@@ -317,26 +305,43 @@ namespace MVC_Acft_Track.Controllers
             }
             if (flightIds.Count == 0) return RedirectToAction("GetAreaActiveFlights", new { areaId = areaId, message = SELECTSOMTHING });
 
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            var flightsSer = serializer.Serialize(flightIds);
-            return RedirectToAction("DisplayAreaSelFlightsMovingMap", new { aId = areaId, fs = flightsSer });
+            var flightsSer = new JavaScriptSerializer().Serialize(flightIds);
+            return RedirectToAction("DisplayAreaMovingMap", new { aId = areaId, fs = flightsSer });
         }
 
-        public ActionResult DisplayAreaSelFlightsMovingMap(int aId, string fs, int isAutoUpdate = 0)
+        [HttpGet]
+        public ActionResult DisplayAreaMovingMap(int aId, string fs, string aRadius = "5")
         {
             areaId = aId;
-            //JavaScriptSerializer serializer = new JavaScriptSerializer();
-            //int[] flights = serializer.Deserialize<int[]>(fs);
             var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
-            //ViewBag.Flights = flights;
+            ViewBag.areaId = areaId;
             ViewBag.Flights = fs;
             ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
             ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
-            ViewBag.backUrl = "GetAreaActiveFlights";
-            ViewBag.areaId = areaId;
-            ViewBag.isAutoUpdate = isAutoUpdate;
+            ViewBag.RadiusSelList = ListsDD.getRadius(aRadius);
+            ViewBag.ARadius = Int32.Parse(aRadius) * 1000;
+            ViewBag.isFlightList = !String.IsNullOrEmpty(fs);
+            //ViewBag.IsArea = true;
             return View();
         }
+        //public ActionResult DisplayAreaSelFlightsMovingMap(int aId, string fs, string aRadius = "5", int isAutoUpdate = 0)
+        //{
+        //    areaId = aId;
+        //    //JavaScriptSerializer serializer = new JavaScriptSerializer();
+        //    //int[] flights = serializer.Deserialize<int[]>(fs);
+        //    var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
+        //    //ViewBag.Flights = flights;
+        //    ViewBag.Flights = fs;
+        //    ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
+        //    ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
+        //    ViewBag.backUrl = "GetAreaActiveFlights";
+        //    ViewBag.areaId = areaId;
+        //    ViewBag.RadiusSelList = ListsDD.getRadius(aRadius);
+        //    ViewBag.ARadius = Int32.Parse(aRadius) * 1000;
+        //    ViewBag.isFlightList = true;
+        //    //ViewBag.isAutoUpdate = isAutoUpdate;
+        //    return View("DisplayAreaMovingMap");
+        //}
 
         public JsonResult GetAreaFlightsJson(int areaId, int c)
         {
@@ -366,7 +371,7 @@ namespace MVC_Acft_Track.Controllers
             top = TRACKPOINTS;
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             int[] flightIds = serializer.Deserialize<int[]>(fs);
-            var flightsActive = q_flightsActive.Where(row => flightIds.Contains(row.FlightID)).ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.Acft });
+            var flightsActive = q_flightsActive.Where(row => flightIds.Contains(row.FlightID)).ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal });
             var gpslocationsActive = new List<GpsLocation>();
             foreach (var flight in flightsActive)
             {
@@ -376,7 +381,7 @@ namespace MVC_Acft_Track.Controllers
             }
             var gpslocations = from l in gpslocationsActive
                                join f in flightsActive on l.FlightID equals f.FlightID
-                               select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.Acft };
+                               select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.AcftNumLocal };
 
             return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
         }
@@ -384,9 +389,32 @@ namespace MVC_Acft_Track.Controllers
         [HttpGet]
         public ActionResult SearchByGroup(int? id = null, string message = "")
         {
-            //ViewBag.AreaSelList = new SelectList(db.DimAreas.OrderBy(row => row.AreaName), "AreaID", "AreaName", id);
-            //ViewBag.Message = message;
+            ViewBag.GroupSelList = new SelectList(db.DimAcftGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName", id);
+            ViewBag.Message = message;
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult SearchByGroup(FormCollection form)
+        {
+            if (form["GroupID"].Equals("")) return RedirectToAction("SearchByGroup", new { message = SELECTSOMTHING });
+            var GroupId = int.Parse(form["GroupID"]);
+            var classActiveFlights = new ClassActiveFlights();
+            classActiveFlights.groupId = GroupId;
+            var flightIds = classActiveFlights.acftGroupFlightsActive.Select(r => r.FlightID).ToList();
+            var c = form.Count;
+            var flightsSer = new JavaScriptSerializer().Serialize(flightIds);
+            return RedirectToAction("DisplayAreaSelFlightsMovingMap", new { aId = areaId, fs = flightsSer });
+
+            if (form["submit_map"] == "Display Map")
+            {
+                return RedirectToAction("DisplayAreaMovingMap", new { aId = areaId });
+            }
+            if (form["submit_list"] == "Display List")
+            {
+                return RedirectToAction("GetAreaActiveFlights", new { areaId = areaId });
+            }
+            return RedirectToAction("SearchByArea");
         }
     }
 

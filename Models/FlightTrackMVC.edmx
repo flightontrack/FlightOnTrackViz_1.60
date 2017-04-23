@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="FlightTrackMVCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AircraftGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AcftID" Type="int" />
+          <Property Name="GroupID" Type="int" />
+          <Property Name="Created" Type="datetime" />
+        </EntityType>
         <EntityType Name="AircraftPilot">
           <Key>
             <PropertyRef Name="ID" />
@@ -394,6 +403,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Parameter Name="pilotid" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="FlightTrackMVCModelStoreContainer">
+          <EntitySet Name="AircraftGroup" EntityType="Self.AircraftGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AircraftPilot" EntityType="Self.AircraftPilot" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AirportCoordinates" EntityType="Self.AirportCoordinates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimAcftGroup" EntityType="Self.DimAcftGroup" Schema="dbo" store:Type="Tables" />
@@ -594,6 +604,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           </FunctionImport>
           <EntitySet Name="AirportCoordinates" EntityType="FlightTrackMVCModel.AirportCoordinates" />
           <EntitySet Name="DimAcftGroups" EntityType="FlightTrackMVCModel.DimAcftGroup" />
+          <EntitySet Name="AircraftGroups" EntityType="FlightTrackMVCModel.AircraftGroup" />
         </EntityContainer>
         <EntityType Name="DimArea">
           <Key>
@@ -927,6 +938,15 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="GroupID" Type="Int32" Nullable="false" />
           <Property Name="GroupName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="GroupType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AircraftGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AcftID" Type="Int32" />
+          <Property Name="GroupID" Type="Int32" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1285,6 +1305,16 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
                 <ScalarProperty Name="GroupType" ColumnName="GroupType" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AircraftGroups">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.AircraftGroup">
+              <MappingFragment StoreEntitySet="AircraftGroup">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="AcftID" ColumnName="AcftID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

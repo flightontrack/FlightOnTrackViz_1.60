@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Tikhomirov\Source\Repos\FlightOnTrackViz_1.60\Models\FlightTrackMVC.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Public\Documents\FlightOnTrackViz_1.60\Models\FlightTrackMVC.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

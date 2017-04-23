@@ -55,7 +55,7 @@ function getDrawActveFlights(jsonFlights) {
 
             //set point infowindow
             var popupWindowText = "<table border=0 style=\"font-size:95%;font-family:arial,helvetica,sans-serif;\">"
-                + "<tr><td align=left>N:"+ $(this).attr('Acft') + "</td></tr>"
+                + "<tr><td align=left>N:" + $(this).attr('AcftNumLocal') + "</td></tr>"
                 + "<tr><td align=left>Alt(ft):" + $(this).attr('AltitudeFt') + "</td></tr>"
                 + "<tr><td align=left>F #:" + $(this).attr('FlightID') + "</td></tr>";
 
