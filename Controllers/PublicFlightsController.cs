@@ -348,7 +348,7 @@ namespace MVC_Acft_Track.Controllers
             //top = c;
             top = TRACKPOINTS;
             var gpslocationsActive = new List<GpsLocation>();
-            var flightsActive = q_flightsActive.ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.Acft });
+            var flightsActive = q_flightsActive.ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal });
             foreach (var flight in flightsActive)
             {
                 flightId = flight.FlightID;
@@ -360,7 +360,7 @@ namespace MVC_Acft_Track.Controllers
                                    select l).ToList();
             var gpslocations = from l in activeLocInArea
                                join f in flightsActive on l.FlightID equals f.FlightID
-                               select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.Acft };
+                               select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.AcftNumLocal };
 
             //var a = this.Json(gpslocations, JsonRequestBehavior.AllowGet);
             return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
@@ -402,19 +402,9 @@ namespace MVC_Acft_Track.Controllers
             var classActiveFlights = new ClassActiveFlights();
             classActiveFlights.groupId = GroupId;
             var flightIds = classActiveFlights.acftGroupFlightsActive.Select(r => r.FlightID).ToList();
-            var c = form.Count;
             var flightsSer = new JavaScriptSerializer().Serialize(flightIds);
-            return RedirectToAction("DisplayAreaSelFlightsMovingMap", new { aId = areaId, fs = flightsSer });
+            return RedirectToAction("DisplayAreaMovingMap", new { aId = areaId, fs = flightsSer });
 
-            if (form["submit_map"] == "Display Map")
-            {
-                return RedirectToAction("DisplayAreaMovingMap", new { aId = areaId });
-            }
-            if (form["submit_list"] == "Display List")
-            {
-                return RedirectToAction("GetAreaActiveFlights", new { areaId = areaId });
-            }
-            return RedirectToAction("SearchByArea");
         }
     }
 
