@@ -34,6 +34,19 @@ namespace MVC_Acft_Track.Helpers
         public IQueryable<vFlightAcftPilot> acftGroupFlightsActive {
             get { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Where(r => r.Points > 0); }
         }
+        public IQueryable<GpsLocation> flightLastGpsLocation { get { return db.GpsLocations.Where(row => row.FlightID == _flightId); } }
+        public object getAreaCenter()
+        {
+            var fs = db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Where(r => r.Points > 0);
+            int? delay = 10000;
+            int fId = 0;
+            foreach (var f in fs)
+            {
+                if (f.UpdateDelay < delay) { delay = f.UpdateDelay;fId = f.FlightID; }
+            }
+            //var f = fs.Where(r=>r.UpdateDelay=)
+            return new {lat =1,lng =2 };
+        }
     }
 
 }
