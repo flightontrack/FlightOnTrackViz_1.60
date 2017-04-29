@@ -139,7 +139,7 @@
         }
         //---------------------------------------------------------------
         function buttonback() {
-            var url = '@Url.Action("SearchByArea", new { id = areaId })';
+            var url = '@Url.Action(@ViewBag.backUrl, new { id = areaId })';
             window.location.assign(url);
         }
         function buttonAutoRefresh() {
@@ -164,27 +164,25 @@
 </script>
 </head>
 <body>
-    <div>
-        <table>
-            <tr>
-                <td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>
-                <td>&nbsp;&nbsp;Select area radius(km):&nbsp;</td>
-                <td>@Html.DropDownList("RadiusSelList", @ViewBag.RadiusSelList as SelectList, new { @class = "form-control" })</td>
-                <td><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></td>
-                <td><button onclick="buttonCenterOnDefault(this)" class="btn btn-default" type="button" id="onCenter" value="Center">Center/Zoom Default</button></td>
-                <td>&nbsp;&nbsp;</td>
-
-                <td>&nbsp;&nbsp;</td>
-            </tr>
-        </table>
-    </div>
-    <div id="map_div"></div>
-    <div id="GreenTextDiv" style="color: green; position: absolute;display:none">
-        <h1>Update is On</h1>
-    </div>
-    <div id="RedTextDiv" style="color: red; position: absolute; display: none;">
-        <blink><h1><b>Update is Off. Refresh the page.</b></h1></blink>
-    </div>
+    @*<div class="container no-padding-column">*@
+        <div class="row">
+                @*  <td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>*@
+                <div class="col-sm-1"></div>
+                <div class="col-sm-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select area radius(km):</div>
+                <div class="col-sm-1">@Html.DropDownList("RadiusSelList", @ViewBag.RadiusSelList as SelectList, new { @class = "form-control" })</div>
+                <div class="col-sm-1"><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></div>
+                <div class="col-sm-1"><button onclick="buttonCenterOnDefault(this)" class="btn btn-default" type="button" id="onCenter" value="Center">Center/Zoom Default</button></div>
+        </div>
+        <div class="row no-padding-column">
+            <div id="map_div"></div>
+            <div id="GreenTextDiv" style="color: green; position: absolute;display:none">
+                <h1>Update is On</h1>
+            </div>
+            <div id="RedTextDiv" style="color: red; position: absolute; display: none;">
+                <blink><h1><b>Update is Off. Refresh the page.</b></h1></blink>
+            </div>
+        </div>
+     @*</div>*@
 
 </body>
 </html>

@@ -68,7 +68,9 @@ namespace MVC_Acft_Track.Helpers
 
         public IQueryable<GpsLocation> flightGpsLocations { get { return db.GpsLocations.Where(row => row.FlightID == _flightId); } }
 
-        public IQueryable<Flight> flightsJunkNotChecked { get { return db.Flights.Where(row => row.IsAltitudeChecked.Value == null); } }
+        public IQueryable<GpsLocation> flightGpsLocationsOrderDesc { get { return db.GpsLocations.Where(row => row.FlightID == _flightId).OrderByDescending(row => row.GPSLocationID);} }
+
+        public IQueryable<Flight> flightsJunkNotChecked { get { return db.Flights.Where(row => (row.IsAltitudeChecked.Value == null)); } }
 
         public IQueryable<vFlightAcftPilot> flightsByPilot { get { return db.vFlightAcftPilots.Where(row => row.PilotID == pilotId); } }
 

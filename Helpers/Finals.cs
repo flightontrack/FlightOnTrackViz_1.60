@@ -23,5 +23,7 @@ namespace MVC_Acft_Track
         public const string MSG_ARPTNOTFOUNDMULTIPLE = "There are multiple airports matching your criteria. <br>Please select one: ";
         public const string MSG_ARPTVALIDATION_FAILED = "Sorry, at least 3 symbols are required to enter. Try again.";
 
+        public const string MSG_NOGROUPACTIVACFTS = "There are no active flights in this group";
+
     }
 }

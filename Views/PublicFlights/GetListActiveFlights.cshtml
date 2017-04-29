@@ -20,6 +20,7 @@
     @using (Html.BeginForm())
     {
         <input type="hidden" name="areaId" value="@ViewBag.areaId" />
+        <input type="hidden" name="groupId" value="@ViewBag.groupId" />
         <input type="submit" class="btn btn-default" name="submit" value="Update Page" />
         <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
         @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
