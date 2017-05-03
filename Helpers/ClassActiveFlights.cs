@@ -42,29 +42,31 @@ namespace MVC_Acft_Track.Helpers
             }
             get { return _areaId; }
         }
+
+        public IQueryable<vFlightAcftPilot> inflightFlights
+        {
+            get
+            { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE); }
+        }
+
         public IQueryable<vFlightAcftPilot> flightsFlights
         {
             get
-            { return db.vFlightAcftPilots.Where(r => flightIdList.Contains(r.FlightID)); }
+            { return inflightFlights.Where(r => flightIdList.Contains(r.FlightID)); }
         }
-
-        public IQueryable<vFlightAcftPilot> acftGroupFlightsActive {
-            get
-            { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Where(r => r.Points > 0); }
-        }
-        public Array acftGroupFlightIDsActive
+        public IQueryable<vFlightAcftPilot> acftGroupFlightsActive
         {
             get
-            { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Where(r => r.Points > 0).Select(r=>r.FlightID).ToArray(); }
+            { return inflightFlights.Where(r => acftList.Contains(r.AcftID)); }
         }
-        public object areaCenter() {
-            return db.DimAreas.Where(r => r.AreaID.Equals(_areaId)).Select(r => new { r.CenterLat, r.CenterLong }); 
-        }
+        //public object areaCenter() {
+        //    return db.DimAreas.Where(r => r.AreaID.Equals(_areaId)).Select(r => new { r.CenterLat, r.CenterLong }); 
+        //}
 
         public Location getGroupCenter()
         {
             /// centering area on latest updated flight
-            var fs = db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Where(r => r.Points > 0);
+            var fs = inflightFlights.Where(r => acftList.Contains(r.AcftID));
             //var loc = new Location();
             if (fs.Count() == 0) { return new Location(); }
             int? delay = 10000;

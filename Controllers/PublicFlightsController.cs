@@ -17,7 +17,7 @@ namespace MVC_Acft_Track.Controllers
 
         private Entities db = new Entities();
         private IEnumerable<vFlightAcftPilot> q_flightsRecent;
-        private IEnumerable<vFlightAcftPilot> q_flightsActive;
+        //private IEnumerable<vFlightAcftPilot> q_flightsActive;
         private IEnumerable<vFlightAcftPilot> q_acftGroupFlightsActive;
         private IEnumerable<GpsLocation> q_gpslocationsActive;
         private IEnumerable<DimArea> q_getAreaCenter;
@@ -34,7 +34,7 @@ namespace MVC_Acft_Track.Controllers
             q_flightsRecent = db.vFlightAcftPilots.Where(row => row.IsShared == null ? false : (bool)row.IsShared).Where(row => row.IsJunk == false).OrderByDescending(row => row.FlightID).Take(TIMESPANFLIGHTS);
             q_flightsLogBook = db.vPilotLogBooks.OrderByDescending(row => row.RouteID).Take(TIMESPANFLIGHTS);
 
-            q_flightsActive = db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => r.Points > 0);
+            //q_flightsActive = db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => r.Points > 0);
 
             q_gpslocationsActive = db.GpsLocations.Where(row => row.FlightID == flightId).OrderBy(g => g.FlightID).ThenByDescending(g => g.onSessionPointNum);
             //q_gpslocationsActive = db.GpsLocations.Where(row => row.FlightID.Value == flightId).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum);
@@ -353,7 +353,9 @@ namespace MVC_Acft_Track.Controllers
             //top = c;
             top = TRACKPOINTS;
             var gpslocationsActive = new List<GpsLocation>();
-            var flightsActive = q_flightsActive.ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal });
+            var classActiveFlights = new ClassActiveFlights();
+            var flightsActive = classActiveFlights.inflightFlights.Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal }).ToList()
+                //q_flightsActive.ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal });
             foreach (var flight in flightsActive)
             {
                 flightId = flight.FlightID;
@@ -375,20 +377,21 @@ namespace MVC_Acft_Track.Controllers
         {
             top = TRACKPOINTS;
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            int[] flightIds = serializer.Deserialize<int[]>(fs);
-            var flightsActive = q_flightsActive.Where(row => flightIds.Contains(row.FlightID)).ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal });
+            var classActiveFlights = new ClassActiveFlights();
+            classActiveFlights.flightIdList = serializer.Deserialize<int[]>(fs).ToList();
+            var flightsActive = classActiveFlights.flightsFlights.Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal }).ToList();
             var gpslocationsActive = new List<GpsLocation>();
             foreach (var flight in flightsActive)
             {
                 flightId = flight.FlightID;
-                //gpslocationsActive.InsertRange(gpslocationsActive.Count(), q_gpslocationsActive.Take(top).ToList());
                 gpslocationsActive.InsertRange(gpslocationsActive.Count(), q_gpslocationsActive.Take(top).OrderByDescending(g => g.onSessionPointNum).ToList());
             }
             var gpslocations = from l in gpslocationsActive
                                join f in flightsActive on l.FlightID equals f.FlightID
                                select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.AcftNumLocal };
-
-            return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
+            var groupCenterRadius = classActiveFlights.getGroupCenter();
+            var o = new { groupCenterRadius = groupCenterRadius, gpslocations = gpslocations };
+            return this.Json(o, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
