@@ -46,7 +46,7 @@ namespace MVC_Acft_Track.Models
         public virtual DbSet<DimAcftGroup> DimAcftGroups { get; set; }
         public virtual DbSet<AircraftGroup> AircraftGroups { get; set; }
     
-        public virtual ObjectResult<Nullable<bool>> get_isArea(Nullable<int> gpsLocationID, Nullable<int> areaID)
+        public virtual ObjectResult<Nullable<bool>> get_isArea(Nullable<int> gpsLocationID, Nullable<int> areaID,  string areaRadius)
         {
             var gpsLocationIDParameter = gpsLocationID.HasValue ?
                 new ObjectParameter("GpsLocationID", gpsLocationID) :
@@ -55,7 +55,11 @@ namespace MVC_Acft_Track.Models
             var areaIDParameter = areaID.HasValue ?
                 new ObjectParameter("AreaID", areaID) :
                 new ObjectParameter("AreaID", typeof(int));
-    
+
+            var areaRadiusIDParameter = areaRadius != null ?
+                new ObjectParameter("AreaRadius", areaRadius) :
+                new ObjectParameter("AreaRadius", typeof(string));
+
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<bool>>("get_isArea", gpsLocationIDParameter, areaIDParameter);
         }
     

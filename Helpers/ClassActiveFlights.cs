@@ -48,7 +48,11 @@ namespace MVC_Acft_Track.Helpers
             get
             { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE); }
         }
-
+        //public IQueryable<vFlightAcftPilot> inflightInAreaFlights
+        //{
+        //    get
+        //    { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE); }
+        //}
         public IQueryable<vFlightAcftPilot> flightsFlights
         {
             get

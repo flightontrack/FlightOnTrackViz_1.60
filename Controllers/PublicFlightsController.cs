@@ -264,24 +264,27 @@ namespace MVC_Acft_Track.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAreaActiveFlights(int areaId, string message = "")
+        public ActionResult GetAreaActiveFlights(int areaId, string areaRadius= DEFAULT_AREARADIUS, string message = "")
         {
             ViewBag.Message = message;
             top = TRACKPOINTS;
+            var top1 = 1;
             try
             {
+                var classActiveFlights = new ClassActiveFlights();
                 var gpslocationsActive = new List<GpsLocation>();
-                var flightsActive = q_flightsActive.ToList().Select(r => r.FlightID);
+                /// get all currently active flights
+                var flightsActive = classActiveFlights.inflightFlights.Select(r=>r.FlightID).ToList();
                 foreach (int flight in flightsActive)
                 {
                     flightId = flight;
-                    gpslocationsActive.InsertRange(gpslocationsActive.Count(), q_gpslocationsActive.Take(top).ToList());
-                    //gpslocationsActive.InsertRange(gpslocationsActive.Count(), q_gpslocationsActive.Take(top).OrderByDescending(g => g.onSessionPointNum).ToList());
+                    gpslocationsActive.InsertRange(gpslocationsActive.Count(), q_gpslocationsActive.Take(top1).ToList());
                 }
-                var flightsInArea = (from l in gpslocationsActive
-                                     where db.get_isArea(l.GPSLocationID, areaId).FirstOrDefault().GetValueOrDefault()
+                /// filter active flights in area out of all active flights
+                classActiveFlights.flightIdList = (from l in gpslocationsActive
+                                     where db.get_isArea(l.GPSLocationID, areaId, areaRadius).FirstOrDefault().GetValueOrDefault()
                                      select l.FlightID).ToList();
-                var flightsActiveInArea = q_flightsActive.Where(r => flightsInArea.Contains(r.FlightID));
+                var flightsActiveInArea = classActiveFlights.flightsFlights.ToList();
                 ViewBag.areaId = areaId;
                 ViewBag.areaName = db.DimAreas.Where(r => r.AreaID.Equals(areaId)).FirstOrDefault().AreaName;
                 return View("GetListActiveFlights",flightsActiveInArea);
@@ -315,7 +318,7 @@ namespace MVC_Acft_Track.Controllers
         }
 
         [HttpGet]
-        public ActionResult DisplayAreaMovingMap(int aId, string fs, string aRadius = "5", decimal? areaCenterLat = null, decimal? areaCenterLong = null)
+        public ActionResult DisplayAreaMovingMap(int aId, string fs, string aRadius = DEFAULT_AREARADIUS, decimal? areaCenterLat = null, decimal? areaCenterLong = null)
         {
             //areaId = aId;
             //var areaCenter = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList()[0];
@@ -329,32 +332,15 @@ namespace MVC_Acft_Track.Controllers
             //ViewBag.backUrl = 
             return View();
         }
-        //public ActionResult DisplayAreaSelFlightsMovingMap(int aId, string fs, string aRadius = "5", int isAutoUpdate = 0)
-        //{
-        //    areaId = aId;
-        //    //JavaScriptSerializer serializer = new JavaScriptSerializer();
-        //    //int[] flights = serializer.Deserialize<int[]>(fs);
-        //    var areaCenterLat = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList();
-        //    //ViewBag.Flights = flights;
-        //    ViewBag.Flights = fs;
-        //    ViewBag.AreaCenterLat = areaCenterLat.FirstOrDefault().CenterLat;
-        //    ViewBag.AreaCenterLong = areaCenterLat.FirstOrDefault().CenterLong;
-        //    ViewBag.backUrl = "GetAreaActiveFlights";
-        //    ViewBag.areaId = areaId;
-        //    ViewBag.RadiusSelList = ListsDD.getRadius(aRadius);
-        //    ViewBag.ARadius = Int32.Parse(aRadius) * 1000;
-        //    ViewBag.isFlightList = true;
-        //    //ViewBag.isAutoUpdate = isAutoUpdate;
-        //    return View("DisplayAreaMovingMap");
-        //}
 
-        public JsonResult GetAreaFlightsJson(int areaId, int c)
+        public JsonResult GetAreaFlightsJson(int areaId, string areaRadius, int c)
         {
             //top = c;
             top = TRACKPOINTS;
             var gpslocationsActive = new List<GpsLocation>();
             var classActiveFlights = new ClassActiveFlights();
-            var flightsActive = classActiveFlights.inflightFlights.Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal }).ToList()
+            /// get all currently active flights
+            var flightsActive = classActiveFlights.inflightFlights.Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal }).ToList();
                 //q_flightsActive.ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal });
             foreach (var flight in flightsActive)
             {
@@ -362,14 +348,15 @@ namespace MVC_Acft_Track.Controllers
                 gpslocationsActive.InsertRange(gpslocationsActive.Count(), q_gpslocationsActive.Take(top).ToList());
                 //gpslocationsActive.InsertRange(gpslocationsActive.Count(), q_gpslocationsActive.Take(top).OrderByDescending(g => g.onSessionPointNum).ToList());
             }
+            /// filter active gps locations in area out of all active flights
             var activeLocInArea = (from l in gpslocationsActive
-                                   where db.get_isArea(l.GPSLocationID, areaId).FirstOrDefault().GetValueOrDefault()
+                                   where db.get_isArea(l.GPSLocationID, areaId, areaRadius).FirstOrDefault().GetValueOrDefault()
                                    select l).ToList();
+            /// join back to active flights to get acft and if position current
             var gpslocations = from l in activeLocInArea
                                join f in flightsActive on l.FlightID equals f.FlightID
                                select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.AcftNumLocal };
 
-            //var a = this.Json(gpslocations, JsonRequestBehavior.AllowGet);
             return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
         }
 
