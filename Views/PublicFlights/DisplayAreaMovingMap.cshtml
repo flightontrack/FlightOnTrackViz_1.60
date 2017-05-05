@@ -1,25 +1,25 @@
 ﻿
 @{  Layout = null;
-    var areaId = ViewBag.AreaId;
-    var flights = ViewBag.Flights;
-    var isArea = ViewBag.IsArea;
-    var isFlightList = ViewBag.isFlightList;
-    var methodBack = ViewBag.backUrl;
-    string urlMethod= "GetAreaFlightsJson";
-    object urlMethodPar = new { areaId = ViewBag.AreaId };
-    //string urlBackMethod = "GetAreaFlightsJson";
+var areaId = ViewBag.AreaId;
+var flights = ViewBag.Flights;
+var isArea = ViewBag.IsArea;
+var isFlightList = ViewBag.isFlightList;
+var methodBack = ViewBag.backUrl;
+string urlMethod = "GetAreaFlightsJson";
+object urlMethodPar = new { areaId = ViewBag.AreaId };
+//string urlBackMethod = "GetAreaFlightsJson";
 
-    //if (isArea??false)
-    //{
-    //    urlMethod = "GetAreaFlightsJson";
-    //    urlMethodPar = new { areaId = ViewBag.AreaId };
-    //    urlBackMethod = "DisplayAreaMovingMap";
-    //}
-    if (isFlightList??false)
-    {
-        urlMethod = "GetMultipleFlightsDataJson";
-        urlMethodPar = new { fs = @ViewBag.Flights };
-    }
+//if (isArea??false)
+//{
+//    urlMethod = "GetAreaFlightsJson";
+//    urlMethodPar = new { areaId = ViewBag.AreaId };
+//    urlBackMethod = "DisplayAreaMovingMap";
+//}
+if (isFlightList ?? false)
+{
+    urlMethod = "GetMultipleFlightsDataJson";
+    urlMethodPar = new { fs = @ViewBag.Flights };
+}
 }
 
 <!DOCTYPE html>
@@ -164,16 +164,22 @@
 </script>
 </head>
 <body>
-    @*<div class="container no-padding-column">*@
+    <div class="container no-padding-column">
         <div class="row">
                 @*  <td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>*@
-                <div class="col-sm-1"></div>
-                <div class="col-sm-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select area radius(km):</div>
-                <div class="col-sm-1">@Html.DropDownList("RadiusSelList", @ViewBag.RadiusSelList as SelectList, new { @class = "form-control" })</div>
-                <div class="col-sm-1"><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></div>
-                <div class="col-sm-1"><button onclick="buttonCenterOnDefault(this)" class="btn btn-default" type="button" id="onCenter" value="Center">Center/Zoom Default</button></div>
+                <div class="col-md-1">&nbsp;</div>
+            <div class="col-md-2">&nbsp;&nbsp;Select area radius(km):</div>
+            <div class="form-group">
+                <div class="col-md-1">@Html.DropDownList("RadiusSelList", @ViewBag.RadiusSelList as SelectList, new { @class = "form-control" })</div>
+            </div>
+            @*<div class="form-group">*@
+                <div class="col-md-1"><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></div>
+            @*</div>*@
+            <div class="form-group">
+                <div class="col-md-1"><button onclick="buttonCenterOnDefault(this)" class="btn btn-default" type="button" id="onCenter" value="Center">Center/Zoom Default</button></div>
+            </div>
         </div>
-        <div class="row no-padding-column">
+        <div class="form-group">
             <div id="map_div"></div>
             <div id="GreenTextDiv" style="color: green; position: absolute;display:none">
                 <h1>Update is On</h1>
@@ -182,7 +188,7 @@
                 <blink><h1><b>Update is Off. Refresh the page.</b></h1></blink>
             </div>
         </div>
-     @*</div>*@
+        </div>
 
 </body>
 </html>

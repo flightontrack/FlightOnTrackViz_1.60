@@ -315,7 +315,7 @@ namespace MVC_Acft_Track.Controllers
         }
 
         [HttpGet]
-        public ActionResult DisplayAreaMovingMap(int aId, string fs, string aRadius = "5", decimal? areaCenterLat = null, decimal? areaCenterLong = null)
+        public ActionResult DisplayAreaMovingMap(int aId, string fs, string aRadius = "3", decimal? areaCenterLat = null, decimal? areaCenterLong = null)
         {
             //areaId = aId;
             //var areaCenter = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList()[0];
