@@ -145,7 +145,7 @@ if (isFlightList ?? false)
         function buttonAutoRefresh() {
             var ri = document.getElementById("RadiusSelList");
             r = ri.options[ri.selectedIndex].value;
-            var url = '@Html.Raw(@Url.Action("DisplayAreaMovingMap", new { aId = areaId, fs = flights }))';
+            var url = '@Html.Raw(@Url.Action("DisplayAreaMovingMap", new { aId = areaId, fs = flights, areaCenterLat = @ViewBag.AreaCenterLat, areaCenterLong = @ViewBag.AreaCenterLong }))';
             url= url+="&aRadius="+r;
             window.location.assign(url);
     }

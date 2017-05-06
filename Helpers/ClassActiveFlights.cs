@@ -42,34 +42,37 @@ namespace MVC_Acft_Track.Helpers
             }
             get { return _areaId; }
         }
+
+        public IQueryable<vFlightAcftPilot> inflightFlights
+        {
+            get
+            { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE); }
+        }
+        //public IQueryable<vFlightAcftPilot> inflightInAreaFlights
+        //{
+        //    get
+        //    { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE); }
+        //}
         public IQueryable<vFlightAcftPilot> flightsFlights
         {
             get
-            { return db.vFlightAcftPilots.Where(r => flightIdList.Contains(r.FlightID)); }
+            { return inflightFlights.Where(r => flightIdList.Contains(r.FlightID)); }
         }
-
-        public IQueryable<vFlightAcftPilot> acftGroupFlightsActive {
-            get
-            //{ return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Where(r => r.Points > 0); }
-            { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)); }
-        }
-        public Array acftGroupFlightIDsActive
+        public IQueryable<vFlightAcftPilot> acftGroupFlightsActive
         {
             get
-            //{ return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Where(r => r.Points > 0).Select(r=>r.FlightID).ToArray(); }
-            { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Select(r=>r.FlightID).ToArray(); }
+            { return inflightFlights.Where(r => acftList.Contains(r.AcftID)); }
         }
-        public object areaCenter() {
-            return db.DimAreas.Where(r => r.AreaID.Equals(_areaId)).Select(r => new { r.CenterLat, r.CenterLong }); 
-        }
+        //public object areaCenter() {
+        //    return db.DimAreas.Where(r => r.AreaID.Equals(_areaId)).Select(r => new { r.CenterLat, r.CenterLong }); 
+        //}
 
-        public Location getGroupCenter()
+        public MapCircle getAcftGroupMapCircle()
         {
             /// centering area on latest updated flight
-            //var fs = db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID)).Where(r => r.Points > 0);
-            var fs = db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => acftList.Contains(r.AcftID));
+            var fs = inflightFlights.Where(r => acftList.Contains(r.AcftID));
             //var loc = new Location();
-            if (fs.Count() == 0) { return new Location(); }
+            if (fs.Count() == 0) { return new MapCircle(); }
             int? delay = 10000;
             int fId = 0;
             foreach (var f in fs)
@@ -79,12 +82,12 @@ namespace MVC_Acft_Track.Helpers
             var q = new qLINQ (db);
             q.flightId = fId;
             var loc = q.flightGpsLocationsOrderDesc.ToList()[0];
-            return new Location { Lat = loc.latitude, Long = loc.longitude};
+            return new MapCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS };
         }
 
-        public Location getFlightsCenter()
+        public MapCircle getFlightsMapCircle()
         {
-            if (flightsFlights.Count() == 0) { return new Location(); }
+            if (flightsFlights.Count() == 0) { return new MapCircle(); }
             int ? delay = 10000;
             int fId = 0;
             foreach (var f in flightsFlights)
@@ -94,13 +97,14 @@ namespace MVC_Acft_Track.Helpers
             var q = new qLINQ(db);
             q.flightId = fId;
             var loc = q.flightGpsLocationsOrderDesc.ToList()[0];
-            return new Location { Lat = loc.latitude, Long = loc.longitude };
+            return new MapCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS  };
         }
 
     }
-    public class Location
+    public class MapCircle
     {
         public decimal Lat;
         public decimal Long;
+        public string Radius;
     }
 }
