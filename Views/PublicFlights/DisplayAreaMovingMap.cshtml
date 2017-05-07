@@ -63,8 +63,9 @@ if (isFlightList ?? false)
         var currentCenter;
         var greenControl;
         var redControl;
-        var areaRadius = @ViewBag.ARadius;
+        var areaRadius = @ViewBag.ARadius * 1000;
         var defaultZoomLevel =(areaRadius>=10000?12:13);
+        var mapCircle;
         var alertText;
         var greenAlertText = "Update is On";
         var redAlertText = "Update is Off. Refresh the page.";
@@ -85,7 +86,7 @@ if (isFlightList ?? false)
                 center: defaultCenter
             };
             map = new google.maps.Map(document.getElementById('map_div'), mapOptions);
-            var circle = new google.maps.Circle({
+            mapCircle = new google.maps.Circle({
                 strokeColor: '#FF0000',
                 strokeOpacity: 0.4,
                 strokeWeight: 2,
@@ -103,6 +104,7 @@ if (isFlightList ?? false)
         function getMarkers() {
 
             var url = '@Html.Raw(@Url.Action(urlMethod, urlMethodPar))';
+            url +="&areaRadius="+@ViewBag.ARadius;
             url +="&c="+cnt;
 
             $.ajax({
@@ -118,11 +120,14 @@ if (isFlightList ?? false)
               .always(function( data ) {
                   //set marker infowindow polyline for multiple flights
                   console.log(url);
-                  getDrawActveFlights(data);
+                  console.log(data.centerRadius);
+                  //return;
+                  getDrawActveFlights(data.gpslocations);
+                  mapCircle.setCenter({lat: data.centerRadius.Lat, lng: data.centerRadius.Long})
                   if (cnt<REQUEST_COUNT){
                       //setup next getMarkers call
                       setTimeout(getMarkers,INTERVAL);
-                      //cnt++;
+                      cnt++;
                   }
                   else{
                       greenControl.style.display = 'none';

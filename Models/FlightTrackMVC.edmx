@@ -72,6 +72,14 @@ warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primar
           <Property Name="Radius" Type="int" />
           <Property Name="Area" Type="geography" StoreGeneratedPattern="Computed" />
           <Property Name="GeoLocBuffer" Type="geography" StoreGeneratedPattern="Computed" />
+          <Property Name="Radius_3" Type="int" />
+          <Property Name="Radius_5" Type="int" />
+          <Property Name="Radius_10" Type="int" />
+          <Property Name="Radius_15" Type="int" />
+          <Property Name="GeoLocBuffer_3" Type="geography" StoreGeneratedPattern="Computed" />
+          <Property Name="GeoLocBuffer_5" Type="geography" StoreGeneratedPattern="Computed" />
+          <Property Name="GeoLocBuffer_10" Type="geography" StoreGeneratedPattern="Computed" />
+          <Property Name="GeoLocBuffer_15" Type="geography" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Flight">
           <Key>
@@ -394,6 +402,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
         <Function Name="get_isArea" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="GpsLocationID" Type="int" Mode="In" />
           <Parameter Name="AreaID" Type="int" Mode="In" />
+          <Parameter Name="Radius" Type="varchar" Mode="In" />
         </Function>
         <Function Name="get_PilotP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="phonenumber" Type="varchar" Mode="In" />
@@ -420,7 +429,15 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
 [DimArea].[CenterPoint] AS [CenterPoint], 
 [DimArea].[Radius] AS [Radius], 
 [DimArea].[Area] AS [Area], 
-[DimArea].[GeoLocBuffer] AS [GeoLocBuffer]
+[DimArea].[GeoLocBuffer] AS [GeoLocBuffer], 
+[DimArea].[Radius_3] AS [Radius_3], 
+[DimArea].[Radius_5] AS [Radius_5], 
+[DimArea].[Radius_10] AS [Radius_10], 
+[DimArea].[Radius_15] AS [Radius_15], 
+[DimArea].[GeoLocBuffer_3] AS [GeoLocBuffer_3], 
+[DimArea].[GeoLocBuffer_5] AS [GeoLocBuffer_5], 
+[DimArea].[GeoLocBuffer_10] AS [GeoLocBuffer_10], 
+[DimArea].[GeoLocBuffer_15] AS [GeoLocBuffer_15]
 FROM [dbo].[DimArea] AS [DimArea]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="SearchRequest" EntityType="Self.SearchRequest" store:Type="Tables" store:Schema="dbo">
@@ -576,6 +593,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <FunctionImport Name="get_isArea" ReturnType="Collection(Boolean)">
             <Parameter Name="GpsLocationID" Mode="In" Type="Int32" />
             <Parameter Name="AreaID" Mode="In" Type="Int32" />
+            <Parameter Name="Radius" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="vPilotLogBooks" EntityType="FlightTrackMVCModel.vPilotLogBook" />
           <EntitySet Name="DimAircraftRemotes" EntityType="FlightTrackMVCModel.DimAircraftRemote" />
@@ -618,6 +636,14 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Type="Int32" Name="Radius" />
           <Property Type="Geography" Name="Area" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="GeoLocBuffer" Type="Geography" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Radius_3" Type="Int32" />
+          <Property Name="Radius_5" Type="Int32" />
+          <Property Name="Radius_10" Type="Int32" />
+          <Property Name="Radius_15" Type="Int32" />
+          <Property Name="GeoLocBuffer_3" Type="Geography" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="GeoLocBuffer_5" Type="Geography" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="GeoLocBuffer_10" Type="Geography" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="GeoLocBuffer_15" Type="Geography" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="SearchRequest">
           <Key>
@@ -957,6 +983,14 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySetMapping Name="DimAreas">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.DimArea">
               <MappingFragment StoreEntitySet="DimArea">
+                <ScalarProperty Name="GeoLocBuffer_15" ColumnName="GeoLocBuffer_15" />
+                <ScalarProperty Name="GeoLocBuffer_10" ColumnName="GeoLocBuffer_10" />
+                <ScalarProperty Name="GeoLocBuffer_5" ColumnName="GeoLocBuffer_5" />
+                <ScalarProperty Name="GeoLocBuffer_3" ColumnName="GeoLocBuffer_3" />
+                <ScalarProperty Name="Radius_15" ColumnName="Radius_15" />
+                <ScalarProperty Name="Radius_10" ColumnName="Radius_10" />
+                <ScalarProperty Name="Radius_5" ColumnName="Radius_5" />
+                <ScalarProperty Name="Radius_3" ColumnName="Radius_3" />
                 <ScalarProperty Name="GeoLocBuffer" ColumnName="GeoLocBuffer" />
                 <ScalarProperty Name="Area" ColumnName="Area" />
                 <ScalarProperty Name="Radius" ColumnName="Radius" />

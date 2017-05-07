@@ -22,5 +22,13 @@ namespace MVC_Acft_Track.Models
         public Nullable<int> Radius { get; set; }
         public System.Data.Entity.Spatial.DbGeography Area { get; set; }
         public System.Data.Entity.Spatial.DbGeography GeoLocBuffer { get; set; }
+        public Nullable<int> Radius_3 { get; set; }
+        public Nullable<int> Radius_5 { get; set; }
+        public Nullable<int> Radius_10 { get; set; }
+        public Nullable<int> Radius_15 { get; set; }
+        public System.Data.Entity.Spatial.DbGeography GeoLocBuffer_3 { get; set; }
+        public System.Data.Entity.Spatial.DbGeography GeoLocBuffer_5 { get; set; }
+        public System.Data.Entity.Spatial.DbGeography GeoLocBuffer_10 { get; set; }
+        public System.Data.Entity.Spatial.DbGeography GeoLocBuffer_15 { get; set; }
     }
 }

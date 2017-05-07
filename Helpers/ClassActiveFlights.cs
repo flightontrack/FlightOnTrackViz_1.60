@@ -13,7 +13,6 @@ namespace MVC_Acft_Track.Helpers
     {
         public Entities db;
         int _groupId;
-        int _areaId;
         List<int?> acftList;
         List<int> _flightIdList;
 
@@ -34,25 +33,13 @@ namespace MVC_Acft_Track.Helpers
             }
             get { return _groupId; }
         }
-        public int areaId
-        {
-            set
-            {
-                _areaId = value;
-            }
-            get { return _areaId; }
-        }
 
         public IQueryable<vFlightAcftPilot> inflightFlights
         {
             get
             { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE); }
         }
-        //public IQueryable<vFlightAcftPilot> inflightInAreaFlights
-        //{
-        //    get
-        //    { return db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE); }
-        //}
+
         public IQueryable<vFlightAcftPilot> flightsFlights
         {
             get
@@ -63,16 +50,13 @@ namespace MVC_Acft_Track.Helpers
             get
             { return inflightFlights.Where(r => acftList.Contains(r.AcftID)); }
         }
-        //public object areaCenter() {
-        //    return db.DimAreas.Where(r => r.AreaID.Equals(_areaId)).Select(r => new { r.CenterLat, r.CenterLong }); 
-        //}
 
-        public MapCircle getAcftGroupMapCircle()
+        public ClassArea.AreaCircle getAcftGroupMapCircle()
         {
             /// centering area on latest updated flight
-            var fs = inflightFlights.Where(r => acftList.Contains(r.AcftID));
+            var fs = inflightFlights.Where(r => acftList.Contains(r.AcftID)).ToList();
             //var loc = new Location();
-            if (fs.Count() == 0) { return new MapCircle(); }
+            if (fs.Count() == 0) { return new ClassArea.AreaCircle(); }
             int? delay = 10000;
             int fId = 0;
             foreach (var f in fs)
@@ -82,12 +66,12 @@ namespace MVC_Acft_Track.Helpers
             var q = new qLINQ (db);
             q.flightId = fId;
             var loc = q.flightGpsLocationsOrderDesc.ToList()[0];
-            return new MapCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS };
+            return new ClassArea.AreaCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS };
         }
 
-        public MapCircle getFlightsMapCircle()
+        public ClassArea.AreaCircle getFlightsMapCircle()
         {
-            if (flightsFlights.Count() == 0) { return new MapCircle(); }
+            if (flightsFlights.Count() == 0) { return new ClassArea.AreaCircle(); }
             int ? delay = 10000;
             int fId = 0;
             foreach (var f in flightsFlights)
@@ -97,14 +81,8 @@ namespace MVC_Acft_Track.Helpers
             var q = new qLINQ(db);
             q.flightId = fId;
             var loc = q.flightGpsLocationsOrderDesc.ToList()[0];
-            return new MapCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS  };
+            return new ClassArea.AreaCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS  };
         }
 
-    }
-    public class MapCircle
-    {
-        public decimal Lat;
-        public decimal Long;
-        public string Radius;
     }
 }
