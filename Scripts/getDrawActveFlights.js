@@ -6,7 +6,7 @@ function getDrawActveFlights(jsonFlights) {
     var isPushpin;
 
     var active_pushpin = {
-        url: "/Images/1484079748_red-pin.png",
+        url: "/Images/1484079763_green-pin.png",
         scaledSize: new google.maps.Size(28, 28),
         origin: new google.maps.Point(0, 0)
     };

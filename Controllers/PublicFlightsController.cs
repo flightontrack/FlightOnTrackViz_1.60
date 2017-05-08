@@ -361,7 +361,7 @@ namespace MVC_Acft_Track.Controllers
             var flightIds = classActiveFlights.acftGroupFlightsActive.Select(r => r.FlightID).ToList();
             if (flightIds.Count() == 0)
             {
-                return RedirectToAction("SearchByGroup", new { aId = groupId, message = MSG_NOGROUPACTIVACFTS });
+                return RedirectToAction("SearchByGroup", new { id = groupId, message = MSG_NOGROUPACTIVACFTS });
             }
 
             ViewBag.Message = message;
