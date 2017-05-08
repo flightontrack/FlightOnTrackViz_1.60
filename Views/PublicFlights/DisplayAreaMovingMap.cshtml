@@ -1,26 +1,20 @@
 ﻿
 @{  @*Layout = null;*@
-    var areaId = ViewBag.AreaId;
-    var groupId =ViewBag.groupId;
-    var flights = ViewBag.Flights;
-    var isArea = ViewBag.IsArea;
-    var isFlightList = ViewBag.isFlightList;
-    var methodBack = ViewBag.backUrl;
-    string urlMethod = "GetAreaFlightsJson";
-    object urlMethodPar = new { areaId = ViewBag.AreaId };
-    //string urlBackMethod = "GetAreaFlightsJson";
+var areaId = ViewBag.AreaId;
+var groupId =ViewBag.groupId;
+var flights = ViewBag.Flights;
+var isArea = ViewBag.IsArea;
+var isFlightList = ViewBag.isFlightList;
+var methodBack = ViewBag.backUrl;
+string urlMethod = "GetAreaFlightsJson";
+object urlMethodPar = new { areaId = ViewBag.AreaId };
+var mod = ViewBag.model;
 
-    //if (isArea??false)
-    //{
-    //    urlMethod = "GetAreaFlightsJson";
-    //    urlMethodPar = new { areaId = ViewBag.AreaId };
-    //    urlBackMethod = "DisplayAreaMovingMap";
-    //}
-    if (isFlightList ?? false)
-    {
-        urlMethod = "GetMultipleFlightsDataJson";
-        urlMethodPar = new { fs = @ViewBag.Flights };
-    }
+if (isFlightList ?? false)
+{
+    urlMethod = "GetMultipleFlightsDataJson";
+    urlMethodPar = new { fs = @ViewBag.Flights };
+}
 }
 
 <!DOCTYPE html>
@@ -42,22 +36,22 @@
 
     <script>
 
-        var routeSelect;
-        var refreshSelect;
-        var messages;
+        //var routeSelect;
+        //var refreshSelect;
+        //var messages;
         var map;
-        var intervalID;
-        var newInterval;
-        var currentInterval;
-        var iconUrl;
+        //var intervalID;
+        //var newInterval;
+        //var currentInterval;
+        //var iconUrl;
         var INTERVAL = 5000;
         var REQUEST_COUNT = 60;
         var mapOptions;
         var cookieName = "fontZoomLevel=";
-        var markersStore = [];
-        var infowindowStore = [];
-        var flightPathStore = [];
-        var isRefresh = true;
+        //var markersStore = [];
+        //var infowindowStore = [];
+        //var flightPathStore = [];
+        //var isRefresh = true;
         var cnt =0;
         var defaultCenter;
         var centerOnDefault = false;
@@ -68,7 +62,7 @@
         //var isFlightList = Boolean @ViewBag.isFlightList;
         var defaultZoomLevel =(@ViewBag.ARadius==3?13:@ViewBag.ARadius==5?12:@ViewBag.ARadius==10?11:10);
         var mapCircle;
-        var alertText;
+        //var alertText;
         var greenAlertText = "Update is On";
         var redAlertText = "Update is Off. Refresh the page.";
         var True = true; False = false;
