@@ -1,25 +1,26 @@
 ﻿
-@{  Layout = null;
-var areaId = ViewBag.AreaId;
-var flights = ViewBag.Flights;
-var isArea = ViewBag.IsArea;
-var isFlightList = ViewBag.isFlightList;
-var methodBack = ViewBag.backUrl;
-string urlMethod = "GetAreaFlightsJson";
-object urlMethodPar = new { areaId = ViewBag.AreaId };
-//string urlBackMethod = "GetAreaFlightsJson";
+@{  @*Layout = null;*@
+    var areaId = ViewBag.AreaId;
+    var groupId =ViewBag.groupId;
+    var flights = ViewBag.Flights;
+    var isArea = ViewBag.IsArea;
+    var isFlightList = ViewBag.isFlightList;
+    var methodBack = ViewBag.backUrl;
+    string urlMethod = "GetAreaFlightsJson";
+    object urlMethodPar = new { areaId = ViewBag.AreaId };
+    //string urlBackMethod = "GetAreaFlightsJson";
 
-//if (isArea??false)
-//{
-//    urlMethod = "GetAreaFlightsJson";
-//    urlMethodPar = new { areaId = ViewBag.AreaId };
-//    urlBackMethod = "DisplayAreaMovingMap";
-//}
-if (isFlightList ?? false)
-{
-    urlMethod = "GetMultipleFlightsDataJson";
-    urlMethodPar = new { fs = @ViewBag.Flights };
-}
+    //if (isArea??false)
+    //{
+    //    urlMethod = "GetAreaFlightsJson";
+    //    urlMethodPar = new { areaId = ViewBag.AreaId };
+    //    urlBackMethod = "DisplayAreaMovingMap";
+    //}
+    if (isFlightList ?? false)
+    {
+        urlMethod = "GetMultipleFlightsDataJson";
+        urlMethodPar = new { fs = @ViewBag.Flights };
+    }
 }
 
 <!DOCTYPE html>
@@ -64,11 +65,13 @@ if (isFlightList ?? false)
         var greenControl;
         var redControl;
         var areaRadius = @ViewBag.ARadius * 1000;
-        var defaultZoomLevel =(areaRadius>=10000?12:13);
+        //var isFlightList = Boolean @ViewBag.isFlightList;
+        var defaultZoomLevel =(@ViewBag.ARadius==3?13:@ViewBag.ARadius==5?12:@ViewBag.ARadius==10?11:10);
         var mapCircle;
         var alertText;
         var greenAlertText = "Update is On";
         var redAlertText = "Update is Off. Refresh the page.";
+        var True = true; False = false;
 
         //---------------------------------------------------------------
         function init() {
@@ -76,6 +79,10 @@ if (isFlightList ?? false)
             greenControl = document.getElementById('GreenTextDiv');
             redControl = document.getElementById('RedTextDiv');
             greenControl.style.display = 'inline';
+
+            document.getElementById("RadiusSelList").addEventListener("change",function() {
+                buttonAutoRefresh();
+            });
 
             // set the map center dd zoom cookie
             var zoomLevel = (getCookie(cookieName) == '' ? defaultZoomLevel : parseInt(getCookie(cookieName)));
@@ -118,14 +125,13 @@ if (isFlightList ?? false)
                    console.log("errorThrown: " + errorThrown);
                })
               .always(function( data ) {
-                  //set marker infowindow polyline for multiple flights
-                  console.log(url);
-                  console.log(data.centerRadius);
-                  //return;
-                  getDrawActveFlights(data.gpslocations);
+                  ///set marker infowindow polyline for multiple flights
+                  //console.log(url);
+                  //console.log(data.centerRadius);
+                  if(data.gpslocations.length>0) getDrawActveFlights(data.gpslocations);
                   mapCircle.setCenter({lat: data.centerRadius.Lat, lng: data.centerRadius.Long})
                   if (cnt<REQUEST_COUNT){
-                      //setup next getMarkers call
+                      ///setup next getMarkers call
                       setTimeout(getMarkers,INTERVAL);
                       cnt++;
                   }
@@ -144,7 +150,7 @@ if (isFlightList ?? false)
         }
         //---------------------------------------------------------------
         function buttonback() {
-            var url = '@Url.Action(@ViewBag.backUrl, new { id = areaId })';
+            var url = @(!isFlightList)?'@Html.Raw(@Url.Action("GetListAreaActiveFlights", new { areaId = areaId }))':'@Html.Raw(@Url.Action("GetListActiveFlights", new { flightsSer="", groupId = groupId }))';
             window.location.assign(url);
         }
         function buttonAutoRefresh() {
@@ -153,38 +159,36 @@ if (isFlightList ?? false)
             var url = '@Html.Raw(@Url.Action("DisplayAreaMovingMap", new { aId = areaId, fs = flights, areaCenterLat = @ViewBag.AreaCenterLat, areaCenterLong = @ViewBag.AreaCenterLong }))';
             url= url+="&aRadius="+r;
             window.location.assign(url);
-    }
-    function buttonCenterOnDefault(element) {
-        //if (element.innerText=="Center On Area"){
-        //    element.innerText="Center On Plane";
-        currentCenter=map.getCenter();
-        map.setCenter(defaultCenter);
-        map.setZoom(defaultZoomLevel);
-    }
+        }
+        function buttonCenterOnDefault(element) {
+            //if (element.innerText=="Center On Area"){
+            //    element.innerText="Center On Plane";
+            currentCenter=map.getCenter();
+            map.setCenter(defaultCenter);
+            map.setZoom(defaultZoomLevel);
+        }
 
     //---------------------------------------------------------------
     $(document).ready(function () {
-        init();
-    });
+                        init();
+                    });
 </script>
 </head>
-<body>
-    <div class="container no-padding-column">
-        <div class="row">
-                @*  <td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>*@
-                <div class="col-md-1">&nbsp;</div>
-            <div class="col-md-2">&nbsp;&nbsp;Select area radius(km):</div>
-            <div class="form-group">
-                <div class="col-md-1">@Html.DropDownList("RadiusSelList", @ViewBag.RadiusSelList as SelectList, new { @class = "form-control" })</div>
-            </div>
-            @*<div class="form-group">*@
-                <div class="col-md-1"><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></div>
-            @*</div>*@
-            <div class="form-group">
-                <div class="col-md-1"><button onclick="buttonCenterOnDefault(this)" class="btn btn-default" type="button" id="onCenter" value="Center">Center/Zoom Default</button></div>
-            </div>
+<body style="padding-top: 60px">
+    <div class="row">
+        <table style="margin:3px">
+            <tr>
+                <td style="padding-right:10px"></td>
+                <td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>
+                <td style="padding-right:10px"></td>
+                <td><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></td>
+                <td style="padding-right:10px"></td>
+                <td style="padding:4px">Area Radius (km):</td>
+                <td>@Html.DropDownList("RadiusSelList", @ViewBag.RadiusSelList as SelectList, new { @class = "form-control" })</td>
+            </tr>
+        </table>
         </div>
-        <div class="form-group">
+        <div class="row">
             <div id="map_div"></div>
             <div id="GreenTextDiv" style="color: green; position: absolute;display:none">
                 <h1>Update is On</h1>
@@ -193,7 +197,5 @@ if (isFlightList ?? false)
                 <blink><h1><b>Update is Off. Refresh the page.</b></h1></blink>
             </div>
         </div>
-        </div>
-
 </body>
 </html>

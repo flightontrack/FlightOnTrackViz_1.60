@@ -250,11 +250,11 @@ namespace MVC_Acft_Track.Controllers
             if (form["AreaID"].Equals("")) return RedirectToAction("SearchByArea", new { message = SELECTSOMTHING });
             var areaID = int.Parse(form["AreaID"]);
 
-            //if (form["submit_map"] == "Display Map")
-            //{
-            //    var area = new ClassArea(areaID, DEFAULT_AREARADIUS);
-            //    return RedirectToAction("DisplayAreaMovingMap", new { aId = areaID, areaCenterLat = area.circle.Lat, areaCenterLong = area.circle.Long });
-            //}
+            if (form["submit_map"] == "Display Map")
+            {
+                var area = new ClassArea(areaID, DEFAULT_AREARADIUS);
+                return RedirectToAction("DisplayAreaMovingMap", new { aId = areaID, areaCenterLat = area.circle.Lat, areaCenterLong = area.circle.Long });
+            }
             if (form["submit_list"] == "Display Flights")
             {
                 return RedirectToAction("GetListAreaActiveFlights", new { areaId = areaID });
