@@ -1,7 +1,7 @@
 ﻿@model MVC_Acft_Track.Models.Flight
 
 @{
-    Layout = null;
+    //Layout = null;
     var jsonData = Html.Raw(ViewBag.FlightsJsonData);
     var imgstartpoint = Url.Content("~/Images/1484079763_green-pin.png");
     var imgendpoint = Url.Content("~/Images/1484079792_orange-pin.png");
@@ -33,18 +33,18 @@
 
 
     <script>
-    var messages;
+    //var messages;
     var map;
-    var iconUrl;
+    //var iconUrl;
     var mapOptions;
     var cookieName = "fontZoomLevel=";
     var defaultZoomLevel = 13;
     var markersStore = [];
     var flightPathStore = [];
-    var isRefresh = true;
-    var cnt =0;
+    //var isRefresh = true;
+    //var cnt =0;
     var defaultCenter;
-    var centerOnDefault = false;
+    //var centerOnDefault = false;
 
     //---------------------------------------------------------------
     function init() {
@@ -85,16 +85,20 @@
     });
     </script>
 </head>
-<body>
-    <div>
-        <table>
+<body style="padding-top: 60px">
+    <div class="row">
+        <table style="margin:3px">
             <tr>
+                <td style="padding-right:10px"></td>
                 @*<td><input class="btn btn-primary active" type="submit" name="RequestVisualLogBook" value="Request Visual LogBook" /></td>*@
                 @*<td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>*@
+                @*<td style="padding-right:10px"></td>*@
                 <td><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></td>
             </tr>
         </table>
     </div>
-    <div id="map_div"></div>
+    <div class="row">
+        <div id="map_div"></div>
+    </div>
 </body>
 </html>

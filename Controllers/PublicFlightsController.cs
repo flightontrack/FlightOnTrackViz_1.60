@@ -108,7 +108,7 @@ namespace MVC_Acft_Track.Controllers
                     ViewBag.ViewTitle = "Route " + id + " Flights";
                     ViewBag.ActionBack = "GetLatestRoutes";
                     ViewBag.Message = message;
-                    //ViewBag.Caller = "GetRouteFlights";
+                    ViewBag.DisplayChBoxChecked = true;
                     routeid = id;
                     var q = q_flightsByRoute.ToList();
                     return View("IndexFlightsPublic", q);
@@ -316,7 +316,6 @@ namespace MVC_Acft_Track.Controllers
             return RedirectToAction("DisplayAreaMovingMap", new { aId = areaID, fs = flightsSer, areaCenterLat = area.circle.Lat, areaCenterLong = area.circle.Long });
         }
         #endregion
-
         #region Group Flights
         [HttpGet]
         public ActionResult SearchByGroup(int? id = null, string message = "")
@@ -366,6 +365,7 @@ namespace MVC_Acft_Track.Controllers
 
             ViewBag.Message = message;
             ViewBag.groupId = groupId;
+            ViewBag.DisplayChBoxChecked = true;
             //var flightIds = new JavaScriptSerializer().Deserialize<int[]>(flightsSer);
             //var classActiveFlights = new ClassActiveFlights();
             classActiveFlights.flightIdList = flightIds;

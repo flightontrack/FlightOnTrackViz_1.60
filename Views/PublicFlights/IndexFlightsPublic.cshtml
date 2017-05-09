@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>
 
+@{ bool ifChecked = ViewBag.DisplayChBoxChecked ?? false;}
 @*<div>
-        @if (ViewBag.ActionBack == "Index") {@Html.ActionLink("[__Up__]", "Index", "Home")}
-    @if (ViewBag.ActionBack == "GetLatestRoutes") {@Html.ActionLink("[__Up__]", "GetLatestRoutes", "PublicFlights")}
-        @if (ViewBag.ActionBack == "SearchByCriteria") {@Html.ActionLink("[__Up__]", "SearchByCriteria", "PublicFlights")}
-</div>*@
+            @if (ViewBag.ActionBack == "Index") {@Html.ActionLink("[__Up__]", "Index", "Home")}
+        @if (ViewBag.ActionBack == "GetLatestRoutes") {@Html.ActionLink("[__Up__]", "GetLatestRoutes", "PublicFlights")}
+            @if (ViewBag.ActionBack == "SearchByCriteria") {@Html.ActionLink("[__Up__]", "SearchByCriteria", "PublicFlights")}
+    </div>*@
 <h2>@ViewBag.ViewTitle</h2>
 <br>
 
@@ -25,7 +26,7 @@
         <p class="message-error"> @ViewBag.Message</p>
         @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
         columns: grid.Columns(
-        grid.Column(columnName: "FlightID", header: "Display", format: (item) => Html.CheckBox((string)item.FlightID.ToString(),true)),
+        grid.Column(columnName: "FlightID", header: "Display", format: (item) => Html.CheckBox((string)item.FlightID.ToString(), ifChecked)),
         grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID, actionBack = "GetLatestRoutes" }, null)),
         grid.Column(columnName: "FlightName", header: "Flight/Arpt", style: "text-align-left"),
         grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
