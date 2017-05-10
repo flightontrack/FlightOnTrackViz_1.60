@@ -205,6 +205,7 @@ function getDrawStaticFlights(jsonFlights,imgstartpoint, imgendpoint, imgtracepo
         // Sets  all markers in the store along with infowindow.
         for (var i = 0; i < markersStore.length; i++) {
             markersStore[i].setMap(map);
+            bounds.extend(loc);
         }
     }
 

@@ -12,29 +12,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flight Map</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @*<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <meta http-equiv='cache-control' content='no-cache'>
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
 
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/googlemap.css" rel="stylesheet" type="text/css" />*@
+    <sheettitle hidden>Flight Map (DisplayLatestFlightsStaticMap)</sheettitle>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAIm-QyYK0jc3jyTMA6rgCTnx-9nWILiiQ"></script>
     <script src="~/Scripts/getDrawStaticFlights.js"></script>
-    @*@Styles.Render("~/Content/css")
-        "~/Content/bootstrap.css",
-        "~/Content/site.css",
-        "~/Content/custom.css",
-        "~/Content/webgrid.css"*@
-    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/googlemap.css" rel="stylesheet" type="text/css" />
-
-
     <script>
     //var messages;
     var map;
+    var bounds;
     //var iconUrl;
     var mapOptions;
     var cookieName = "fontZoomLevel=";
@@ -62,7 +56,10 @@
                 document.cookie = cookieName + zooooom;
             });
             map.setCenter(defaultCenter);
+            bounds  = new google.maps.LatLngBounds();
             getDrawStaticFlights(@jsonData,'@imgstartpoint','@imgendpoint','@imgtracepoint','@imgintermpoint');
+            map.fitBounds(bounds);       // auto-zoom
+            map.panToBounds(bounds);     // auto-center
     }
 
     //---------------------------------------------------------------
