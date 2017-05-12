@@ -51,6 +51,7 @@ if (isFlightList ?? false)
         var markersStore = [];
         var infowindowStore = [];
         var flightPathStore = [];
+        var connectionLinesStore = [];
         //var isRefresh = true;
         var cnt =0;
         var defaultCenter;
@@ -62,6 +63,7 @@ if (isFlightList ?? false)
         //var isFlightList = Boolean @ViewBag.isFlightList;
         var defaultZoomLevel =(@ViewBag.ARadius==3?13:@ViewBag.ARadius==5?12:@ViewBag.ARadius==10?11:10);
         var mapCircle;
+
         //var alertText;
         var greenAlertText = "Update is On";
         var redAlertText = "Update is Off. Refresh the page.";
@@ -122,7 +124,7 @@ if (isFlightList ?? false)
                   ///set marker infowindow polyline for multiple flights
                   //console.log(url);
                   //console.log(data.centerRadius);
-                  if(data.gpslocations.length>0) getDrawActveFlights(data.gpslocations);
+                  if(data.gpslocations.length>0) getDrawActveFlights(data.gpslocations, new google.maps.LatLng(data.centerRadius.Lat, data.centerRadius.Long));
                   mapCircle.setCenter({lat: data.centerRadius.Lat, lng: data.centerRadius.Long})
                   bounds=mapCircle.getBounds();
                   map.fitBounds(bounds);       // auto-zoom

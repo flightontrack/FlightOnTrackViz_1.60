@@ -1,9 +1,9 @@
 ﻿//function MarkersUpdate(jsonFlights) {
-function getDrawActveFlights(jsonFlights) {
+function getDrawActveFlights(jsonFlights,centerPosition) {
     var pointList = [];
     var uniqueFligts = [];
     var iconimage;
-    var isPushpin;
+    var isPushpin = [];
 
     var active_pushpin = {
         url: "/Images/1484079763_green-pin.png",
@@ -25,10 +25,13 @@ function getDrawActveFlights(jsonFlights) {
     //map set to null all previous positions
     setMapOnAll(null);
     setflightPath(null);
+    setConnectionLines(null);
+
     //clean up store arrays
     markersStore = [];
     infowindowStore = [];
     flightPathStore = [];
+    connectionLinesStore = [];
 
     if (jsonFlights.length == 0) {
         console.log("No active flights");
@@ -56,12 +59,25 @@ function getDrawActveFlights(jsonFlights) {
             //set point infowindow
             var popupWindowText = "<table border=0 style=\"font-size:95%;font-family:arial,helvetica,sans-serif;\">"
                 + "<tr><td align=left>N:" + $(this).attr('AcftNumLocal') + "</td></tr>"
-                + "<tr><td align=left>Alt(ft):" + $(this).attr('AltitudeFt') + "</td></tr>"
-                + "<tr><td align=left>F #:" + $(this).attr('FlightID') + "</td></tr>";
+                + "<tr><td align=left>A ft:" + $(this).attr('AltitudeFt') + "</td></tr>"
+                + "<tr><td align=left>F:" + $(this).attr('FlightID') + "</td></tr>";
 
             // array of trackpoint for markers and their infowindows and icons
             pointList[key] = new LatLng($(this).attr('latitude'), $(this).attr('longitude'), iconimage, "Flight"+$(this).attr('FlightID'), popupWindowText, $(this).attr('FlightID'), isPushpin);
-
+            if (isPushpin) {
+                var connectionLine = [
+                    centerPosition,
+                    new google.maps.LatLng(this.latitude, this.longitude)
+                ]
+                connectionLinesStore.push(
+                    new google.maps.Polyline({
+                        path: connectionLine,
+                        strokeColor: "#FF0000",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 3
+                    })
+                )
+            }
         });
 
         //build store arrays for markers and infowindow for later use
@@ -94,13 +110,16 @@ function getDrawActveFlights(jsonFlights) {
                 strokeOpacity: 0.8,
                 strokeWeight: 3
             });
-
             flightPathStore.push(flightPath)
+
+
         });
         //draw markers out of stores
         setMapOnAll(map);
         // draw polyline out of store
         setflightPath(map);
+        //draw connection lines
+        setConnectionLines(map);
     }
 }
 
@@ -154,6 +173,11 @@ function setMapOnAll(p_map) {
 function setflightPath(p_map) {
     for (var i = 0; i < flightPathStore.length; i++) {
         flightPathStore[i].setMap(p_map);
+    }
+}
+function setConnectionLines(p_map) {
+    for (var i = 0; i < connectionLinesStore.length; i++) {
+        connectionLinesStore[i].setMap(p_map);
     }
 }
 
