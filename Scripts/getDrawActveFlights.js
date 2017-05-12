@@ -33,6 +33,7 @@ function getDrawActveFlights(jsonFlights,centerPosition) {
     flightPathStore = [];
     connectionLinesStore = [];
 
+
     if (jsonFlights.length == 0) {
         console.log("No active flights");
         return;
@@ -58,9 +59,9 @@ function getDrawActveFlights(jsonFlights,centerPosition) {
 
             //set point infowindow
             var popupWindowText = "<table border=0 style=\"font-size:95%;font-family:arial,helvetica,sans-serif;\">"
-                + "<tr><td align=left>N:" + $(this).attr('AcftNumLocal') + "</td></tr>"
-                + "<tr><td align=left>A ft:" + $(this).attr('AltitudeFt') + "</td></tr>"
-                + "<tr><td align=left>F:" + $(this).attr('FlightID') + "</td></tr>";
+                + "<tr><td align=left>N:<b>" + $(this).attr('AcftNumLocal') + "</b></td></tr>"
+                + "<tr><td align=left>A ft:<b>" + $(this).attr('AltitudeFt') + "</b></td></tr>"
+                + "<tr><td align=left>F:<b>" + $(this).attr('FlightID') + "</b></td></tr>";
 
             // array of trackpoint for markers and their infowindows and icons
             pointList[key] = new LatLng($(this).attr('latitude'), $(this).attr('longitude'), iconimage, "Flight"+$(this).attr('FlightID'), popupWindowText, $(this).attr('FlightID'), isPushpin);
@@ -73,8 +74,8 @@ function getDrawActveFlights(jsonFlights,centerPosition) {
                     new google.maps.Polyline({
                         path: connectionLine,
                         strokeColor: "#FF0000",
-                        strokeOpacity: 0.8,
-                        strokeWeight: 3
+                        strokeOpacity: 0.5,
+                        strokeWeight: 1
                     })
                 )
             }

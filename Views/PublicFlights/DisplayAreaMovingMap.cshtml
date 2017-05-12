@@ -124,7 +124,7 @@ if (isFlightList ?? false)
                   ///set marker infowindow polyline for multiple flights
                   //console.log(url);
                   //console.log(data.centerRadius);
-                  if(data.gpslocations.length>0) getDrawActveFlights(data.gpslocations, new google.maps.LatLng(data.centerRadius.Lat, data.centerRadius.Long));
+                  getDrawActveFlights(data.gpslocations, new google.maps.LatLng(data.centerRadius.Lat, data.centerRadius.Long));
                   mapCircle.setCenter({lat: data.centerRadius.Lat, lng: data.centerRadius.Long})
                   bounds=mapCircle.getBounds();
                   map.fitBounds(bounds);       // auto-zoom
