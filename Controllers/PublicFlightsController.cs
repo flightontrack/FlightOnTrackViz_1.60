@@ -284,6 +284,7 @@ namespace MVC_Acft_Track.Controllers
                                      select l.FlightID).ToList();
                 var flightsActiveInArea = classActiveFlights.flightsFlights.ToList();
                 ViewBag.areaId = areaId;
+                ViewBag.DisplayChBoxChecked = true;
                 var a = new ClassArea(areaId, DEFAULT_AREARADIUS);
                 ViewBag.areaName = a.area.FirstOrDefault().AreaName;
                 return View("GetListActiveFlights",flightsActiveInArea);

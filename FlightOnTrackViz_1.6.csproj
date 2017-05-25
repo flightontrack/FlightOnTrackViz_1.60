@@ -235,6 +235,7 @@
     <Compile Include="Helpers\kmlFlightPlacemarkPoint.cs" />
     <Compile Include="Helpers\kmlStyles.cs" />
     <Compile Include="Helpers\ListsDD.cs" />
+    <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Helpers\qLINQ.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AircraftGroup.cs">

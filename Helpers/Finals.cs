@@ -26,5 +26,9 @@ namespace MVC_Acft_Track
 
         public const string MSG_NOGROUPACTIVACFTS = "There are no active flights in this group";
 
+        public const string LOG_FILES_PATH = "d:/home/LogFiles/";
+        //public const string LOG_FILES_PATH = "c:/temp/ConsoleoutFT/";
+        public const string ERROR_USEREXISTS = "ERROR_USEREXISTS";
+
     }
 }

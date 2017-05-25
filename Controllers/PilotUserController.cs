@@ -4,6 +4,7 @@ using System.Web.Security;
 using WebMatrix.WebData;
 using MVC_Acft_Track.Models;
 using System.Linq;
+using static MVC_Acft_Track.Finals;
 
 namespace MVC_Acft_Track.Controllers
 {
@@ -33,12 +34,17 @@ namespace MVC_Acft_Track.Controllers
 
                     var UserName = user1 + "." + user2.Substring(user2.Length-4);
                     if (!WebSecurity.Initialized) { WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true); }
-                    WebSecurity.CreateUserAndAccount(UserName, a_p);
-                    Response.Write(UserName);
+                    if (WebSecurity.UserExists(UserName)) Response.Write(ERROR_USEREXISTS);
+                    else
+                    {
+                        WebSecurity.CreateUserAndAccount(UserName, a_p);
+                        Response.Write(UserName);
+                    }
                 }
                 catch (MembershipCreateUserException e)
                 {
                     string error = e.Message;
+                    LogHelper.onFailureLog("CreateUserPilot()", e);
                     Response.Write(error);
                     throw;
                 }

@@ -127,7 +127,7 @@ if (isFlightList ?? false)
                   getDrawActveFlights(data.gpslocations, new google.maps.LatLng(data.centerRadius.Lat, data.centerRadius.Long));
                   mapCircle.setCenter({lat: data.centerRadius.Lat, lng: data.centerRadius.Long})
                   bounds=mapCircle.getBounds();
-                  map.fitBounds(bounds);       // auto-zoom
+                  //map.fitBounds(bounds);       // auto-zoom
                   map.panToBounds(bounds);     // auto-center
                   if (cnt<REQUEST_COUNT){
                       ///setup next getMarkers call
