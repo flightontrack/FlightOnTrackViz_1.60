@@ -231,7 +231,6 @@
     <Compile Include="Helpers\ClassArea.cs" />
     <Compile Include="Helpers\ClassActiveFlights.cs" />
     <Compile Include="Helpers\Finals.cs" />
-    <Compile Include="Helpers\FlightClass.cs" />
     <Compile Include="Helpers\kmlFlightPlacemarkLineString.cs" />
     <Compile Include="Helpers\kmlFlightPlacemarkPoint.cs" />
     <Compile Include="Helpers\kmlStyles.cs" />
@@ -322,7 +321,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\vmFlight.cs" />
+    <Compile Include="ViewModels\vmFlightObjects.cs" />
     <Compile Include="ViewModels\vmPilotLogBook.cs" />
   </ItemGroup>
   <ItemGroup>
