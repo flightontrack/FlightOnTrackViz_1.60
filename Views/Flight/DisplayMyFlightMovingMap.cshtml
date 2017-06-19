@@ -1,5 +1,5 @@
 ﻿
-@{  Layout = null;
+@{  @*Layout = null;*@
     var FlightId = ViewBag.FlightId;
     var FlightOrRoute = ViewBag.FlightOrRoute;
     var isAutoUpdate = ViewBag.isAutoUpdate;
@@ -147,27 +147,21 @@
 {
     <div class="row">
         <div class="col-md-2">
-            <div class="text-danger"><h4><b>Refresh is ON</b></h4></div>
-        </div>
-        <div>
+@*            <div class="text-danger"><h4><b>Refresh is ON</b></h4></div>*@
             <button onclick="buttonAutoRefresh(this)" class="btn btn-success" type="submit" value="@isAutoUpdate">@buttonText</button>
         </div>
      </div>
 }
 else
 {
-<div class="row">
-    <div class="text-danger">
+    <div class="row">
         <div class="col-md-2">
-            <h4><b>Refresh is OFF</b></h4>
-        </div>
-        <div>
             <button onclick="buttonAutoRefresh(this)" class="btn btn-default" type="submit" value="@isAutoUpdate">@buttonText</button>
         </div>
     </div>
-</div>
 }
-            <div id="map_div"></div>
+<br>
+<div id="map_div"></div>
 
 </body>
 </html>
