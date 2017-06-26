@@ -12,16 +12,26 @@ namespace MVC_Acft_Track.Helpers
 
         public Entities db;
         int _pilotId;
+        int _acftId;
         int _flightId;
         int _topNumber = 100;
+        //Flight flight;
 
         public qLINQ() { db = new Entities(); }
-        public qLINQ(Entities dbent) { db = dbent;}
+
+        public qLINQ(int flightId) { _flightId = flightId; }
+        public qLINQ(Entities dbent) { db = dbent; }
 
         public int topNumber { set { _topNumber = value; } }
         public int pilotId {
             set { _pilotId = value; }
             get { return _pilotId; }
+        }
+
+        public int acftId
+        {
+            set { _acftId = value; }
+            get { return _acftId; }
         }
         string _pilotUserName;
         public string pilotUserName {
@@ -56,6 +66,20 @@ namespace MVC_Acft_Track.Helpers
         }
 
         public int flightId { set { _flightId = value; } }
+
+        public Flight flight {
+            get { return db.Flights.Find(_flightId); }
+        }
+
+        public DimAircraftRemote acftRemote
+        {
+            get { return db.DimAircraftRemotes.Find(_acftId); }
+        }
+
+        public Pilot pilot {
+            get { return db.Pilots.Find(_pilotId); }
+        }
+
         public IQueryable<vFlightAcftPilot> flightsAll { get { return db.vFlightAcftPilots.Where(r => r.FlightID > 0).OrderByDescending(r => r.FlightID); } }
         public IQueryable<vFlightAcftPilot> flightsAllTopNum { get { return db.vFlightAcftPilots.Where(r => r.FlightID > 0).OrderByDescending(row => row.FlightID).Take(_topNumber); } } //.AsNoTracking();
         //var q = db.vFlightAcftPilots.ToList();//.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();//.Where(row => row.IsJunk == false).OrderByDescending(row => row.FlightID);//.Take(TIMESPANFLIGHTS);

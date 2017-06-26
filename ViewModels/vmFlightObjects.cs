@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MVC_Acft_Track.Models;
+using MVC_Acft_Track.Helpers;
 
 namespace MVC_Acft_Track.ViewModels
 {
-    public class vmFlightObjects
+    public class vmFlight
     {
         public int Flightid;
         public Flight Flight;
@@ -22,21 +23,23 @@ namespace MVC_Acft_Track.ViewModels
         public int? PltId;
         public string FlightPilotCode = String.Empty;
         public string FlightPilotName = String.Empty;
-        public int? FlightAcftId;
+        //public int? FlightAcftId;
         public string AcftNum = String.Empty;
 
-        public vmFlightObjects(int id) {
+        public vmFlight(int id) {
             Flightid = id;
-            var entities = new Entities();
-            Flight = entities.Flights.Find(id);
+            //var entities = new Entities();
+            var q = new qLINQ(id);
+            Flight = q.flight;
             FlightName = Flight.FlightName;
-            RouteId = Flight.RouteID??id;
+            RouteId = Flight.RouteID ?? id;
             IsPattern = Flight.IsPattern.HasValue ? "Yes" : "No";
-            FlightDuration = Flight.FlightDurationMin??0;
+            FlightDuration = Flight.FlightDurationMin ?? 0;
             TrackFreq = Flight.FreqSec;
             FlightDate = Flight.FlightDate;
             IsShared = Flight.IsShared;
-            GpsLocations = entities.GpsLocations.Where(row => row.FlightID == id).OrderBy(row => row.onSessionPointNum).ToList();
+            //GpsLocations = entities.GpsLocations.Where(row => row.FlightID == id).OrderBy(row => row.onSessionPointNum).ToList();
+            GpsLocations = q.flightGpsLocations.ToList();
             var pilot = new vmPilot(Flight.PilotID ?? 0);
             if (pilot.PilotId != null)
             {
@@ -44,11 +47,17 @@ namespace MVC_Acft_Track.ViewModels
                 FlightPilotCode = pilot.PilotCode;
                 FlightPilotName = pilot.PilotName;
             }
-            FlightAcftId = Flight.AcftID;
-            AcftNum = entities.DimAircraftRemotes.Find(FlightAcftId).AcftNum;
+            q.acftId = Flight.AcftID ?? 0;
+            //FlightAcftId = Flight.AcftID;
+            AcftNum = q.acftRemote.AcftNum;
         }
     }
 
+    public class vmFlightList
+    {
+        public List<vmFlight> Flights;
+
+    } 
     public class vmPilot
     {
         public int? PilotId;
@@ -58,8 +67,10 @@ namespace MVC_Acft_Track.ViewModels
 
         public vmPilot(int id)
         {
-            var entities = new Entities();
-            var p = entities.Pilots.Find(id);
+            //var entities = new Entities();
+            var q = new qLINQ();
+            q.pilotId = id;
+            var p = q.pilot;
             if (p != null)
             {
                 thePilot = p;

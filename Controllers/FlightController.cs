@@ -299,7 +299,7 @@ namespace MVC_Acft_Track.Controllers
         //}
         public ActionResult DisplayFlightData(int id = 0)
         {
-            var vmF = new vmFlightObjects(id);
+            var vmF = new vmFlight(id);
             //var isFlightShared = db.Flights.Where(row => row.FlightID == id).First().IsShared;
             if (Request.IsAuthenticated || (bool)vmF.IsShared)
             {
