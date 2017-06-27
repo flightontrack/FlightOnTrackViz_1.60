@@ -4,7 +4,7 @@
     ViewBag.Title = "Edit";
 }
 <div>
-    @Html.ActionLink("[Back]", "GetAllFligts")
+    @Html.ActionLink("[Back]", "GetAllFlights")
 </div>
 <br>
 <b>Flight  @Html.DisplayFor(model => model.FlightID)</b>
@@ -12,21 +12,22 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.FlightID)
-    <table class="webgrid">
+
+    <table class="table table-striped table-condensed">
         <tr>
-            <td class="label"> Flight Name </td>
+            <td> Flight Name </td>
             <td>@Html.EditorFor(model => model.FlightName)</td>
         </tr>
         <tr>
-            <td class="label">Comments</td>
+            <td>Comments</td>
             <td>@Html.EditorFor(model => model.Comments)</td>
         </tr>
         <tr>
-            <td class="label">Aircraft</td>
+            <td>Aircraft</td>
             <td>@Html.DropDownList("AircraftsSelList")</td>
         </tr>
         <tr>
-            <td class="label">Phone</td>
+            <td>Pilot Phone</td>
             <td>@if (ViewBag.selectedPilotID == null) {
                 @Html.DropDownList("PhoneSelList","Select")
             }

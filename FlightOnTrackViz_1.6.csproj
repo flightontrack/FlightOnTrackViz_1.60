@@ -573,7 +573,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\MarkJunkRecords.cshtml" />
     <Content Include="Views\PublicFlights\GetLatestRoutes.cshtml" />
-    <Content Include="Views\Admin\GetAllFligts.cshtml" />
+    <Content Include="Views\Admin\GetAllFlights.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Home\IndexLogBook.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -597,7 +597,7 @@
     <Content Include="Views\Home\IndexMobile.cshtml" />
     <Content Include="Tableau\VisualLogBook.twb" />
     <Content Include="Views\Shared\DisplayLatestFlightsStaticMap.cshtml" />
-    <Content Include="Views\PublicFlights\SearchByCriteria.cshtml" />
+    <Content Include="Views\Shared\SearchByCriteria.cshtml" />
     <Content Include="Views\Account\LoginGroup.cshtml" />
     <Content Include="Views\PublicFlights\SearchByGroup.cshtml" />
   </ItemGroup>

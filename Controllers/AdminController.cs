@@ -4,11 +4,12 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using MVC_Acft_Track.Models;
-using MVC_Acft_Track.Helpers;
 using FontBing;
 using WebMatrix.WebData;
+using MVC_Acft_Track.Models;
+using MVC_Acft_Track.Helpers;
 using static MVC_Acft_Track.App;
+using static MVC_Acft_Track.Finals;
 
 /// 9784934810.0139
 /// 82$befc
@@ -119,20 +120,20 @@ namespace MVC_Acft_Track.Controllers
             return View(junkFlights);
         }
 
-        public ActionResult GetAllFligts() {
+        public ActionResult GetAllFlights() {
             if (Request.IsAuthenticated)
             {
                 try
                 {
                     ViewBag.ViewTitle = "All Recent Flights";
-                    ViewBag.ActionBack = "GetAllFligts";
+                    ViewBag.ActionBack = "GetAllFlights";
                     q.topNumber = 50;
                     var fs = q.flightsAll.ToList();
                     return View(fs);
                 }
                 catch (Exception e)
                 {
-                    ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "GetAllFligts() error";
+                    ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "GetAllFlights() error";
                     return View("ErrorPage");
                 }
             }
@@ -140,13 +141,13 @@ namespace MVC_Acft_Track.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GetAllFligts(FormCollection form)
+        public ActionResult GetAllFlights(FormCollection form)
         {
             if (Request.IsAuthenticated)
             {
                 if (Request["submit"] == "Update page")
                 {
-                    return RedirectToAction("GetAllFligts");
+                    return RedirectToAction("GetAllFlights");
                 }
                 if (Request["submit"] == "Delete selected flights")
                 {
@@ -160,7 +161,7 @@ namespace MVC_Acft_Track.Controllers
                             db.SaveChanges();
                         }
                     }
-                    return RedirectToAction("GetAllFligts");
+                    return RedirectToAction("GetAllFlights");
                 }
                 if (Request["submit"] == "Save changes")
                 {
@@ -222,7 +223,7 @@ namespace MVC_Acft_Track.Controllers
                         }
                     }
                 }
-            return RedirectToAction("GetAllFligts");
+            return RedirectToAction("GetAllFlights");
             }
             else return RedirectToAction("Login", "Account");
         }
@@ -277,11 +278,105 @@ namespace MVC_Acft_Track.Controllers
                 db.Entry(flight).Property(p => p.Updated).IsModified = true;
 
                 db.SaveChanges();
-                return RedirectToAction("GetAllFligts");
+                return RedirectToAction("GetAllFlights");
             }
             return View(flight);
         }
 
+        [HttpGet]
+        public ActionResult SearchByCriteria(string message = "")
+        {
+            ViewBag.AircraftsSelList = new SelectList(db.vListAircrafts.OrderBy(row => row.AcftNumLocal), "AcftID", "AcftNumLocal");
+            ViewBag.PilotSelList = new SelectList(db.vListPilots.OrderBy(row => row.PilotCode), "PilotID", "PilotCode");
+            ViewBag.AirportSelList = new SelectList(db.vListAirports.OrderBy(row => row.AirportCode), "AirportID", "AirportCode");
+            ViewBag.GroupSelList = new SelectList(db.DimAcftGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName");
+            ViewBag.Message = message;
+            return View("SearchByCriteria");
+        }
+        [HttpPost]
+        public ActionResult SearchByCriteria(FormCollection form)
+        {
+            if (form["submit"] == "Search")
+            {
+                if (form["FlightID"].Equals("") && form["AcftNumLocal"].Equals("") && form["PilotID"].Equals("") && form["FlightDate"].Equals("") && form["GroupID"].Equals("")) return RedirectToAction("SearchByCriteria", new { message = SELECTSOMTHING });
+                var flightID = form["FlightID"];
+                var airportID = form["AirportID"];
+                var acftNumLocal = form["AcftNumLocal"];
+                var pilotID = form["PilotID"];
+                var flightDate = form["FlightDate"];
+                var companyID = form["CompanyID"];
+                return RedirectToAction("SearchByCriteriaResult", new { flightID = flightID, airportID = airportID, acftNumLocal = acftNumLocal, pilotID = pilotID, flightDate = flightDate, companyID = companyID });
+            }
+            return View();
+        }
+        [HttpGet]
+        public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID)
+        {
+            List<vFlightAcftPilot> flights = new List<vFlightAcftPilot>();
+            var f = db.vFlightAcftPilots.Where(row => 1 == 1);
+
+            if (string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate + companyID))
+            {
+                return RedirectToAction("SearchByCriteria");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(flightID))
+                {
+                    int flightIDint = int.Parse(flightID);
+                    f = f.Where(row => row.FlightID == flightIDint);
+                }
+                if (!string.IsNullOrEmpty(flightDate))
+                {
+                    var flightDatedate = DateTime.Parse(flightDate);
+                    f = f.Where(row => DbFunctions.TruncateTime(row.FlightDate) == flightDatedate);
+                }
+                //if (!string.IsNullOrEmpty(airportID))
+                //{
+                //    //flights = flights.Where(row => row.AcftID == int.Parse(aircraftID)).ToList();
+                //}
+                if (!string.IsNullOrEmpty(acftNumLocal))
+                {
+                    var acftids = db.AircraftPilots.Where(row => row.AcftNumLocal == acftNumLocal).Select(row => row.AcftID).ToList();
+                    f = f.Where(row => acftids.Contains(row.AcftID.Value));
+                }
+                if (!string.IsNullOrEmpty(companyID))
+                {
+                    var companyIDint = int.Parse(companyID);
+                    var acftids = db.AircraftPilots.Where(row => row.CompanyID == companyIDint).Select(row => row.AcftID).ToList();
+                    f = f.Where(row => acftids.Contains(row.AcftID.Value));
+                }
+                if (!string.IsNullOrEmpty(pilotID))
+                {
+                    var pilotIDint = int.Parse(pilotID);
+                    f = f.Where(row => row.PilotID == pilotIDint);
+                }
+                flights = f.Where(row => !row.IsJunk).Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
+            }
+
+            return View("GetAllFlights", flights);
+        }
+        [HttpPost]
+        public ActionResult SearchByCriteriaResult(FormCollection form)
+        {
+            var flightIds = new List<int>();
+            var c = form.Count;
+            foreach (string id in form)
+            {
+                if (form[id] == "Compare") continue;
+                if (form.GetValues(id).Contains("true"))
+                {
+                    flightIds.Add(int.Parse(id));
+                }
+            }
+            if (flightIds.Count == 0) return View();
+            var gpslocations = db.GpsLocations.Where(row => flightIds.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
+            //JavaScriptSerializer serializer = new JavaScriptSerializer();
+            //ViewBag.FlightsJsonData = serializer.Serialize(gpslocations);
+            //ViewBag.AreaCenterLat = gpslocations.FirstOrDefault().latitude;
+            //ViewBag.AreaCenterLong = gpslocations.FirstOrDefault().longitude;
+            return View("DisplayLatestFlightsStaticMap");
+        }
     }
 
 }

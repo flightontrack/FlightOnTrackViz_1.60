@@ -23,9 +23,9 @@
                         <colgroup> <col class="col-md-2"> <col class="col-md-3"> </colgroup>
                         @*<thead> <tr> <th class="info">Class</th> <th class="info">Description</th> </tr> </thead>*@
                         <tbody>
-                            <tr> <th scope="row"> Flight/Arpt </th> <td>@Html.EditorFor(model => model.FlightName)</td></tr>
-                            <tr> <th scope="row"> Comments </th> <td>@Html.EditorFor(model => model.Comments)</td> </tr>
-                            <tr> <th scope="row"> Aircraft </th> <td>@Html.DropDownList("AircraftsSelList") </td> </tr>
+                            <tr> <td scope="row"> Flight/Arpt </td> <td>@Html.EditorFor(model => model.FlightName)</td></tr>
+                            <tr> <td scope="row"> Comments </td> <td>@Html.EditorFor(model => model.Comments)</td> </tr>
+                            <tr> <td scope="row"> Aircraft </td> <td>@Html.DropDownList("AircraftsSelList") </td> </tr>
                         </tbody>
                     </table>
             <p>
