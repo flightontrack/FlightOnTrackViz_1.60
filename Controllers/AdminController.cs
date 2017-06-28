@@ -10,6 +10,7 @@ using MVC_Acft_Track.Models;
 using MVC_Acft_Track.Helpers;
 using static MVC_Acft_Track.App;
 using static MVC_Acft_Track.Finals;
+using System.Threading.Tasks;
 
 /// 9784934810.0139
 /// 82$befc
@@ -79,45 +80,98 @@ namespace MVC_Acft_Track.Controllers
             else return RedirectToAction("Login", "Account");
         }
 
-        public ActionResult MarkJunkRecords()
+        public async Task<ActionResult> GetJunkRecordsAsync()
+        {
+            Console.WriteLine("before");
+            List<Flight> junkFlights = await MarkJunkRecords();
+            Console.WriteLine("after");
+            return View(junkFlights);
+        }
+        //public ActionResult MarkJunkRecords()
+        //{
+        //    var flights = q.flightsJunkNotChecked.ToList();
+        //    var junkFlightIds = new List<int>();
+        //    var junkFlights = new List<Flight>();
+        //    foreach(var f in flights){
+
+        //        q.flightId = f.FlightID;
+        //        var locations = q.flightGpsLocations.ToList();
+        //        if (f.Points <= 1 || locations.Count() == 0) { 
+        //            junkFlights.Add(f);
+        //            junkFlightIds.Add(f.FlightID);
+        //            continue; 
+        //        }
+        //        var highestAltitude = locations.Max(row => row.AltitudeM);
+        //        var locationHighest = locations.Where(l => l.AltitudeM == highestAltitude).Select(l => new { l.latitude,l.longitude}).First();
+        //        string queryString = locationHighest.latitude.ToString() + "," + locationHighest.longitude.ToString();
+
+        //        BingElevadion.querystring = queryString;
+        //        var elevation = BingElevadion.groundElevation;
+        //        if ((highestAltitude - elevation)<50){
+        //        //mark flight as junk
+        //            junkFlights.Add(f);
+        //            junkFlightIds.Add(f.FlightID); 
+        //        }
+
+        //    }   
+        //    foreach(var f in flights){
+        //            if (ModelState.IsValid)
+        //            {
+        //                f.IsJunk = true;
+        //                f.IsAltitudeChecked = true;
+        //                db.Flights.Attach(f);
+        //                db.Entry(f).Property(p => p.IsJunk).IsModified = junkFlightIds.Contains(f.FlightID);
+        //                db.Entry(f).Property(p => p.IsAltitudeChecked).IsModified = true;
+        //                db.SaveChanges();
+        //            }
+        //        }
+        //    return View(junkFlights);
+        //}
+
+        async Task<List<Flight>> MarkJunkRecords()
         {
             var flights = q.flightsJunkNotChecked.ToList();
             var junkFlightIds = new List<int>();
             var junkFlights = new List<Flight>();
-            foreach(var f in flights){
-                
+            foreach (var f in flights)
+            {
+
                 q.flightId = f.FlightID;
                 var locations = q.flightGpsLocations.ToList();
-                if (f.Points <= 1 || locations.Count() == 0) { 
+                if (f.Points <= 1 || locations.Count() == 0)
+                {
                     junkFlights.Add(f);
                     junkFlightIds.Add(f.FlightID);
-                    continue; 
+                    continue;
                 }
                 var highestAltitude = locations.Max(row => row.AltitudeM);
-                var locationHighest = locations.Where(l => l.AltitudeM == highestAltitude).Select(l => new { l.latitude,l.longitude}).First();
+                var locationHighest = locations.Where(l => l.AltitudeM == highestAltitude).Select(l => new { l.latitude, l.longitude }).First();
                 string queryString = locationHighest.latitude.ToString() + "," + locationHighest.longitude.ToString();
 
                 BingElevadion.querystring = queryString;
                 var elevation = BingElevadion.groundElevation;
-                if ((highestAltitude - elevation)<50){
-                //mark flight as junk
+                if ((highestAltitude - elevation) < 50)
+                {
+                    //mark flight as junk
                     junkFlights.Add(f);
-                    junkFlightIds.Add(f.FlightID); 
+                    junkFlightIds.Add(f.FlightID);
                 }
 
-            }   
-            foreach(var f in flights){
-                    if (ModelState.IsValid)
-                    {
-                        f.IsJunk = true;
-                        f.IsAltitudeChecked = true;
-                        db.Flights.Attach(f);
-                        db.Entry(f).Property(p => p.IsJunk).IsModified = junkFlightIds.Contains(f.FlightID);
-                        db.Entry(f).Property(p => p.IsAltitudeChecked).IsModified = true;
-                        db.SaveChanges();
-                    }
+            }
+            foreach (var f in flights)
+            {
+                if (ModelState.IsValid)
+                {
+                    f.IsJunk = true;
+                    f.IsAltitudeChecked = true;
+                    db.Flights.Attach(f);
+                    db.Entry(f).Property(p => p.IsJunk).IsModified = junkFlightIds.Contains(f.FlightID);
+                    db.Entry(f).Property(p => p.IsAltitudeChecked).IsModified = true;
+                    db.SaveChanges();
                 }
-            return View(junkFlights);
+            }
+
+            return junkFlights;
         }
 
         public ActionResult GetAllFlights() {
