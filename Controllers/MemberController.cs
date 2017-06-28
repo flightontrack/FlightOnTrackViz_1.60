@@ -12,6 +12,7 @@ using static MVC_Acft_Track.Finals;
 
 namespace MVC_Acft_Track.Controllers
 {
+    [RequireHttps]
     public class MemberController : Controller
     {
         public bool debugmode = true;

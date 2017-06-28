@@ -16,6 +16,7 @@ namespace MVC_Acft_Track.Controllers
 {
 
     [Authorize]
+    [RequireHttps]
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {

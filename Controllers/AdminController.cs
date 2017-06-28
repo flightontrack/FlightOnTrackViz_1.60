@@ -356,27 +356,7 @@ namespace MVC_Acft_Track.Controllers
 
             return View("GetAllFlights", flights);
         }
-        [HttpPost]
-        public ActionResult SearchByCriteriaResult(FormCollection form)
-        {
-            var flightIds = new List<int>();
-            var c = form.Count;
-            foreach (string id in form)
-            {
-                if (form[id] == "Compare") continue;
-                if (form.GetValues(id).Contains("true"))
-                {
-                    flightIds.Add(int.Parse(id));
-                }
-            }
-            if (flightIds.Count == 0) return View();
-            var gpslocations = db.GpsLocations.Where(row => flightIds.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
-            //JavaScriptSerializer serializer = new JavaScriptSerializer();
-            //ViewBag.FlightsJsonData = serializer.Serialize(gpslocations);
-            //ViewBag.AreaCenterLat = gpslocations.FirstOrDefault().latitude;
-            //ViewBag.AreaCenterLong = gpslocations.FirstOrDefault().longitude;
-            return View("DisplayLatestFlightsStaticMap");
-        }
+
     }
 
 }

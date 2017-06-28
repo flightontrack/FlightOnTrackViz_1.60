@@ -19,7 +19,7 @@ namespace MVC_Acft_Track.Helpers
 
         public qLINQ() { db = new Entities(); }
 
-        public qLINQ(int flightId) { _flightId = flightId; }
+        public qLINQ(int flightId) { db = new Entities(); _flightId = flightId; }
         public qLINQ(Entities dbent) { db = dbent; }
 
         public int topNumber { set { _topNumber = value; } }
