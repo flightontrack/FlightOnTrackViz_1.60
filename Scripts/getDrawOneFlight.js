@@ -58,13 +58,13 @@ function getDrawOneFlight(jsonFlight, imgstartpoint,imgendpoint,imgtracepoint,im
             }
 
             if (key == 0) {
-                //set pushpin on first position of the flight                
+                //set pushpin on first position of the route                
                 iconimage = tracestartpoint;
                 isPushpin = true;
             }
             else if (key == jsonFlight.length - 1) {
-                //set pushpin on last position of the flight
-                iconimage = traceendpoint;
+                //set pushpin on last position of the route
+                iconimage = intermpoint;
                 isPushpin = true;
             }
             else if ($(this).attr('onSessionPointNum') == 1) {
@@ -75,7 +75,9 @@ function getDrawOneFlight(jsonFlight, imgstartpoint,imgendpoint,imgtracepoint,im
                 iconimage = tracepoint;
                 isPushpin = false;
             }
-                currentCenter = new google.maps.LatLng($(this).attr('latitude'), $(this).attr('longitude'));
+
+
+            currentCenter = new google.maps.LatLng($(this).attr('latitude'), $(this).attr('longitude'));
             //set point infowindow
                 var popupWindowText = "<table style=\"font-size:95%;font-family:arial,helvetica,sans-serif;\">"
                     + '<tr><td align=right>Flight #:&nbsp</td><td class="colcustom_1">' + $(this).attr('FlightID') + "</td></tr>"
@@ -147,6 +149,26 @@ function getDrawOneFlight(jsonFlight, imgstartpoint,imgendpoint,imgtracepoint,im
         setMapOnAll(map);
         // draw polyline out of store
         setflightPath(map);
+
+        setflightPath(map);
+        ///construct endpoints circles
+        pointList.forEach(
+            function (p, i) {
+                if (p.ispushpin) {
+                    var mapCircle = new google.maps.Circle({
+                        strokeColor: 'blue',
+                        strokeOpacity: 0.2,
+                        strokeWeight: 15,
+                        fillColor: 'red',
+                        fillOpacity: 0.4,
+                        map: map,
+                        center: { lat: p.lat, lng: p.lng },
+                        radius: 5
+                    });
+                    //circlesStore.push(mapCircle);
+                }
+            }
+        )
 
     }
 }
