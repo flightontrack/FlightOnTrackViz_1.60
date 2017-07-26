@@ -33,6 +33,7 @@ function getDrawStaticFlights(jsonFlights,imgstartpoint, imgendpoint, imgtracepo
         setflightPath(null);
         //clean up store arrays
         markersStore = [];
+        circlesStore = [];
         flightPathStore = [];
         var Colors = [
             "#0000FF",
@@ -59,20 +60,20 @@ function getDrawStaticFlights(jsonFlights,imgstartpoint, imgendpoint, imgtracepo
                 if (key == 0) {
                     //set pushpin on first position of the route                
                     iconimage = tracestartpoint;
-                    isPushpin = false;
+                    isPushpin = true;
                 }
                 else if (key == jsonFlights.length - 1 ) {
                     //set pushpin on last position of the route
-                    iconimage = traceendpoint;
-                    isPushpin = false;
+                    iconimage = intermpoint;
+                    isPushpin = true;
                 }
                 else if ($(this).attr('onSessionPointNum')==1) {
                     iconimage = intermpoint;
-                    isPushpin = false;
+                    isPushpin = true;
                 }
                 else {
                     iconimage = tracepoint;
-                    isPushpin = true;
+                    isPushpin = false;
                 }
 
                 //set point infowindow
@@ -90,6 +91,7 @@ function getDrawStaticFlights(jsonFlights,imgstartpoint, imgendpoint, imgtracepo
                 pointList[key] = new LatLng($(this).attr('latitude'), $(this).attr('longitude'), iconimage, "Flight"+$(this).attr('FlightID'), popupWindowText, $(this).attr('FlightID'), isPushpin);
 
             });
+
 
             //build store arrays for markers and infowindow for later use
             pointList.forEach(
@@ -180,6 +182,24 @@ function getDrawStaticFlights(jsonFlights,imgstartpoint, imgendpoint, imgtracepo
             setMapOnAll(map);
             // draw polyline out of store
             setflightPath(map);
+            ///construct endpoints circles
+            pointList.forEach(
+                function (p, i) {
+                    if (p.ispushpin) {
+                        var mapCircle = new google.maps.Circle({
+                            strokeColor: 'blue',
+                            strokeOpacity: 0.2,
+                            strokeWeight: 15,
+                            fillColor: 'red',
+                            fillOpacity: 0.4,
+                            map: map,
+                            center: { lat: p.lat, lng: p.lng },
+                            radius: 5
+                        });
+                        //circlesStore.push(mapCircle);
+                    }
+                }
+            )
             showMessage("FONT");
         }
     }
@@ -201,19 +221,20 @@ function getDrawStaticFlights(jsonFlights,imgstartpoint, imgendpoint, imgtracepo
         this.ispushpin = isPushpin;
     };
 
-    function setMapOnAll() {
+    function setMapOnAll(p_map) {
         // Sets  all markers in the store along with infowindow.
         for (var i = 0; i < markersStore.length; i++) {
-            markersStore[i].setMap(map);
+            markersStore[i].setMap(p_map);
             bounds.extend(markersStore[i].position);
         }
     }
 
-    function setflightPath() {
+    function setflightPath(p_map) {
         for (var i = 0; i < flightPathStore.length; i++) {
-            flightPathStore[i].setMap(map);
+            flightPathStore[i].setMap(p_map);
         }
     }
+
 
     function showMessage(message) {
         map.innerHTML = '<strong>' + message + '</strong>';
