@@ -1,5 +1,14 @@
 ﻿@*@model IEnumerable<MVC_Acft_Track.Models.GpsLocation>*@
 @model MVC_Acft_Track.ViewModels.vmFlight
+        @{
+            var grid = new WebGrid(
+                Model.GpsLocations, 
+                defaultSort: "FlightDate", 
+                canPage: true, 
+                rowsPerPage: 100
+                );
+            var hidePanel = grid.PageIndex==0?true:false;
+        }
 
 <div class="row">
     <div class="col-sm-4">
@@ -28,15 +37,22 @@
 </div>
 
 <div class="row">
-            <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Click on collapsible panel to open or close it
-                    <div class="panel-title">
-                        <a data-toggle="collapse" href="#details"><h3>+ Flight Details</h3></a>
-                    </div>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Click on collapsible panel to open or close it
+                <div class="panel-title">
+                    @*<a data-toggle="collapse" data-target="#details"><h3>+ Flight Details</h3></a>*@
+                    <h3>Flight Details</h3>
+                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">Click to open or close it</button>
                 </div>
-                <div id="details" class="panel-collapse collapse">
+            </div>
+            @{
+                if (hidePanel) {
+                }
+            }
+    <div id="details" class="panel-collapse collapse">
+    
     <div class="row">
         <div class="col-sm-4">
             <ul class="list-group">
@@ -52,7 +68,7 @@
         </div>
         <div class="col-sm-4">
             <ul class="list-group">
-                <li class="list-group-item active"><h4>Table Columns</h4></li>
+                <li class="list-group-item active"><h4>Table Legend</h4></li>
                 <li class="list-group-item">
                     <ul style="list-style-type:none">
                         <li><b>TPN</b>      - Map Trackpoint Number</li>
@@ -70,30 +86,34 @@
             </ul>
         </div>
       </div>
-                    @{
-                        var grid = new WebGrid(Model.GpsLocations, defaultSort: "FlightDate", canPage: true, rowsPerPage: 50);
-                    }
-                    @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
-                columns: grid.Columns(
-                //grid.Column(columnName: "GPSLocationID", header: "GPS Location ID", style: "text-align-left"),
-                grid.Column(columnName: "onSessionPointNum", header: "TPN", style: "text-align-left"),
-                grid.Column(columnName: "gpsTime", header: "LOCAL TIME", style: "text-align-left"),
-                grid.Column(columnName: "latitude", header: "LAT", style: "text-align-left"),
-                grid.Column(columnName: "longitude", header: "LON", style: "text-align-left"),
-                grid.Column(columnName: "AltitudeM", header: "ALTM", style: "text-align-left"),
-                grid.Column(columnName: "AltitudeFt", header: "ALTF", style: "text-align-left"),
-                //grid.Column(columnName: "accuracy", header: "Accuracy M", style: "text-align-left"),
-                grid.Column(columnName: "SpeedMph", header: "GRSPMPH", style: "text-align-left"),
-                grid.Column(columnName: "SpeedKnot", header: "GRSPKNT", style: "text-align-left"),
-                grid.Column(columnName: "SpeedKmph", header: "GRSPKMH", style: "text-align-left"),
-                //grid.Column(columnName: "direction", header: "Direction", style: "text-align-left"),
-                grid.Column(columnName: "AirportCode", header: "ARPT", style: "text-align-left")
-                )
-                )
-                </div>
+@*@grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",*@
+        @grid.GetHtml(
+            mode: WebGridPagerModes.All,
+            tableStyle: "webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "table-pager",
+
+            columns: grid.Columns(
+            //grid.Column(columnName: "GPSLocationID", header: "GPS Location ID", style: "text-align-left"),
+            grid.Column(columnName: "onSessionPointNum", header: "TPN", style: "text-align-left"),
+            grid.Column(columnName: "gpsTime", header: "LOCAL TIME", style: "text-align-left"),
+            grid.Column(columnName: "latitude", header: "LAT", style: "text-align-left"),
+            grid.Column(columnName: "longitude", header: "LON", style: "text-align-left"),
+            grid.Column(columnName: "AltitudeM", header: "ALTM", style: "text-align-left"),
+            grid.Column(columnName: "AltitudeFt", header: "ALTF", style: "text-align-left"),
+            //grid.Column(columnName: "accuracy", header: "Accuracy M", style: "text-align-left"),
+            grid.Column(columnName: "SpeedMph", header: "GRSPMPH", style: "text-align-left"),
+            grid.Column(columnName: "SpeedKnot", header: "GRSPKNT", style: "text-align-left"),
+            grid.Column(columnName: "SpeedKmph", header: "GRSPKMH", style: "text-align-left"),
+            //grid.Column(columnName: "direction", header: "Direction", style: "text-align-left"),
+            grid.Column(columnName: "AirportCode", header: "ARPT", style: "text-align-left")
+            )
+        )
+
             </div>
         </div>
     </div>
+</div>
 
 
 
