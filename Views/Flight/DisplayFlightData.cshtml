@@ -2,12 +2,13 @@
 @model MVC_Acft_Track.ViewModels.vmFlight
         @{
             var grid = new WebGrid(
-                Model.GpsLocations, 
-                defaultSort: "FlightDate", 
-                canPage: true, 
+                Model.GpsLocations,
+                defaultSort: "onSessionPointNum",
+                canPage: true,
                 rowsPerPage: 100
                 );
-            var hidePanel = grid.PageIndex==0?true:false;
+            var hidePanel = grid.PageIndex == 0 ? true : false;
+            var collapsePanel = hidePanel ? "panel-collapse collapse" : "panel-collapse collapse in";
         }
 
 <div class="row">
@@ -40,18 +41,13 @@
     <div class="panel-group">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Click on collapsible panel to open or close it
                 <div class="panel-title">
                     @*<a data-toggle="collapse" data-target="#details"><h3>+ Flight Details</h3></a>*@
                     <h3>Flight Details</h3>
-                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#details">Click to open or close it</button>
+                    <button type="button" class="btn btn-default active" data-toggle="collapse" data-target="#details">Click to open or close panel</button>
                 </div>
             </div>
-            @{
-                if (hidePanel) {
-                }
-            }
-    <div id="details" class="panel-collapse collapse">
+    <div id="details" class='@collapsePanel'>
     
     <div class="row">
         <div class="col-sm-4">
