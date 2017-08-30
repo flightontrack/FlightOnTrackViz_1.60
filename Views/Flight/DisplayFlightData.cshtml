@@ -7,8 +7,8 @@
                 canPage: true,
                 rowsPerPage: 100
                 );
-            var hidePanel = grid.PageIndex == 0 ? true : false;
-            var collapsePanel = hidePanel ? "panel-collapse collapse" : "panel-collapse collapse in";
+            //var hidePanel = grid.PageIndex == 0 ? true : false;
+            var collapsePanel = grid.PageIndex == 0 ? "panel-collapse collapse" : "panel-collapse collapse in";
         }
 
 <div class="row">
@@ -44,7 +44,7 @@
                 <div class="panel-title">
                     @*<a data-toggle="collapse" data-target="#details"><h3>+ Flight Details</h3></a>*@
                     <h3>Flight Details</h3>
-                    <button type="button" class="btn btn-default active" data-toggle="collapse" data-target="#details">Click to open or close panel</button>
+                    <button type="button" class="btn btn-default active" data-toggle="collapse" data-target="#details">Expand/Collapse Details</button>
                 </div>
             </div>
     <div id="details" class='@collapsePanel'>
