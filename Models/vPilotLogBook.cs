@@ -26,5 +26,6 @@ namespace MVC_Acft_Track.Models
         public bool IsJunk { get; set; }
         public string AcftRegNum { get; set; }
         public Nullable<bool> IsShared { get; set; }
+        public string HTMLToolTip { get; set; }
     }
 }

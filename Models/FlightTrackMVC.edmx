@@ -293,6 +293,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a 
           <Property Name="RouteID" Type="int" Nullable="false" />
           <Property Name="FlightDateOnly" Type="varchar" MaxLength="10" />
           <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="HTMLToolTip" Type="nvarchar(max)" />
           <Property Name="AcftMMS" Type="nvarchar" MaxLength="57" />
           <Property Name="Acft" Type="nvarchar" MaxLength="50" />
           <Property Name="AcftRegNum" Type="varchar" MaxLength="9" />
@@ -532,6 +533,7 @@ FROM [dbo].[vListPilot] AS [vListPilot]</DefiningQuery>
 [vPilotLogBook].[RouteID] AS [RouteID], 
 [vPilotLogBook].[FlightDateOnly] AS [FlightDateOnly], 
 [vPilotLogBook].[Comments] AS [Comments], 
+[vPilotLogBook].[HTMLToolTip] AS [HTMLToolTip], 
 [vPilotLogBook].[AcftMMS] AS [AcftMMS], 
 [vPilotLogBook].[Acft] AS [Acft], 
 [vPilotLogBook].[AcftRegNum] AS [AcftRegNum], 
@@ -725,6 +727,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="IsJunk" Type="Boolean" Nullable="false" />
           <Property Name="AcftRegNum" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="IsShared" Type="Boolean" />
+          <Property Name="HTMLToolTip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DimAircraftRemote">
           <Key>
@@ -1075,6 +1078,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySetMapping Name="vPilotLogBooks">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.vPilotLogBook">
               <MappingFragment StoreEntitySet="vPilotLogBook">
+                <ScalarProperty Name="HTMLToolTip" ColumnName="HTMLToolTip" />
                 <ScalarProperty Name="IsShared" ColumnName="IsShared" />
                 <ScalarProperty Name="AcftRegNum" ColumnName="AcftRegNum" />
                 <ScalarProperty Name="IsJunk" ColumnName="IsJunk" />
