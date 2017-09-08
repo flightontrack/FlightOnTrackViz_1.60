@@ -107,44 +107,62 @@ function getDrawStaticFlights(jsonFlights,imgstartpoint, imgendpoint, imgtracepo
                 var infowindow = new google.maps.InfoWindow({
                     content: p.infow
                 });
-                infowindow.addListener('domready', function () {
-                    //$(".gm-style-iw").next("div").hide();
+                //infowindow.addListener('domready', function () {
+                //    //$(".gm-style-iw").next("div").hide();
 
-                    // Reference to the DIV which receives the contents of the infowindow using jQuery
-                    //var iwOuter = $('.gm-style-iw');
-                    ////hiding cross
-                    //iwOuter.next("div").hide();
-                    ///* The DIV we want to change is above the .gm-style-iw DIV.
-                    // * So, we use jQuery and create a iwBackground variable,
-                    // * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
-                    // */
-                    //var iwBackground = iwOuter.prev();
+                //    // Reference to the DIV which receives the contents of the infowindow using jQuery
+                //    //var iwOuter = $('.gm-style-iw');
+                //    ////hiding cross
+                //    //iwOuter.next("div").hide();
+                //    ///* The DIV we want to change is above the .gm-style-iw DIV.
+                //    // * So, we use jQuery and create a iwBackground variable,
+                //    // * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
+                //    // */
+                //    //var iwBackground = iwOuter.prev();
 
-                    //// Remove the background shadow DIV
-                    //iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
+                //    //// Remove the background shadow DIV
+                //    //iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
 
-                    //// Remove the white background DIV
-                    //iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
+                //    //// Remove the white background DIV
+                //    //iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
 
-                    //var iwCloseBtn = iwOuter.next();
+                //    //var iwCloseBtn = iwOuter.next();
 
-                    //// Apply the desired effect to the close button
-                    //iwCloseBtn.css({
-                    //    opacity: '1', // by default the close button has an opacity of 0.7
-                    //    right: '38px', top: '3px', // button repositioning
-                    //    border: '7px solid #48b5e9', // increasing button border and new color
-                    //    'border-radius': '13px', // circular effect
-                    //    'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
-                    //});
-                    //// The API automatically applies 0.7 opacity to the button after the mouseout event.
-                    //// This function reverses this event to the desired value.
-                    //iwCloseBtn.mouseout(function () {
-                    //    $(this).css({ opacity: '1' });
+                //    //// Apply the desired effect to the close button
+                //    //iwCloseBtn.css({
+                //    //    opacity: '1', // by default the close button has an opacity of 0.7
+                //    //    right: '38px', top: '3px', // button repositioning
+                //    //    border: '7px solid #48b5e9', // increasing button border and new color
+                //    //    'border-radius': '13px', // circular effect
+                //    //    'box-shadow': '0 0 5px #3990B9' // 3D effect to highlight the button
+                //    //});
+                //    //// The API automatically applies 0.7 opacity to the button after the mouseout event.
+                //    //// This function reverses this event to the desired value.
+                //    //iwCloseBtn.mouseout(function () {
+                //    //    $(this).css({ opacity: '1' });
 
-                    //});
-                });
+                //    //});
+                //});
 
-                marker.addListener('click', function () {
+                //marker.addListener('click', function () {
+                //    infowindow.open(map, marker);
+                //    // Reference to the DIV which receives the contents of the infowindow using jQuery
+                //    var iwOuter = $('.gm-style-iw');
+
+                //    /* The DIV we want to change is above the .gm-style-iw DIV.
+                //     * So, we use jQuery and create a iwBackground variable,
+                //     * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
+                //     */
+                //    var iwBackground = iwOuter.prev();
+
+                //    // Remove the background shadow DIV
+                //    iwBackground.children(':nth-child(2)').css({ 'display': 'none' });
+
+                //    // Remove the white background DIV
+                //    iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
+
+                //});
+                marker.addListener('mouseover', function () {
                     infowindow.open(map, marker);
                     // Reference to the DIV which receives the contents of the infowindow using jQuery
                     var iwOuter = $('.gm-style-iw');
@@ -161,6 +179,9 @@ function getDrawStaticFlights(jsonFlights,imgstartpoint, imgendpoint, imgtracepo
                     // Remove the white background DIV
                     iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
 
+                });
+                marker.addListener('mouseout', function () {
+                    infowindow.close(map, marker);
                 });
                 markersStore.push(marker);          
             });

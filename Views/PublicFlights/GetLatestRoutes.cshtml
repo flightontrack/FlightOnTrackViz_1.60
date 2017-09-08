@@ -11,7 +11,9 @@
 
 <div>
     @{
-        var grid = new WebGrid(Model, defaultSort: "FlightID", rowsPerPage: 50);
+        var grid = new WebGrid(Model, 
+            defaultSort: "FlightID", 
+            rowsPerPage: 50);
         grid.SortDirection = SortDirection.Descending;
     }
     @*<p>

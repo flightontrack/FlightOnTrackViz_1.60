@@ -21,7 +21,7 @@ $(document).ready(function () {
             var grid = new WebGrid(
                            Model.flightsLogBook, 
                            canSort: true, 
-                           defaultSort: "FlightDateOnly", 
+                           defaultSort: "RouteID",
                            canPage: true, 
                            rowsPerPage: 10);
             grid.SortDirection = sortdirAsc?SortDirection.Ascending: SortDirection.Descending;
