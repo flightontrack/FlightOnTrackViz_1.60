@@ -39,7 +39,7 @@ namespace MVC_Acft_Track.Models
         public Nullable<int> FreqSec { get; set; }
         public Nullable<int> RouteID { get; set; }
         public Nullable<int> AppVersionCode { get; set; }
-        public Nullable<bool> IsNameUpdated { get; set; }
+        public Nullable<short> IsNameUpdated { get; set; }
         public Nullable<int> AreaID { get; set; }
         public Nullable<bool> IsJunk { get; set; }
         public Nullable<bool> IsAltitudeChecked { get; set; }

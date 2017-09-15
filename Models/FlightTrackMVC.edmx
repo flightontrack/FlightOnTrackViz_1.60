@@ -110,7 +110,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primar
           <Property Name="FreqSec" Type="int" />
           <Property Name="RouteID" Type="int" />
           <Property Name="AppVersionCode" Type="int" />
-          <Property Name="IsNameUpdated" Type="bit" />
+          <Property Name="IsNameUpdated" Type="smallint" />
           <Property Name="AreaID" Type="int" />
           <Property Name="IsJunk" Type="bit" />
           <Property Name="IsAltitudeChecked" Type="bit" />
@@ -808,7 +808,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="FreqSec" Type="Int32" />
           <Property Name="RouteID" Type="Int32" />
           <Property Name="AppVersionCode" Type="Int32" />
-          <Property Name="IsNameUpdated" Type="Boolean" />
+          <Property Name="IsNameUpdated" Type="Int16" />
           <Property Name="AreaID" Type="Int32" />
           <Property Name="IsJunk" Type="Boolean" />
           <Property Name="IsAltitudeChecked" Type="Boolean" />
