@@ -110,7 +110,7 @@ function getDrawOneFlight(jsonFlight, imgstartpoint,imgendpoint,imgtracepoint,im
                 content: p.infow
             });
 
-            marker.addListener('click', function () {
+            marker.addListener('mouseover', function () {
                 infowindow.open(map, marker);
                 // Reference to the DIV which receives the contents of the infowindow using jQuery
                 var iwOuter = $('.gm-style-iw');
@@ -126,6 +126,10 @@ function getDrawOneFlight(jsonFlight, imgstartpoint,imgendpoint,imgtracepoint,im
 
                 // Remove the white background DIV
                 iwBackground.children(':nth-child(4)').css({ 'display': 'none' });
+
+            });
+            marker.addListener('mouseout', function () {
+                infowindow.close(map, marker);
             });
             markersStore.push(marker);
         });
@@ -148,8 +152,6 @@ function getDrawOneFlight(jsonFlight, imgstartpoint,imgendpoint,imgtracepoint,im
         //draw markers out of store
         setMapOnAll(map);
         // draw polyline out of store
-        setflightPath(map);
-
         setflightPath(map);
         ///construct endpoints circles
         pointList.forEach(

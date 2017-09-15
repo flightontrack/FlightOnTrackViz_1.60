@@ -34,12 +34,11 @@ namespace MVC_Acft_Track
               "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/googlemap.css",
                       "~/Content/site.css",
-                      "~/Content/custom.css",
-                                            //"~/Content/allcss.css",
                       "~/Content/webgrid.css",
-                      "~/Content/googlemap.css"
+                      "~/Content/bootstrap.css",
+                      "~/Content/custom.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
