@@ -15,6 +15,7 @@ namespace MVC_Acft_Track.Helpers
         int _acftId;
         int _flightId;
         int _topNumber = 100;
+        string _acftNumLocal;
         //Flight flight;
 
         public qLINQ() { db = new Entities(); }
@@ -32,6 +33,11 @@ namespace MVC_Acft_Track.Helpers
         {
             set { _acftId = value; }
             get { return _acftId; }
+        }
+        public string acftNumLocal
+        {
+            set { _acftNumLocal = value; }
+            get { return _acftNumLocal; }
         }
         string _pilotUserName;
         public string pilotUserName {
@@ -71,6 +77,7 @@ namespace MVC_Acft_Track.Helpers
             get { return db.Flights.Find(_flightId); }
         }
 
+        
         public DimAircraftRemote acftRemote
         {
             get { return db.DimAircraftRemotes.Find(_acftId); }
@@ -81,6 +88,7 @@ namespace MVC_Acft_Track.Helpers
         }
 
         public IQueryable<vFlightAcftPilot> flightsAll { get { return db.vFlightAcftPilots.Where(r => r.FlightID > 0).OrderByDescending(r => r.FlightID); } }
+        public IQueryable<vFlightAcftPilot> flightsGetGarbage { get { return db.vFlightAcftPilots.Where(r => r.IsJunk == true).OrderByDescending(r => r.FlightID); } }
         public IQueryable<vFlightAcftPilot> flightsAllTopNum { get { return db.vFlightAcftPilots.Where(r => r.FlightID > 0).OrderByDescending(row => row.FlightID).Take(_topNumber); } } //.AsNoTracking();
         //var q = db.vFlightAcftPilots.ToList();//.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();//.Where(row => row.IsJunk == false).OrderByDescending(row => row.FlightID);//.Take(TIMESPANFLIGHTS);
         public IQueryable<vPilotLogBook> pilotLogBook { get { return db.vPilotLogBooks.Where(row => row.PilotID == _pilotId).OrderByDescending(row => row.RouteID); } }
@@ -98,7 +106,8 @@ namespace MVC_Acft_Track.Helpers
 
         public IQueryable<vFlightAcftPilot> flightsByPilot { get { return db.vFlightAcftPilots.Where(row => row.PilotID == pilotId); } }
 
-        public IQueryable<vAircraftPilot> pilotAircrafts { get { return db.vAircraftPilots.Where(r => r.PilotID == pilotId); } }
+        public IQueryable<vAircraftPilot> aircraftsByPilot { get { return db.vAircraftPilots.Where(r => r.PilotID == pilotId); } }
+        public IQueryable<vAircraftPilot> aircraftsByAcftNumLocal { get { return db.vAircraftPilots.Where(row => row.AcftNumLocal == _acftNumLocal); } }
 
 
         ///Select Lista

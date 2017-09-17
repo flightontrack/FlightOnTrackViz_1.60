@@ -52,7 +52,7 @@ namespace MVC_Acft_Track.Controllers
                     case 1:
                         return View("MemberPilot", p);
                     case 2:
-                        return View("MemberAcft", q.pilotAircrafts.ToList());
+                        return View("MemberAcft", q.aircraftsByPilot.ToList());
                     case 3:
 
                         //if (p == null) return View("LogBookNotFound");

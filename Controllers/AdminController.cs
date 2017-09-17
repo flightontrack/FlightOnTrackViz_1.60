@@ -174,15 +174,19 @@ namespace MVC_Acft_Track.Controllers
             return junkFlights;
         }
 
-        public ActionResult GetAllFlights() {
+        public ActionResult GetAllFlights(bool isJunkAllFlights = false) {
             if (Request.IsAuthenticated)
             {
                 try
                 {
-                    ViewBag.ViewTitle = "All Recent Flights";
-                    ViewBag.ActionBack = "GetAllFlights";
-                    q.topNumber = 50;
-                    var fs = q.flightsAll.ToList();
+                    //ViewBag.ViewTitle = "All Recent Flights";
+                    //ViewBag.ActionBack = "GetAllFlights";
+                    //q.topNumber = 50;
+                    var fs = isJunkAllFlights?q.flightsGetGarbage.ToList():q.flightsAll.ToList();
+                    if (isJunkAllFlights)
+                    {
+                        foreach (vFlightAcftPilot f in fs) { f.IsChecked = true; }
+                    }
                     return View(fs);
                 }
                 catch (Exception e)
@@ -216,6 +220,10 @@ namespace MVC_Acft_Track.Controllers
                         }
                     }
                     return RedirectToAction("GetAllFlights");
+                }
+                if (Request["submit"] == "Mark all Garbage To Delete")
+                {
+                    return RedirectToAction("GetAllFlights", new { isJunkAllFlights = true });
                 }
                 if (Request["submit"] == "Save changes")
                 {
@@ -366,8 +374,9 @@ namespace MVC_Acft_Track.Controllers
         [HttpGet]
         public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID)
         {
-            List<vFlightAcftPilot> flights = new List<vFlightAcftPilot>();
-            var f = db.vFlightAcftPilots.Where(row => 1 == 1);
+            //List<vFlightAcftPilot> flights; // = new List<vFlightAcftPilot>();
+            //var f = db.vFlightAcftPilots.Where(row => 1 == 1);
+            var f = q.flightsAll;
 
             if (string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate + companyID))
             {
@@ -391,7 +400,8 @@ namespace MVC_Acft_Track.Controllers
                 //}
                 if (!string.IsNullOrEmpty(acftNumLocal))
                 {
-                    var acftids = db.AircraftPilots.Where(row => row.AcftNumLocal == acftNumLocal).Select(row => row.AcftID).ToList();
+                    q.acftNumLocal = acftNumLocal;
+                    var acftids = q.aircraftsByAcftNumLocal.Select(row => row.AcftID).ToList();
                     f = f.Where(row => acftids.Contains(row.AcftID.Value));
                 }
                 if (!string.IsNullOrEmpty(companyID))
@@ -405,10 +415,10 @@ namespace MVC_Acft_Track.Controllers
                     var pilotIDint = int.Parse(pilotID);
                     f = f.Where(row => row.PilotID == pilotIDint);
                 }
-                flights = f.Where(row => !row.IsJunk).Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
+                //flights = f.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
             }
 
-            return View("GetAllFlights", flights);
+            return View("GetAllFlights", f);
         }
 
     }
