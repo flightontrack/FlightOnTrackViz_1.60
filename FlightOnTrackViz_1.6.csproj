@@ -323,6 +323,7 @@
     </Compile>
     <Compile Include="ViewModels\vmFlightObjects.cs" />
     <Compile Include="ViewModels\vmPilotLogBook.cs" />
+    <Compile Include="ViewModels\vmSearchRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -573,7 +574,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\GetJunkRecordsAsync.cshtml" />
     <Content Include="Views\PublicFlights\GetLatestRoutes.cshtml" />
-    <Content Include="Views\Admin\GetAllFlights.cshtml" />
+    <Content Include="Views\Admin\GetFlights.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Home\IndexLogBook.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />

@@ -45,5 +45,6 @@ namespace MVC_Acft_Track.Models
         public Nullable<bool> IsAltitudeChecked { get; set; }
         public Nullable<int> FlightStart_GPSLocationID { get; set; }
         public Nullable<bool> IsChecked { get; set; }
+        public Nullable<int> UpdatedBy { get; set; }
     }
 }

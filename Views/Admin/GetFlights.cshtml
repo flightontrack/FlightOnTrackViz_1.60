@@ -1,10 +1,12 @@
-﻿@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>
+﻿@*@model IEnumerable<MVC_Acft_Track.Models.<vFlightAcftPilot>*@
+
+@model MVC_Acft_Track.ViewModels.vmSearchRequest
 
 @Html.ActionLink("[ System Management Menu ]", "Index", "Admin")
 <h2>@ViewBag.ViewTitle</h2>
 
 @{
-    var grid = new WebGrid(Model, defaultSort: "FlightID", rowsPerPage: 50);
+    var grid = new WebGrid(Model.flightList, defaultSort: "FlightID", rowsPerPage: 50);
     grid.SortDirection = SortDirection.Descending;
 }
 <p>
@@ -15,19 +17,20 @@
 
 @if (Request.IsAuthenticated || ViewBag.isRouteShared)
 {
-
     using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        <input type="hidden" name="acftId" value="@ViewBag.AcftID" />
+        @Html.Hidden("searchRequest", new { flightID = Model.flightID, airportID = Model.airportID, acftNumLocal = Model.acftNumLocal, pilotID = Model.pilotID, flightDate = Model.flightDate, companyID = Model.companyID });
+        @*<input type="hidden" name="acftId" value="@ViewBag.AcftID" />*@
         <input type="submit" name="submit" value="Save changes" />
         <input type="submit" name="submit" value="Mark all Garbage To Delete" />
         <input type="submit" name="submit" value="Delete selected flights" />
+        <input type="submit" name="submit" value="Merge selected flights" />
         <input type="submit" name="submit" value="Update page" />
         @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
      columns: grid.Columns(
         grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID, actionBack = @ViewBag.ActionBack }, null)),
-        grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.DropDownList("FlightIdDropDown:" + (string)item.FlightID.ToString(), new SelectList(Model.OrderByDescending(m => m.FlightID), "FlightID", "FlightID", item.RouteID == null ? item.FlightID : item.RouteID))),
+        grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.DropDownList("FlightIdDropDown:" + (string)item.FlightID.ToString(), new SelectList(Model.flightList.OrderByDescending(m => m.FlightID), "FlightID", "FlightID", item.RouteID == null ? item.FlightID : item.RouteID))),
         grid.Column(columnName: "FlightName", header: "Flight/Arpt", style: "text-align-left"),
         grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
         //grid.Column(columnName: "FlightDateUTC",header: "Date UTC",style: "text-align-left",format: (item) => item.FlightDateUTC.ToString("d",(new System.Globalization.CultureInfo("ja-JP")).DateTimeFormat)),

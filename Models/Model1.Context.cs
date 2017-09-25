@@ -113,5 +113,14 @@ namespace MVC_Acft_Track.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fVisualPilotLogDestinations_Result>("[Entities].[fVisualPilotLogDestinations](@pilotId)", pilotIdParameter);
         }
+    
+        public virtual int merge_Flights(string flightsstring)
+        {
+            var flightsstringParameter = flightsstring != null ?
+                new ObjectParameter("flightsstring", flightsstring) :
+                new ObjectParameter("flightsstring", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("merge_Flights", flightsstringParameter);
+        }
     }
 }

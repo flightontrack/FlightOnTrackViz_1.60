@@ -39,5 +39,7 @@ namespace MVC_Acft_Track.Models
         public Nullable<int> signalStrength { get; set; }
         public Nullable<int> AltitudeFt { get; set; }
         public Nullable<int> AreaID { get; set; }
+        public Nullable<System.DateTime> Updated { get; set; }
+        public Nullable<int> UpdatedBy { get; set; }
     }
 }

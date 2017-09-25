@@ -59,7 +59,7 @@
           <Property Name="Created" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.DimArea' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DimArea">
           <Key>
             <PropertyRef Name="AreaID" />
@@ -116,6 +116,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primar
           <Property Name="IsAltitudeChecked" Type="bit" />
           <Property Name="FlightStart_GPSLocationID" Type="int" />
           <Property Name="IsChecked" Type="bit" />
+          <Property Name="UpdatedBy" Type="int" />
         </EntityType>
         <EntityType Name="GpsLocation">
           <Key>
@@ -146,6 +147,8 @@ warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primar
           <Property Name="signalStrength" Type="int" />
           <Property Name="AltitudeFt" Type="int" />
           <Property Name="AreaID" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
         </EntityType>
         <EntityType Name="Pilot">
           <Key>
@@ -173,7 +176,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primar
           <Property Name="LandingsForward" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.SearchRequest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.SearchRequest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SearchRequest">
           <Key>
             <PropertyRef Name="SearchID" />
@@ -193,7 +196,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.SearchRequest' does not have a 
           <Property Name="GroupName" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vAircraftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.vAircraftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vAircraftPilot">
           <Key>
             <PropertyRef Name="ID" />
@@ -216,7 +219,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vAircraftPilot' does not have a
           <Property Name="PilotCode" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vFlightAcftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.vFlightAcftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vFlightAcftPilot">
           <Key>
             <PropertyRef Name="FlightID" />
@@ -253,7 +256,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vFlightAcftPilot' does not have
           <Property Name="AltitudeFt" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vListAircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.vListAircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vListAircraft">
           
           <Key>
@@ -265,7 +268,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vListAircraft' does not have a 
           <Property Name="c" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vListAirport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.vListAirport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vListAirport">
           <Key>
             <PropertyRef Name="AirportID" />
@@ -274,7 +277,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vListAirport' does not have a p
           <Property Name="AirportCode" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vListPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.vListPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vListPilot">
           <Key>
             <PropertyRef Name="PilotID" />
@@ -284,7 +287,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vListPilot' does not have a pri
           <Property Name="c" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.vPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vPilotLogBook">
           <Key>
             
@@ -305,7 +308,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a 
           <Property Name="IsShared" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.vVisualPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vVisualPilotLogBook">
           <Key>
             <PropertyRef Name="FlightID" />
@@ -335,7 +338,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not h
           <Property Name="latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-merge.dbo.vVisualPilotLogDestinations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vVisualPilotLogDestinations">
           <Key>
             <PropertyRef Name="FlightID" />
@@ -408,6 +411,9 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
         <Function Name="get_PilotP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="phonenumber" Type="varchar" Mode="In" />
           <Parameter Name="deviceid" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="merge_Flights" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="flightsstring" Type="varchar" Mode="In" />
         </Function>
         <Function Name="update_PilotGuid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="pilotid" Type="int" Mode="In" />
@@ -625,6 +631,9 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySet Name="AirportCoordinates" EntityType="FlightTrackMVCModel.AirportCoordinates" />
           <EntitySet Name="DimAcftGroups" EntityType="FlightTrackMVCModel.DimAcftGroup" />
           <EntitySet Name="AircraftGroups" EntityType="FlightTrackMVCModel.AircraftGroup" />
+          <FunctionImport Name="merge_Flights">
+            <Parameter Name="flightsstring" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="DimArea">
           <Key>
@@ -814,6 +823,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="IsAltitudeChecked" Type="Boolean" />
           <Property Name="FlightStart_GPSLocationID" Type="Int32" />
           <Property Name="IsChecked" Type="Boolean" />
+          <Property Name="UpdatedBy" Type="Int32" />
         </EntityType>
         <EntityType Name="GpsLocation">
           <Key>
@@ -844,6 +854,8 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="signalStrength" Type="Int32" />
           <Property Name="AltitudeFt" Type="Int32" />
           <Property Name="AreaID" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
         </EntityType>
         <EntityType Name="Pilot">
           <Key>
@@ -1150,6 +1162,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySetMapping Name="Flights">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.Flight">
               <MappingFragment StoreEntitySet="Flight">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="IsChecked" ColumnName="IsChecked" />
                 <ScalarProperty Name="FlightStart_GPSLocationID" ColumnName="FlightStart_GPSLocationID" />
                 <ScalarProperty Name="IsAltitudeChecked" ColumnName="IsAltitudeChecked" />
@@ -1187,6 +1200,8 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySetMapping Name="GpsLocations">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.GpsLocation">
               <MappingFragment StoreEntitySet="GpsLocation">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
                 <ScalarProperty Name="AreaID" ColumnName="AreaID" />
                 <ScalarProperty Name="AltitudeFt" ColumnName="AltitudeFt" />
                 <ScalarProperty Name="signalStrength" ColumnName="signalStrength" />
@@ -1356,6 +1371,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="merge_Flights" FunctionName="FlightTrackMVCModel.Store.merge_Flights" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

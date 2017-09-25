@@ -6031,12 +6031,14 @@ button.close {
   margin-left: -3px;
 }
 .tooltip-inner {
-  max-width: 200px;
+  max-width: 300px;
   padding: 3px 8px;
   color: #fff;
   text-align: center;
   background-color: #000;
   border-radius: 4px;
+              /*max-width: none;*/
+            white-space: nowrap;
 }
 .tooltip-arrow {
   position: absolute;
