@@ -143,12 +143,7 @@ namespace MVC_Acft_Track.Controllers
                 {
                     //ViewBag.ViewTitle = "All Recent Flights";
                     //ViewBag.ActionBack = "GetAllFlights";
-                    q.topNumber = 50;
-                    var fs = isJunkAllFlights?q.flightsGetGarbage.ToList():q.flightsAll.ToList();
-                    if (isJunkAllFlights)
-                    {
-                        foreach (vFlightAcftPilot f in fs) { f.IsChecked = true; }
-                    }
+                    var fs = new vmSearchRequest(null, null,null,null,null,null,isJunkAllFlights,50);
                     return View(fs);
                 }
                 catch (Exception e)
@@ -238,6 +233,7 @@ namespace MVC_Acft_Track.Controllers
             ViewBag.AirportSelList = new SelectList(db.vListAirports.OrderBy(row => row.AirportCode), "AirportID", "AirportCode");
             ViewBag.GroupSelList = new SelectList(db.DimAcftGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName");
             ViewBag.Message = message;
+            ViewBag.PublicSearch = false;
             return View("SearchByCriteria");
         }
         [HttpPost]
@@ -257,54 +253,21 @@ namespace MVC_Acft_Track.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID)
+        public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isJunkAllFlights = false)
         {
             //List<vFlightAcftPilot> flights; // = new List<vFlightAcftPilot>();
             //var f = db.vFlightAcftPilots.Where(row => 1 == 1);
             //var f = q.flightsAll;
             //vmSearchRequest searchRequest;
 
-            if (string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate + companyID))
+            if (!isJunkAllFlights && string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate + companyID))
             {
                 return RedirectToAction("SearchByCriteria");
             }
             else
             {
-                return View("GetFlights", new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID));
-                //searchRequest = new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID);
-                //if (!string.IsNullOrEmpty(flightID))
-                //{
-                //    int flightIDint = int.Parse(flightID);
-                //    f = f.Where(row => row.FlightID == flightIDint);
-                //}
-                //if (!string.IsNullOrEmpty(flightDate))
-                //{
-                //    var flightDatedate = DateTime.Parse(flightDate);
-                //    f = f.Where(row => DbFunctions.TruncateTime(row.FlightDate) == flightDatedate);
-                //}
-                ////if (!string.IsNullOrEmpty(airportID))
-                ////{
-                ////    //flights = flights.Where(row => row.AcftID == int.Parse(aircraftID)).ToList();
-                ////}
-                //if (!string.IsNullOrEmpty(acftNumLocal))
-                //{
-                //    q.acftNumLocal = acftNumLocal;
-                //    var acftids = q.aircraftsByAcftNumLocal.Select(row => row.AcftID).ToList();
-                //    f = f.Where(row => acftids.Contains(row.AcftID.Value));
-                //}
-                //if (!string.IsNullOrEmpty(companyID))
-                //{
-                //    var companyIDint = int.Parse(companyID);
-                //    var acftids = db.AircraftPilots.Where(row => row.CompanyID == companyIDint).Select(row => row.AcftID).ToList();
-                //    f = f.Where(row => acftids.Contains(row.AcftID.Value));
-                //}
-                //if (!string.IsNullOrEmpty(pilotID))
-                //{
-                //    var pilotIDint = int.Parse(pilotID);
-                //    f = f.Where(row => row.PilotID == pilotIDint);
-                //}
+                return View("GetFlights", new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isJunkAllFlights));
             }
-            //return View("GetFlights", searchRequest);
         }
 
         [HttpPost]
@@ -315,13 +278,12 @@ namespace MVC_Acft_Track.Controllers
             {
                 if (Request["submit"] == "Mark all Garbage To Delete")
                 {
-                    return RedirectToAction("SearchByCriteriaResult");
+                    return RedirectToAction("SearchByCriteriaResult", new { isJunkAllFlights = true });
                 }
                 FormHandle(form);
                 var searchRequest = form["searchRequest"];
-                //var qq = new searchRequest;
-                var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Split(',');
-                return RedirectToAction("SearchByCriteriaResult");
+                var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
+                return RedirectToAction("SearchByCriteriaResult", new { flightID=dict["flightID"], airportID = dict["airportID"], acftNumLocal = dict["acftNumLocal"], pilotID = dict["pilotID"], flightDate = dict["flightDate"], companyID = dict["companyID"] });
             }
             else return RedirectToAction("Login", "Account");
         }

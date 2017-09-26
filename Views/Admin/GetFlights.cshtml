@@ -6,11 +6,18 @@
 <h2>@ViewBag.ViewTitle</h2>
 
 @{
-    var grid = new WebGrid(Model.flightList, defaultSort: "FlightID", rowsPerPage: 50);
+    var grid = new WebGrid(
+        Model.flightList, 
+        defaultSort: "FlightID", 
+        rowsPerPage: Model.rowsPerPage,
+        canSort: true,
+        canPage: true
+        );
     grid.SortDirection = SortDirection.Descending;
 }
 <p>
     <i>
+        Top <span class="badge">@Model.topN </span> records are listed out of total <span class="badge">@Model.totalRecordCount </span> in the history.
         To sort flights click on a column title.  To delete or share selected flights use the buttons below.<br>
     </i>
 </p>
@@ -20,15 +27,21 @@
     using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        @Html.Hidden("searchRequest", new { flightID = Model.flightID, airportID = Model.airportID, acftNumLocal = Model.acftNumLocal, pilotID = Model.pilotID, flightDate = Model.flightDate, companyID = Model.companyID });
+        @Html.Hidden("searchRequest", new { flightID = Model.flightID, airportID = Model.airportID, acftNumLocal = Model.acftNumLocal, pilotID = Model.pilotID, flightDate = Model.flightDate, companyID = Model.companyID, rowsPerPage = Model.rowsPerPage });
         @*<input type="hidden" name="acftId" value="@ViewBag.AcftID" />*@
-        <input type="submit" name="submit" value="Save changes" />
-        <input type="submit" name="submit" value="Mark all Garbage To Delete" />
-        <input type="submit" name="submit" value="Delete selected flights" />
-        <input type="submit" name="submit" value="Merge selected flights" />
-        <input type="submit" name="submit" value="Update page" />
-        @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+        <input type="submit" name="submit" value="Mark all Garbage To Delete" /><br>
+        <input type="submit" name="submit" value="Delete selected flights" /><br>
+        <input type="submit" name="submit" value="Merge selected flights" /><br>
+        <input type="submit" name="submit" value="Save changes" /><br>
+        <input type="submit" name="submit" value="Update page" /><br>
+
+        @grid.GetHtml(
+                mode: WebGridPagerModes.All,
+                tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "table-pager",
      columns: grid.Columns(
+        grid.Column(columnName: "IsChecked", header: "Select", format: (item) => Html.CheckBox("IsSelected" + (string)item.FlightID.ToString(), (bool)(item.IsChecked != null ? item.IsChecked : false), new { id = item.FlightID })),
         grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID, actionBack = @ViewBag.ActionBack }, null)),
         grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.DropDownList("FlightIdDropDown:" + (string)item.FlightID.ToString(), new SelectList(Model.flightList.OrderByDescending(m => m.FlightID), "FlightID", "FlightID", item.RouteID == null ? item.FlightID : item.RouteID))),
         grid.Column(columnName: "FlightName", header: "Flight/Arpt", style: "text-align-left"),

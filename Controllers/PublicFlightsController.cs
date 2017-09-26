@@ -147,6 +147,7 @@ namespace MVC_Acft_Track.Controllers
             ViewBag.PilotSelList = new SelectList(db.vListPilots.OrderBy(row => row.PilotCode), "PilotID", "PilotCode");
             ViewBag.AirportSelList = new SelectList(db.vListAirports.OrderBy(row => row.AirportCode), "AirportID", "AirportCode");
             ViewBag.GroupSelList = new SelectList(db.DimAcftGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName");
+            ViewBag.PublicSearch = true;
             ViewBag.Message = message;
             return View("SearchByCriteria");
         }

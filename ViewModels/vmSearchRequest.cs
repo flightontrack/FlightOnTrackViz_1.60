@@ -16,19 +16,29 @@ namespace MVC_Acft_Track.ViewModels
         public string pilotID;
         public string flightDate;
         public string companyID;
+        public int  topN = 100;
+        public int  rowsPerPage;
+        public int  totalRecordCount;
         public List<vFlightAcftPilot> flightList; 
 
-        public vmSearchRequest(string p_flightID, string p_airportID, string p_acftNumLocal, string p_pilotID, string p_flightDate, string p_companyID) {
+        public vmSearchRequest(string p_flightID = null, string p_airportID = null, string p_acftNumLocal = null, string p_pilotID = null, string p_flightDate = null, string p_companyID = null,bool p_isSearchJunk = false, int p_rowsPerPage = 50) {
             flightID= p_flightID;
             airportID= p_airportID;
             acftNumLocal= p_acftNumLocal;
             pilotID= p_pilotID;
             flightDate= p_flightDate;
             companyID= p_companyID;
+            rowsPerPage = p_rowsPerPage;
 
             var q = new qLINQ();
             var f = q.flightsAll;
 
+            if (p_isSearchJunk)
+            {
+                f = f.Where(r => r.IsJunk == true);
+                foreach (vFlightAcftPilot i in f) { i.IsChecked = true; }
+                topN = rowsPerPage;
+            }
             if (!string.IsNullOrEmpty(flightID))
             {
                 int flightIDint = int.Parse(flightID);
@@ -60,7 +70,8 @@ namespace MVC_Acft_Track.ViewModels
                 var pilotIDint = int.Parse(pilotID);
                 f = f.Where(row => row.PilotID == pilotIDint);
             }
-            flightList = f.ToList();
+            totalRecordCount = f.Count();
+            flightList = f.Take(topN).ToList();
         }
     }
 }
