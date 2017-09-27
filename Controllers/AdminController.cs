@@ -136,14 +136,12 @@ namespace MVC_Acft_Track.Controllers
             return junkFlights;
         }
 
-        public ActionResult GetFlights(bool isJunkAllFlights = false) {
+        public ActionResult GetFlights(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isJunkAllFlights = false) {
             if (Request.IsAuthenticated)
             {
                 try
                 {
-                    //ViewBag.ViewTitle = "All Recent Flights";
-                    //ViewBag.ActionBack = "GetAllFlights";
-                    var fs = new vmSearchRequest(null, null,null,null,null,null,isJunkAllFlights,50);
+                    var fs = new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isJunkAllFlights, 50);
                     return View(fs);
                 }
                 catch (Exception e)
@@ -160,12 +158,11 @@ namespace MVC_Acft_Track.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                if (Request["submit"] == "Mark all Garbage To Delete")
-                {
-                    return RedirectToAction("GetFlights", new { isJunkAllFlights = true });
-                }
+                var searchRequest = form["searchRequest"];
+                var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
                 FormHandle(form);
-                return RedirectToAction("GetFlights");
+                bool isMarkGarbage = (Request["submit"] == "Mark all Garbage To Delete");
+                return RedirectToAction("GetFlights", new { flightID = dict["flightID"], airportID = dict["airportID"], acftNumLocal = dict["acftNumLocal"], pilotID = dict["pilotID"], flightDate = dict["flightDate"], companyID = dict["companyID"], isJunkAllFlights = isMarkGarbage });
             }
             else return RedirectToAction("Login", "Account");
         }
@@ -248,65 +245,57 @@ namespace MVC_Acft_Track.Controllers
                 var pilotID = form["PilotID"];
                 var flightDate = form["FlightDate"];
                 var companyID = form["CompanyID"];
-                return RedirectToAction("SearchByCriteriaResult", new { flightID = flightID, airportID = airportID, acftNumLocal = acftNumLocal, pilotID = pilotID, flightDate = flightDate, companyID = companyID });
+                return RedirectToAction("GetFlights", new { flightID = flightID, airportID = airportID, acftNumLocal = acftNumLocal, pilotID = pilotID, flightDate = flightDate, companyID = companyID });
             }
             return View();
         }
-        [HttpGet]
-        public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isJunkAllFlights = false)
-        {
-            //List<vFlightAcftPilot> flights; // = new List<vFlightAcftPilot>();
-            //var f = db.vFlightAcftPilots.Where(row => 1 == 1);
-            //var f = q.flightsAll;
-            //vmSearchRequest searchRequest;
+        //[HttpGet]
+        //public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isJunkAllFlights = false)
+        //{
 
-            if (!isJunkAllFlights && string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate + companyID))
-            {
-                return RedirectToAction("SearchByCriteria");
-            }
-            else
-            {
-                return View("GetFlights", new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isJunkAllFlights));
-            }
-        }
+        //    if (!isJunkAllFlights && string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate + companyID))
+        //    {
+        //        return RedirectToAction("SearchByCriteria");
+        //    }
+        //    else
+        //    {
+        //        return View("GetFlights", new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isJunkAllFlights));
+        //    }
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SearchByCriteriaResult(FormCollection form)
-        {
-            if (Request.IsAuthenticated)
-            {
-                if (Request["submit"] == "Mark all Garbage To Delete")
-                {
-                    return RedirectToAction("SearchByCriteriaResult", new { isJunkAllFlights = true });
-                }
-                FormHandle(form);
-                var searchRequest = form["searchRequest"];
-                var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
-                return RedirectToAction("SearchByCriteriaResult", new { flightID=dict["flightID"], airportID = dict["airportID"], acftNumLocal = dict["acftNumLocal"], pilotID = dict["pilotID"], flightDate = dict["flightDate"], companyID = dict["companyID"] });
-            }
-            else return RedirectToAction("Login", "Account");
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult SearchByCriteriaResult(FormCollection form)
+        //{
+        //    if (Request.IsAuthenticated)
+        //    {
+        //        if (Request["submit"] == "Mark all Garbage To Delete")
+        //        {
+        //            return RedirectToAction("SearchByCriteriaResult", new { isJunkAllFlights = true });
+        //        }
+        //        FormHandle(form);
+        //        var searchRequest = form["searchRequest"];
+        //        var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
+        //        return RedirectToAction("SearchByCriteriaResult", new { flightID=dict["flightID"], airportID = dict["airportID"], acftNumLocal = dict["acftNumLocal"], pilotID = dict["pilotID"], flightDate = dict["flightDate"], companyID = dict["companyID"] });
+        //    }
+        //    else return RedirectToAction("Login", "Account");
+        //}
 
         private void FormHandle(FormCollection form)
         {
-            //if (Request["submit"] == "Update page")
-            //{
-            //    return; // RedirectToAction("GetAllFlights");
-            //}
             if (Request["submit"] == "Delete selected flights")
             {
                 foreach (string id in form)
                 {
-                    if (id.Contains("IsDelete") && form.GetValues(id).Contains("true"))
+                    if (id.Contains("IsSelected") && form.GetValues(id).Contains("true"))
                     {
-                        string rowid = id.Remove(0, 8);
+                        string rowid = id.Remove(0, 10);
                         Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
                         db.Flights.Remove(flight);
                         db.SaveChanges();
                     }
                 }
-                return; //RedirectToAction("GetAllFlights");
+                return;
             }
             if (Request["submit"] == "Merge selected flights")
             {
@@ -314,21 +303,17 @@ namespace MVC_Acft_Track.Controllers
 
                 foreach (string id in form)
                 {
-                    if (id.Contains("IsMerge") && form.GetValues(id).Contains("true"))
+                    if (id.Contains("IsSelected") && form.GetValues(id).Contains("true"))
                     {
-                        string rowid = id.Remove(0, 7);
+                        string rowid = id.Remove(0, 10);
                         flightsToMerge.Add(rowid);
                     }
                 }
                 flightsToMerge.Sort();
                 string flightsToMergeString = String.Join(",", (string[])flightsToMerge.ToArray(typeof(string)));
                 db.merge_Flights(flightsToMergeString);
-                return; // RedirectToAction("GetAllFlights");
+                return;
             }
-            //if (Request["submit"] == "Mark all Garbage To Delete")
-            //{
-            //    return RedirectToAction("GetAllFlights", new { isJunkAllFlights = true });
-            //}
             if (Request["submit"] == "Save changes")
             {
                 DateTime timeUtcNow = DateTime.UtcNow;

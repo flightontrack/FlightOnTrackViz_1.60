@@ -53,8 +53,8 @@
         grid.Column(columnName: "AcftNumLocal", header: "Aircraft", style: "text-align-left"),
         grid.Column(columnName: "IsShared", header: "Public", format: (item) => Html.CheckBox("IsShare:" + (string)item.FlightID.ToString(), (bool)(item.IsShared != null ? item.IsShared : false), new { id = item.FlightID })),
         grid.Column(columnName: "IsJunk", header: "Garbage", format: (item) => Html.CheckBox("IsJunk:" + (string)item.FlightID.ToString(), (bool)(item.IsJunk != null ? item.IsJunk : false))),
-        grid.Column(columnName: "IsChecked", header: "To Delete", format: (item) => Html.CheckBox("IsDelete" + (string)item.FlightID.ToString(), (bool)(item.IsChecked != null ? item.IsChecked : false), new { id = item.FlightID })),
-        grid.Column(columnName: "IsChecked", header: "To Merge", format: (item) => Html.CheckBox("IsMerge" + (string)item.FlightID.ToString(), false, new { id = item.FlightID })),
+        //grid.Column(columnName: "IsChecked", header: "To Delete", format: (item) => Html.CheckBox("IsDelete" + (string)item.FlightID.ToString(), (bool)(item.IsChecked != null ? item.IsChecked : false), new { id = item.FlightID })),
+        //grid.Column(columnName: "IsChecked", header: "To Merge", format: (item) => Html.CheckBox("IsMerge" + (string)item.FlightID.ToString(), false, new { id = item.FlightID })),
         grid.Column(columnName: "PilotCode",header: "Phone",style: "text-align-left"),
         grid.Column(columnName: "FlightID", header: "Edit", style: "text-align-left", format: (item) => @Html.ActionLink("edit", "Edit", new { id = item.FlightID })),
         grid.Column(columnName: "Comments", header: "Comments", style: "text-align-left")
