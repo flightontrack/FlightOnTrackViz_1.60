@@ -311,7 +311,7 @@ namespace MVC_Acft_Track.Controllers
                 {
                     if (f.IsChecked ?? false)
                     {
-                        flightsToMerge.Add(f.FlightID);
+                        flightsToMerge.Add((string)f.FlightID.ToString());
                     }
                 }
                 flightsToMerge.Sort();
