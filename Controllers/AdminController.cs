@@ -136,12 +136,14 @@ namespace MVC_Acft_Track.Controllers
             return junkFlights;
         }
 
-        public ActionResult GetFlights(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isJunkAllFlights = false) {
+        //public ActionResult GetFlights(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isMarkGarbage = false) {
+        public ActionResult GetFlights(vmSearchRequest searchRequest) {
             if (Request.IsAuthenticated)
             {
                 try
                 {
-                    var fs = new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isJunkAllFlights, 50);
+                    //var fs = new vmSearchRequestFights(new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isMarkGarbage), 50);
+                    var fs = new vmSearchRequestFights(searchRequest, 50);
                     return View(fs);
                 }
                 catch (Exception e)
@@ -154,18 +156,21 @@ namespace MVC_Acft_Track.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GetFlights(FormCollection form)
+        public ActionResult GetFlights(FormCollection form, vmSearchRequest searchRequest, List<vFlightAcftPilot> flightList)
         {
             if (Request.IsAuthenticated)
             {
-                var searchRequest = form["searchRequest"];
-                var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
-                FormHandle(form);
-                bool isMarkGarbage = (Request["submit"] == "Mark all Garbage To Delete");
-                return RedirectToAction("GetFlights", new { flightID = dict["flightID"], airportID = dict["airportID"], acftNumLocal = dict["acftNumLocal"], pilotID = dict["pilotID"], flightDate = dict["flightDate"], companyID = dict["companyID"], isJunkAllFlights = isMarkGarbage });
+                //var searchRequest = form["searchRequest"];
+                //var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
+                var buttonClicked = Request["buttonClicked"];
+                FormHandle(buttonClicked,form, flightList);
+                searchRequest.isSearchJunk = (Request["buttonClicked"] == "SelectAllGarbage");
+                //return RedirectToAction("GetFlights", new { flightID = dict["flightID"], airportID = dict["airportID"], acftNumLocal = dict["acftNumLocal"], pilotID = dict["pilotID"], flightDate = dict["flightDate"], companyID = dict["companyID"], isJunkAllFlights = isMarkGarbage });
+                return RedirectToAction("GetFlights", searchRequest);
             }
             else return RedirectToAction("Login", "Account");
         }
+
         public ActionResult Edit(int id = 0)
         {
             Flight flight = db.Flights.Find(id);
@@ -217,7 +222,8 @@ namespace MVC_Acft_Track.Controllers
                 db.Entry(flight).Property(p => p.Updated).IsModified = true;
 
                 db.SaveChanges();
-                return RedirectToAction("GetFlights");
+                //return View(flight.FlightID,);
+                return RedirectToAction("Edit", flight.FlightID);
             }
             return View(flight);
         }
@@ -234,18 +240,19 @@ namespace MVC_Acft_Track.Controllers
             return View("SearchByCriteria");
         }
         [HttpPost]
-        public ActionResult SearchByCriteria(FormCollection form)
+        public ActionResult SearchByCriteria(vmSearchRequest vmsearchRequest,FormCollection form)
         {
             if (form["submit"] == "Search")
             {
                 if (form["FlightID"].Equals("") && form["AcftNumLocal"].Equals("") && form["PilotID"].Equals("") && form["FlightDate"].Equals("") && form["GroupID"].Equals("")) return RedirectToAction("SearchByCriteria", new { message = SELECTSOMTHING });
-                var flightID = form["FlightID"];
-                var airportID = form["AirportID"];
-                var acftNumLocal = form["AcftNumLocal"];
-                var pilotID = form["PilotID"];
-                var flightDate = form["FlightDate"];
-                var companyID = form["CompanyID"];
-                return RedirectToAction("GetFlights", new { flightID = flightID, airportID = airportID, acftNumLocal = acftNumLocal, pilotID = pilotID, flightDate = flightDate, companyID = companyID });
+                //var flightID = form["FlightID"];
+                //var airportID = form["AirportID"];
+                //var acftNumLocal = form["AcftNumLocal"];
+                //var pilotID = form["PilotID"];
+                //var flightDate = form["FlightDate"];
+                //var companyID = form["CompanyID"];
+                //return RedirectToAction("GetFlights", new { flightID = flightID, airportID = airportID, acftNumLocal = acftNumLocal, pilotID = pilotID, flightDate = flightDate, companyID = companyID });
+                return RedirectToAction("GetFlights", vmsearchRequest);
             }
             return View();
         }
@@ -259,7 +266,7 @@ namespace MVC_Acft_Track.Controllers
         //    }
         //    else
         //    {
-        //        return View("GetFlights", new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isJunkAllFlights));
+        //        return View("GetFlights", new vmSearchRequestFights(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isJunkAllFlights));
         //    }
         //}
 
@@ -281,32 +288,30 @@ namespace MVC_Acft_Track.Controllers
         //    else return RedirectToAction("Login", "Account");
         //}
 
-        private void FormHandle(FormCollection form)
+        private void FormHandle(string buttonClicked, FormCollection form, List<vFlightAcftPilot> flightList)
         {
-            if (Request["submit"] == "Delete selected flights")
+            if (buttonClicked.Equals("DeleteSelectedFlights"))
             {
-                foreach (string id in form)
+                foreach (var f in flightList)
                 {
-                    if (id.Contains("IsSelected") && form.GetValues(id).Contains("true"))
+                    if (f.IsChecked??false)
                     {
-                        string rowid = id.Remove(0, 10);
-                        Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
+                        //string rowid = id.Remove(0, 10);
+                        Flight flight = db.Flights.Find(f.FlightID);
                         db.Flights.Remove(flight);
                         db.SaveChanges();
                     }
                 }
                 return;
             }
-            if (Request["submit"] == "Merge selected flights")
+            if (buttonClicked.Equals("MergeSelectedFlights"))
             {
                 ArrayList flightsToMerge = new ArrayList();
-
-                foreach (string id in form)
+                foreach (var f in flightList)
                 {
-                    if (id.Contains("IsSelected") && form.GetValues(id).Contains("true"))
+                    if (f.IsChecked ?? false)
                     {
-                        string rowid = id.Remove(0, 10);
-                        flightsToMerge.Add(rowid);
+                        flightsToMerge.Add(f.FlightID);
                     }
                 }
                 flightsToMerge.Sort();
@@ -314,62 +319,64 @@ namespace MVC_Acft_Track.Controllers
                 db.merge_Flights(flightsToMergeString);
                 return;
             }
-            if (Request["submit"] == "Save changes")
+            if (buttonClicked.Equals("SaveChanges"))
             {
                 DateTime timeUtcNow = DateTime.UtcNow;
-                foreach (string id in form)
+                foreach (var f in flightList)
                 {
-                    if (id.Contains("IsShare"))
-                    {
-                        string rowid = id.Remove(0, id.IndexOf(':') + 1);
-                        if (ModelState.IsValid)
-                        {
-                            Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
-                            if (form.GetValues(id).Contains("true") ^ (flight.IsShared.HasValue ? flight.IsShared.Value : false))
+                    Flight flight = db.Flights.Find(f.FlightID);
+                    //if (f.IsShared??false)
+                    //{
+                        //string rowid = id.Remove(0, id.IndexOf(':') + 1);
+                        //if (ModelState.IsValid)
+                        //{
+                            //if (f.IsShared ?? false ^ (flight.IsShared.HasValue ? flight.IsShared.Value : false))
+                            if ((f.IsShared ?? false) ^ (flight.IsShared ?? false))
                             {
-                                flight.IsShared = form.GetValues(id).Contains("true");
+                                flight.IsShared = (f.IsShared ?? false);
                                 flight.Updated = timeUtcNow;
                                 db.Flights.Attach(flight);
                                 db.Entry(flight).Property(p => p.IsShared).IsModified = true;
                                 db.Entry(flight).Property(p => p.Updated).IsModified = true;
                                 db.SaveChanges();
                             };
-                        }
-                    }
-                    if (id.Contains("IsJunk"))
-                    {
-                        string rowid = id.Remove(0, id.IndexOf(':') + 1);
+                        //}
+                    //}
+                    //if (id.Contains("IsJunk"))
+                    //{
+                    //    string rowid = id.Remove(0, id.IndexOf(':') + 1);
 
-                        if (ModelState.IsValid)
-                        {
-                            Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
-                            if (form.GetValues(id).Contains("true") ^ (flight.IsJunk.HasValue ? flight.IsJunk.Value : false))
+                    //    if (ModelState.IsValid)
+                    //    {
+                            //Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
+                            //if (form.GetValues(id).Contains("true") ^ (flight.IsJunk.HasValue ? flight.IsJunk.Value : false))
+                            if (f.IsJunk ^ (flight.IsJunk??false))
                             {
-                                flight.IsJunk = form.GetValues(id).Contains("true");
+                                flight.IsJunk = f.IsJunk;
                                 db.Flights.Attach(flight);
                                 db.Entry(flight).Property(p => p.IsJunk).IsModified = true;
                                 db.SaveChanges();
                             };
-                        }
-                    }
-                    if (id.Contains("FlightIdDropDown"))
-                    {
-                        string rowid = id.Remove(0, id.IndexOf(':') + 1);
-                        if (ModelState.IsValid)
-                        {
-                            Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
-                            int val = Int32.Parse(form.GetValues(id)[0]);
-                            if (val != (flight.RouteID.HasValue ? flight.RouteID : flight.FlightID))
+                    //    }
+                    //}
+                    //if (id.Contains("FlightIdDropDown"))
+                    //{
+                    //    string rowid = id.Remove(0, id.IndexOf(':') + 1);
+                    //    if (ModelState.IsValid)
+                    //    {
+                    //        Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
+                            //int val = Int32.Parse(form.GetValues(id)[0]);
+                            if (f.RouteID != (flight.RouteID.HasValue ? flight.RouteID : flight.FlightID))
                             {
-                                flight.RouteID = val;
+                                flight.RouteID = f.RouteID;
                                 flight.Updated = timeUtcNow;
                                 db.Flights.Attach(flight);
                                 db.Entry(flight).Property(p => p.RouteID).IsModified = true;
                                 db.Entry(flight).Property(p => p.Updated).IsModified = true;
                                 db.SaveChanges();
                             }
-                        }
-                    }
+                    //    }
+                    //}
                 }
             }
         }

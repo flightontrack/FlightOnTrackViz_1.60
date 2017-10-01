@@ -53,11 +53,11 @@ namespace MVC_Acft_Track.ViewModels
         }
     }
 
-    public class vmFlightList
-    {
-        public List<vmFlight> Flights;
+    //public class vmFlightList
+    //{
+    //    public List<vmFlight> Flights;
 
-    } 
+    //} 
     public class vmPilot
     {
         public int? PilotId;
