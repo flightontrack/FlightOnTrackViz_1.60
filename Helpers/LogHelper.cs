@@ -58,5 +58,29 @@ namespace MVC_Acft_Track
                 Console.WriteLine(ex.Message);
             }
         }
+        public static void onFailureLog(string source, string error)
+        {
+            try
+            {
+                if (!Directory.Exists(LOG_FILES_PATH)) Directory.CreateDirectory(LOG_FILES_PATH);
+                using (FileStream filestream = new FileStream(LOG_FILES_PATH + "ConsoleErrorOut.txt", FileMode.Append, FileAccess.Write))
+                {
+                    StreamWriter streamwriter = new StreamWriter(filestream);
+                    Console.SetOut(streamwriter);
+                    Console.SetError(streamwriter);
+                    //Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt")+"|Error source: "+source+"|" + e);
+                    Console.WriteLine("\n");
+                    Console.WriteLine("*********************************************************************");
+                    Console.WriteLine(DateTime.Now.ToString("u"));
+                    Console.WriteLine("Error source: " + source + "|" + error);
+                    Console.WriteLine("---------------------------------------------------------------------");
+                    streamwriter.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

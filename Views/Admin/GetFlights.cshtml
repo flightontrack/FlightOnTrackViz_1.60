@@ -15,8 +15,13 @@
         );
     grid.SortDirection = SortDirection.Descending;
 }
-
-@if (Request.IsAuthenticated || ViewBag.isRouteShared)
+@if (ViewBag.error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <a href="#" class="alert-link">@ViewBag.error</a>
+    </div>
+}
+@if (Request.IsAuthenticated)
 {
     using (Html.BeginForm())
     {
@@ -33,12 +38,6 @@
         @Html.Hidden("acftNumLocal", Model.vmsearchRequest.companyID);
         @*@Html.Hidden("acftNumLocal", Model.vmsearchRequest.isSearchJunk);*@
 
-    @*@Html.Hidden("searchRequest", new { flightID = Model.flightID, airportID = Model.airportID, acftNumLocal = Model.acftNumLocal, pilotID = Model.pilotID, flightDate = Model.flightDate, companyID = Model.companyID, rowsPerPage = Model.rowsPerPage }); *@
-
-        @*<input type="submit" name="submit" value="Mark all Garbage To Delete" /><br>
-        <input type="submit" name="submit" value="Delete selected flights" /><br>
-        <input type="submit" name="submit" value="Merge selected flights" /><br>
-        <input type="submit" name="submit" value="Save changes" />*@
         <button type="submit" name="buttonClicked" value="SelectAllGarbage">Select All Garbage</button><br>
         <button type="submit" name="buttonClicked" value="DeleteSelectedFlights">Delete Selected Flights</button><br>
         <button type="submit" name="buttonClicked" value="MergeSelectedFlights">Merge Selected flights</button><br>
@@ -51,8 +50,6 @@
                 headerStyle: "webgrid-header",
                 footerStyle: "table-pager",
      columns: grid.Columns(
-
-        //grid.Column("Index", format: item => rowIndex = rowIndex + 1),
 
         grid.Column(columnName: "IsChecked", header: "Select", format: (item) => Html.CheckBox("flightList[" + (++rowIndex) + "].IsChecked", (bool)(item.IsChecked != null ? item.IsChecked : false), new { id = item.FlightID })),
         grid.Column(null, header: "", format: (item) => Html.Hidden("flightList[" + (rowIndex) + "].FlightID", (string)item.FlightID.ToString())),
