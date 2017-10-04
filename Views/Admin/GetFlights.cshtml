@@ -71,7 +71,7 @@
         grid.Column(columnName: "IsShared", header: "Public", format: (item) => Html.CheckBox("flightList[" + rowIndex + "].IsShared", (bool)(item.IsShared != null ? item.IsShared : false))),
         grid.Column(columnName: "IsJunk", header: "Garbage", format: (item) => Html.CheckBox("flightList[" + rowIndex + "].IsJunk", (bool)(item.IsJunk != null ? item.IsJunk : false))),
         grid.Column(columnName: "PilotCode", header: "Phone", style: "text-align-left"),
-        grid.Column(columnName: "FlightID", header: "Edit", style: "text-align-left", format: (item) => @Html.ActionLink("edit", "Edit", new { id = item.FlightID })),
+        grid.Column(columnName: "FlightID", header: "Edit", style: "text-align-left", format: (item) => @Html.ActionLink("edit", "FlightEditAdm", new { id = item.FlightID })),
         grid.Column(columnName: "Comments", header: "Comments", style: "text-align-left")
  ))
 

@@ -576,7 +576,7 @@ namespace MVC_Acft_Track.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult FlightEdit(Flight flight, string AircraftsSelList)
         {
-            bool? successFlg;
+            //bool? successFlg;
             if (Request.IsAuthenticated)
             {
             q.pilotUserName = User.Identity.Name;
@@ -595,13 +595,13 @@ namespace MVC_Acft_Track.Controllers
                     db.Entry(flight).Property(f => f.FlightName).IsModified = true;
                     db.Entry(flight).Property(f => f.Comments).IsModified = true;
                     db.SaveChanges();
-                    successFlg = true;
+                    //successFlg = true;
                     return RedirectToAction("FlightsByAcft", new { acftId = flight.AcftID });
                 }
                 catch(Exception e)
                 {
-                    successFlg = false;
-                    return RedirectToAction("FlightEdit", new { successFlg = successFlg });
+                    //successFlg = false;
+                    return RedirectToAction("FlightEdit", new { id = flight.FlightID, successFlg = false });
                 }
             }
             return View(flight);

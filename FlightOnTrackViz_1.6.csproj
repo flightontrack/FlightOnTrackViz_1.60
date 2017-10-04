@@ -575,7 +575,7 @@
     <Content Include="Views\Admin\GetJunkRecordsAsync.cshtml" />
     <Content Include="Views\PublicFlights\GetLatestRoutes.cshtml" />
     <Content Include="Views\Admin\GetFlights.cshtml" />
-    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\FlightEditAdm.cshtml" />
     <Content Include="Views\Home\IndexLogBook.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

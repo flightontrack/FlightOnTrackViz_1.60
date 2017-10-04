@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Edit";
+    var successFlg = ViewBag.successFlg;
+    string msg = ViewBag.Msg;
 }
 <div>
 @*    @Html.ActionLink("[Back]", "GetFlights")*@
@@ -38,8 +40,17 @@
         </tr>
     </table>
     <p>
-        <input type="submit" value="Save Changes" />
+        <input type="submit" class="btn btn-default active" value="Save Changes" />
     </p>
+    if (successFlg != null)
+    {
+        if ((bool)successFlg)
+        {<i>@msg</i> }
+                    else if (!(bool)successFlg)
+                    {
+            <div class="validation-summary-errors text-danger"> @msg  </div>
+        }
+    }
 
 }
 

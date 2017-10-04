@@ -29,19 +29,22 @@ namespace MVC_Acft_Track.Controllers
         // GET: Admin
         public ActionResult Index(int? pilotid = null,string error = null)
         {
-            ViewBag.PilotSelList = new SelectList(db.Pilots.OrderBy(row => row.PilotUserName), "PilotID", "PilotUserName");
-            ViewBag.ErrorMsg = error;
-
-            if (pilotid != null)
+            if (Request.IsAuthenticated)
             {
-                ViewBag.User = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().PilotUserName;
-                var user1 = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().PilotCode;
-                var user2 = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().SimNumber;
-                var spr = db.get_PilotP(user1, user2).ToList();
-                ViewBag.UserPsw = spr[0];
-            }
+                ViewBag.PilotSelList = new SelectList(db.Pilots.OrderBy(row => row.PilotUserName), "PilotID", "PilotUserName");
+                ViewBag.ErrorMsg = error;
 
-            return View();
+                if (pilotid != null)
+                {
+                    ViewBag.User = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().PilotUserName;
+                    var user1 = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().PilotCode;
+                    var user2 = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().SimNumber;
+                    var spr = db.get_PilotP(user1, user2).ToList();
+                    ViewBag.UserPsw = spr[0];
+                }
+                return View();
+            }
+            else return RedirectToAction("Login", "Account");
         }
         
         [HttpPost]
@@ -72,7 +75,6 @@ namespace MVC_Acft_Track.Controllers
                         {
                             ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "Error in Index method";
                             return View("ErrorPage");
-
                         }
                     }
                     return RedirectToAction("Index", new { pilotid = pilotId });
@@ -159,26 +161,29 @@ namespace MVC_Acft_Track.Controllers
         public ActionResult GetFlights(FormCollection form, vmSearchRequest searchRequest, List<vFlightAcftPilot> flightList)
         {
             if (Request.IsAuthenticated) { 
-            if (ModelState.IsValid)
-            {
-                //var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
-                var buttonClicked = Request["buttonClicked"];
-                FormHandle(buttonClicked, flightList);
-                searchRequest.isSearchJunk = (Request["buttonClicked"] == "SelectAllGarbage");
-                return RedirectToAction("GetFlights", searchRequest);
+                if (ModelState.IsValid)
+                {
+                    //var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
+                    var buttonClicked = Request["buttonClicked"];
+                    FormHandle(buttonClicked, flightList);
+                    searchRequest.isSearchJunk = (Request["buttonClicked"] == "SelectAllGarbage");
+                    return RedirectToAction("GetFlights", searchRequest);
+                }
+                else {
+                    var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }).ToString();
+                    LogHelper.onFailureLog("CreateUserPilot()", errors);
+                    ViewBag.ExceptionErrorMessage = isDebugMode ? errors : "POST GetFlights() error";
+                    return View("ErrorPage");
+                }
             }
-            else {
-                var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }).ToString();
-                LogHelper.onFailureLog("CreateUserPilot()", errors);
-                ViewBag.ExceptionErrorMessage = isDebugMode ? errors : "POST GetFlights() error";
-                return View("ErrorPage");
-            }
-        }
             else return RedirectToAction("Login", "Account");
         }
 
-        public ActionResult Edit(int id = 0)
+        public ActionResult FlightEditAdm(int id = 0, bool? successFlg = null)
         {
+            if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
+            ViewBag.successFlg = successFlg;
+
             Flight flight = db.Flights.Find(id);
 
             if (flight == null)
@@ -197,41 +202,56 @@ namespace MVC_Acft_Track.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Flight flight, string AircraftsSelList,string PhoneSelList)
+        public ActionResult FlightEditAdm(Flight flight, string AircraftsSelList,string PhoneSelList)
         {
-            if (ModelState.IsValid)
+            //bool? successFlg;
+            if (Request.IsAuthenticated)
             {
-                db.Flights.Attach(flight);
-
-                DateTime timeUtcNow = DateTime.UtcNow;
-                flight.Updated = timeUtcNow;
-
-                int phoneID;
-                int.TryParse(PhoneSelList, out phoneID);
-                if (phoneID > 0) {
-                    flight.PilotID = phoneID;
-                    db.Entry(flight).Property(f => f.PilotID).IsModified = true;
-                }
-
-                int acftPilotID;
-                int.TryParse(AircraftsSelList, out acftPilotID);
-                if (acftPilotID > 0)
+                if (ModelState.IsValid)
                 {
-                    flight.AcftPilotID = acftPilotID;
-                    flight.AcftID = db.AircraftPilots.Find(acftPilotID).AcftID;
-                    db.Entry(flight).Property(f => f.AcftID).IsModified = true;
-                    db.Entry(flight).Property(f => f.AcftPilotID).IsModified = true;
+                    try
+                    {
+                        db.Flights.Attach(flight);
+
+                        DateTime timeUtcNow = DateTime.UtcNow;
+                        flight.Updated = timeUtcNow;
+
+                        int phoneID;
+                        int.TryParse(PhoneSelList, out phoneID);
+                        if (phoneID > 0)
+                        {
+                            flight.PilotID = phoneID;
+                            db.Entry(flight).Property(f => f.PilotID).IsModified = true;
+                        }
+
+                        int acftPilotID;
+                        int.TryParse(AircraftsSelList, out acftPilotID);
+                        if (acftPilotID > 0)
+                        {
+                            flight.AcftPilotID = acftPilotID;
+                            flight.AcftID = db.AircraftPilots.Find(acftPilotID).AcftID;
+                            db.Entry(flight).Property(f => f.AcftID).IsModified = true;
+                            db.Entry(flight).Property(f => f.AcftPilotID).IsModified = true;
+                        }
+
+                        db.Entry(flight).Property(f => f.FlightName).IsModified = true;
+                        db.Entry(flight).Property(f => f.Comments).IsModified = true;
+                        db.Entry(flight).Property(p => p.Updated).IsModified = true;
+
+                        db.SaveChanges();
+                        //successFlg = true;
+                        return RedirectToAction("FlightEditAdm",  new { id = flight.FlightID,successFlg = true });
+                    }
+                    catch (Exception e)
+                    {
+                        //successFlg = false;
+                        LogHelper.onFailureLog("FlightEditAdm()", e);
+                        return RedirectToAction("FlightEditAdm", new { id = flight.FlightID, successFlg = false });
+                    }
                 }
-
-                db.Entry(flight).Property(f => f.FlightName).IsModified = true;
-                db.Entry(flight).Property(f => f.Comments).IsModified = true;
-                db.Entry(flight).Property(p => p.Updated).IsModified = true;
-
-                db.SaveChanges();
-                //return View(flight.FlightID,);
-                return RedirectToAction("Edit", flight.FlightID);
+                return View(flight);
             }
-            return View(flight);
+            else return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
