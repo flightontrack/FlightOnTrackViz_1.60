@@ -1,38 +1,45 @@
-﻿@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>
+﻿@*@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>*@
+@model MVC_Acft_Track.ViewModels.vmSearchRequestFights
 
 @{
     var menuitem = 4;
     int? acftId = ViewBag.AcftID;
     var successFlg = ViewBag.successFlg;
     string msg = ViewBag.Msg;
-    string msgFightNum = ViewBag.MsgFightNum;
+    string msgFightNum = "There are <span class=\"badge\">" + Model.totalRecordCount + "</span> flights recorded in the history";//ViewBag.MsgFightNum;
     bool sortdirAsc = ViewBag.SortDir == "ASC";
 }
 
 <div class="row">
     @Html.Partial("_MemberMenu", new { menuitem = menuitem })
-    <div class="col-sm-5">
+    <div class="col-sm-8">
 @{
-    var grid = new WebGrid(Model,
+    var grid = new WebGrid(Model.flightList,
                            canSort: true,
                            canPage: true,
                            defaultSort: "RouteID",
-                           rowsPerPage: 15);
+                           rowsPerPage: Model.rowsPerPage
+                           );
     grid.SortDirection = sortdirAsc ? SortDirection.Ascending : SortDirection.Descending;
 }
 
 @if (Request.IsAuthenticated)
 {
-
-    <p>@Html.Raw(ViewBag.MsgFightNum)</p>
+    <p>@Html.Raw(msgFightNum)</p>
     
             using (Html.BeginForm())
             {
             @Html.AntiForgeryToken()
             @Html.Hidden("menuitem", menuitem);
             @Html.Hidden("acftId", acftId)
+            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.acftNumLocal);
+            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.flightID);
+            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.airportID);
+            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.pilotID);
+            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.flightDate);
+            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.companyID);
             @*<input type="hidden" name="acftId" value="@ViewBag.AcftID" />*@
-            @grid.GetHtml(
+            @*@grid.GetHtml(
                 mode: WebGridPagerModes.All,
                 tableStyle: "webgrid",
                 headerStyle: "webgrid-header",
@@ -53,11 +60,39 @@
                 grid.Column(columnName: "IsChecked", header: "To Delete", format: (item) => Html.CheckBox("IsDelete" + (string)item.FlightID.ToString(), (bool)(item.IsChecked != null ? item.IsChecked : false), new { id = item.FlightID })),
                 //grid.Column(columnName: "Comments",header: "Comments",style: "text-align-left"),
                 grid.Column(columnName: "FlightID", header: "Edit", style: "text-align-left", format: (item) => @Html.ActionLink("edit", "FlightEdit", new { id = item.FlightID }))
-            ))
+            ))*@
+            int rowIndex = -1;
+            <button type="submit" class="btn btn-default active" name="buttonClicked" value="DeleteSelectedFlights">Delete Selected Flights</button>
+            <button type="submit" class="btn btn-default active" name="buttonClicked" value="MergeSelectedFlights">Merge Selected Flights</button>
+            <button type="submit" class="btn btn-default active" name="buttonClicked" value="SelectAllGarbage">Select All Garbage</button>
+            <button type="reset"  class="btn btn-default active" name="buttonClicked" value="ResetPage">Reset Page</button>
+            <button type="submit" class="btn btn-default active" name="buttonClicked" value="SaveChanges">Save Changes</button>
+            @grid.GetHtml(
+                mode: WebGridPagerModes.All,
+                tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "table-pager",
+                columns: grid.Columns(
+                grid.Column(columnName: "IsChecked", header: "Select", format: (item) => Html.CheckBox("flightList[" + (++rowIndex) + "].IsChecked", (bool)(item.IsChecked != null ? item.IsChecked : false), new { id = item.FlightID })),
+                grid.Column(null, header: "", format: (item) => Html.Hidden("flightList[" + (rowIndex) + "].FlightID", (string)item.FlightID.ToString())),
+                grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID, actionBack = @ViewBag.ActionBack }, null)),
+                grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.DropDownList("flightList[" + rowIndex + "].RouteID", new SelectList(Model.flightList.OrderByDescending(m => m.FlightID), "FlightID", "FlightID", item.RouteID == null ? item.FlightID : item.RouteID))),
+                grid.Column(columnName: "FlightName", header: "Flight/Arpt", style: "text-align-left"),
+                grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
+                grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
+                grid.Column(columnName: "Points", header: "Points", style: "text-align-left"),
+                grid.Column(columnName: "AcftNumLocal", header: "Aircraft", style: "text-align-left"),
+                grid.Column(columnName: "IsShared", header: "Public", format: (item) => Html.CheckBox("flightList[" + rowIndex + "].IsShared", (bool)(item.IsShared != null ? item.IsShared : false))),
+                grid.Column(columnName: "IsJunk", header: "Garbage", format: (item) => Html.CheckBox("flightList[" + rowIndex + "].IsJunk", (bool)(item.IsJunk != null ? item.IsJunk : false))),
+                //grid.Column(columnName: "PilotCode", header: "Phone", style: "text-align-left"),
+                grid.Column(columnName: "FlightID", header: "Edit", style: "text-align-left", format: (item) => @Html.ActionLink("edit", "FlightEditAdm", new { id = item.FlightID })),
+                grid.Column(columnName: "Comments", header: "Comments", style: "text-align-left")
+                ))
             <br>
-            <input type="submit" class="btn btn-default active" name="SaveChanges" value="Save Changes" />
+
+            @*<input type="submit" class="btn btn-default active" name="SaveChanges" value="Save Changes" />
             <input type="submit" class="btn btn-default active" name="DeleteSelectedFlight" value="Delete Selected Flights" />
-            <input type="submit" class="btn btn-default active" name="UpdatePage" value="Update Page" />
+            <input type="submit" class="btn btn-default active" name="UpdatePage" value="Update Page" />*@
 
             }
             }

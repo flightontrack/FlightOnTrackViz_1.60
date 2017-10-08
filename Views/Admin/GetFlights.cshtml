@@ -7,13 +7,13 @@
 
 @{
     var grid = new WebGrid(
-        Model.flightList, 
-        defaultSort: "FlightID", 
+        Model.flightList,
+        defaultSort: "FlightID",
         rowsPerPage: Model.rowsPerPage,
         canSort: true,
         canPage: true
         );
-    grid.SortDirection = SortDirection.Descending;
+    grid.SortDirection = Model.sortDir;
 }
 @if (ViewBag.error != null)
 {
@@ -40,7 +40,7 @@
 
         <button type="submit" name="buttonClicked" value="SelectAllGarbage">Select All Garbage</button><br>
         <button type="submit" name="buttonClicked" value="DeleteSelectedFlights">Delete Selected Flights</button><br>
-        <button type="submit" name="buttonClicked" value="MergeSelectedFlights">Merge Selected flights</button><br>
+        <button type="submit" name="buttonClicked" value="MergeSelectedFlights">Merge Selected Flights</button><br>
         <button type="submit" name="buttonClicked" value="SaveChanges">Save Changes</button><br>
         <button type="reset"  name="buttonClicked" value="ResetPage">Reset Page </button><br>
     int rowIndex = -1;
@@ -73,7 +73,7 @@
         grid.Column(columnName: "PilotCode", header: "Phone", style: "text-align-left"),
         grid.Column(columnName: "FlightID", header: "Edit", style: "text-align-left", format: (item) => @Html.ActionLink("edit", "FlightEditAdm", new { id = item.FlightID })),
         grid.Column(columnName: "Comments", header: "Comments", style: "text-align-left")
- ))
+        ))
 
     }
 }

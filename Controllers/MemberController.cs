@@ -9,13 +9,14 @@ using MVC_Acft_Track.Helpers;
 using Ionic.Zip;
 using PagedList;
 using static MVC_Acft_Track.Finals;
+using static MVC_Acft_Track.App;
 
 namespace MVC_Acft_Track.Controllers
 {
     //[RequireHttps]
     public class MemberController : Controller
     {
-        public bool debugmode = true;
+        //public bool isDebugMode = true;
         private Entities db;
         private qLINQ q;
         private int pilotid;
@@ -26,7 +27,7 @@ namespace MVC_Acft_Track.Controllers
             q = new qLINQ(db);
         }
 
-        public ActionResult indexMember(int menuitem=1, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "")
+        public ActionResult indexMember(vmSearchRequest searchRequest,int menuitem=1, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "")
         {
             if (Request.IsAuthenticated)
             {
@@ -76,9 +77,10 @@ namespace MVC_Acft_Track.Controllers
 
                         return View("MemberLogbook", new vmPilotLogBook(logBookList, pilotid, timeForward, landNumForward));
                     case 4:
-                        ViewBag.PilotFlightNum = q.flightsByPilot.Count();
-                        ViewBag.MsgFightNum = "There are <span class=\"badge\">" + q.flightsByPilot.Count().ToString() + "</span> flights recorded in the history";
-                        return View("MemberFlights", q.flightsByPilot.ToList());
+                        //ViewBag.PilotFlightNum = q.flightsByPilot.Count();
+                        //ViewBag.MsgFightNum = "There are <span class=\"badge\">" + q.flightsByPilot.Count().ToString() + "</span> flights recorded in the history";
+                        //return View("MemberFlights", q.flightsByPilot.ToList());
+                        return View("MemberFlights", new vmSearchRequestFights(new vmSearchRequest { pilotID = p.PilotID.ToString()},15,10000));
 
                     default:
                         return View("MemberPilot", p);
@@ -89,7 +91,7 @@ namespace MVC_Acft_Track.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult indexMember(FormCollection form, Pilot pilot = null)
+        public ActionResult indexMember(FormCollection form, vmSearchRequest searchRequest, List<vFlightAcftPilot> flightList, Pilot pilot = null)
         {
             if (Request.IsAuthenticated)
             {
@@ -187,7 +189,21 @@ namespace MVC_Acft_Track.Controllers
                                 }
                                 break;
                             case "4":
-                                FlightUpdate(form);
+                                if (ModelState.IsValid)
+                                {
+                                    var buttonClicked = Request["buttonClicked"];
+                                    ClassShared.FormHandle(buttonClicked, flightList);
+                                    searchRequest.isSearchJunk = (Request["buttonClicked"] == "SelectAllGarbage");
+                                    //return RedirectToAction("indexMember", searchRequest);
+                                }
+                                else
+                                {
+                                    var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }).ToString();
+                                    LogHelper.onFailureLog("CreateUserPilot()", errors);
+                                    ViewBag.ExceptionErrorMessage = isDebugMode ? errors : "POST GetFlights() error";
+                                    return View("ErrorPage");
+                                }                                
+                                //FlightUpdate(form);
                                 break;
                         }
                     }
@@ -197,7 +213,7 @@ namespace MVC_Acft_Track.Controllers
                     }
                 }
                 else { successFlg = false; }
-                return RedirectToAction("indexMember", new { menuitem = i, successFlg = successFlg, buttonEnable = btnEnabl });
+                return RedirectToAction("indexMember", new { searchRequest = searchRequest });//, menuitem = i, successFlg = successFlg, buttonEnable = btnEnabl });
             }
             else return RedirectToAction("Login", "Account");
         }
@@ -337,7 +353,7 @@ namespace MVC_Acft_Track.Controllers
                 }
                 catch (Exception e)
                 {
-                    ViewBag.ExceptionErrorMessage = debugmode ? e.Message : "Database Exception";
+                    ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "Database Exception";
                     return View("ExceptionPage");
                 }
             }

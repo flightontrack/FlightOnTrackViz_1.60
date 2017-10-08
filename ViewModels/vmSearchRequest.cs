@@ -5,6 +5,7 @@ using System.Web;
 using MVC_Acft_Track.Helpers;
 using System.Data.Entity;
 using MVC_Acft_Track.Models;
+using System.Web.Helpers;
 
 namespace MVC_Acft_Track.ViewModels
 {
@@ -13,6 +14,7 @@ namespace MVC_Acft_Track.ViewModels
         public int topN { get; set; }
         public int rowsPerPage { get; set; }
         public int totalRecordCount { get; set; }
+        public SortDirection sortDir { get; set; }
         public vmSearchRequest vmsearchRequest { get; set; }
         public List<vFlightAcftPilot> flightList { get; set; }
 
@@ -20,12 +22,12 @@ namespace MVC_Acft_Track.ViewModels
         {
         }
 
-        public vmSearchRequestFights(vmSearchRequest p_sr, int p_rowsPerPage = 50)
+        public vmSearchRequestFights(vmSearchRequest p_sr, int p_rowsPerPage=50, int p_topN = 50,SortDirection p_sortdir = SortDirection.Ascending)
         {
-
             vmsearchRequest = p_sr;
             rowsPerPage = p_rowsPerPage;
-            topN = 50;
+            sortDir = p_sortdir;
+            topN = p_topN;
 
             var q = new qLINQ();
             var f = q.flightsAll;
@@ -67,10 +69,9 @@ namespace MVC_Acft_Track.ViewModels
                 var pilotIDint = int.Parse(vmsearchRequest.pilotID);
                 f = f.Where(row => row.PilotID == pilotIDint);
             }
-            if (!string.IsNullOrEmpty(vmsearchRequest.pilotID))
+            if (vmsearchRequest.isSearchJunk)
             {
-                var pilotIDint = int.Parse(vmsearchRequest.pilotID);
-                f = f.Where(row => row.PilotID == pilotIDint);
+                f = f.Where(row => row.IsJunk == true);
             }
             totalRecordCount = f.Count();
             flightList = f.Take(topN).ToList();
@@ -89,16 +90,15 @@ namespace MVC_Acft_Track.ViewModels
         {
         }
 
-        public vmSearchRequest(string p_flightID = null, string p_airportID = null, string p_acftNumLocal = null, string p_pilotID = null, string p_flightDate = null, string p_companyID = null,bool p_isSearchJunk = false)
-        {
-            flightID = p_flightID;
-            airportID = p_airportID;
-            acftNumLocal = p_acftNumLocal;
-            pilotID = p_pilotID;
-            flightDate = p_flightDate;
-            companyID = p_companyID;
-            isSearchJunk = p_isSearchJunk;
-
-    }
+    //    public vmSearchRequest(string p_flightID = null, string p_airportID = null, string p_acftNumLocal = null, string p_pilotID = null, string p_flightDate = null, string p_companyID = null,bool p_isSearchJunk = false)
+    //    {
+    //        flightID = p_flightID;
+    //        airportID = p_airportID;
+    //        acftNumLocal = p_acftNumLocal;
+    //        pilotID = p_pilotID;
+    //        flightDate = p_flightDate;
+    //        companyID = p_companyID;
+    //        isSearchJunk = p_isSearchJunk;
+    //}
 }
 }

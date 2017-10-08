@@ -228,6 +228,7 @@
     </Compile>
     <Compile Include="Helpers\App.cs" />
     <Compile Include="Helpers\Bing.cs" />
+    <Compile Include="Helpers\ClassShared.cs" />
     <Compile Include="Helpers\ClassArea.cs" />
     <Compile Include="Helpers\ClassActiveFlights.cs" />
     <Compile Include="Helpers\Finals.cs" />

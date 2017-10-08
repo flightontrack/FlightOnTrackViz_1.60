@@ -165,7 +165,7 @@ namespace MVC_Acft_Track.Controllers
                 {
                     //var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
                     var buttonClicked = Request["buttonClicked"];
-                    FormHandle(buttonClicked, flightList);
+                    ClassShared.FormHandle(buttonClicked, flightList);
                     searchRequest.isSearchJunk = (Request["buttonClicked"] == "SelectAllGarbage");
                     return RedirectToAction("GetFlights", searchRequest);
                 }
