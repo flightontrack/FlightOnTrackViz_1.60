@@ -29,6 +29,10 @@
             <td>@Html.DropDownList("AircraftsSelList")</td>
         </tr>
         <tr>
+            <td>Route</td>
+            <td>@Html.DropDownList("FlightSelList")</td>
+        </tr>
+        <tr>
             <td>Pilot Phone</td>
             <td>@if (ViewBag.selectedPilotID == null) {
                 @Html.DropDownList("PhoneSelList","Select")

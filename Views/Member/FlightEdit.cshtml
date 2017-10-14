@@ -1,7 +1,7 @@
 ﻿@model MVC_Acft_Track.Models.Flight
 
 @{
-    var menuitem = 2;
+    var menuitem = 4;
     var successFlg = ViewBag.successFlg;
     string msg = ViewBag.Msg;
 }
@@ -26,6 +26,7 @@
                             <tr> <td scope="row"> Flight/Arpt </td> <td>@Html.EditorFor(model => model.FlightName)</td></tr>
                             <tr> <td scope="row"> Comments </td> <td>@Html.EditorFor(model => model.Comments)</td> </tr>
                             <tr> <td scope="row"> Aircraft </td> <td>@Html.DropDownList("AircraftsSelList") </td> </tr>
+                            <tr> <td scope="row"> Route </td> <td>@Html.DropDownList("FlightSelList") </td> </tr>
                         </tbody>
                     </table>
             <p>

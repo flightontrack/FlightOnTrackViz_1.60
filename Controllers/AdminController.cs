@@ -13,6 +13,7 @@ using static MVC_Acft_Track.Finals;
 using System.Threading.Tasks;
 using System.Collections;
 using MVC_Acft_Track.ViewModels;
+using System.Web.Helpers;
 
 /// 9784934810.0139
 /// 82$befc
@@ -139,13 +140,13 @@ namespace MVC_Acft_Track.Controllers
         }
 
         //public ActionResult GetFlights(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isMarkGarbage = false) {
-        public ActionResult GetFlights(vmSearchRequest searchRequest) {
+        public ActionResult GetFlights(vmSearchRequest searchRequest, string sort = "", string sortdir = "") {
             if (Request.IsAuthenticated)
             {
                 try
                 {
                     //var fs = new vmSearchRequestFights(new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isMarkGarbage), 50);
-                    var fs = new vmSearchRequestFights(searchRequest, 50);
+                    var fs = new vmSearchRequestFights(searchRequest, 50,10000, sort, sortdir.Equals("ASC") ? SortDirection.Ascending : SortDirection.Descending);
                     return View(fs);
                 }
                 catch (Exception e)
@@ -193,16 +194,19 @@ namespace MVC_Acft_Track.Controllers
             int? acftID = flight.AcftID;
             int? selectedPilotID = flight.PilotID;
             int? selectedID = flight.AcftPilotID;
+            q.pilotId = flight.PilotID??DEFAULT_PILOTID;
 
-            ViewBag.AircraftsSelList = new SelectList(q.selList_vAircraftPilot, "ID", "AcftNumLocal", selectedID);
+            ViewBag.AircraftsSelList = new SelectList(q.selList_vAircraftPilot.ToList(), "ID", "AcftNumLocal", selectedID);
             ViewBag.PhoneSelList = new SelectList(q.selList_Pilot.ToList(), "PilotID", "PilotUserName", selectedPilotID);
+            ViewBag.FlightSelList = new SelectList(q.selList_FlightsByPilot.ToList(), "FlightID", "FlightID", flight.RouteID == null ? flight.FlightID : flight.RouteID);
+
             ViewBag.selectedPilotID = selectedPilotID;
             return View(flight);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FlightEditAdm(Flight flight, string AircraftsSelList,string PhoneSelList)
+        public ActionResult FlightEditAdm(Flight flight, string AircraftsSelList,string PhoneSelList, int FlightSelList)
         {
             //bool? successFlg;
             if (Request.IsAuthenticated)
@@ -211,11 +215,11 @@ namespace MVC_Acft_Track.Controllers
                 {
                     try
                     {
-                        db.Flights.Attach(flight);
 
+                        db.Flights.Attach(flight);
                         DateTime timeUtcNow = DateTime.UtcNow;
                         flight.Updated = timeUtcNow;
-
+                        flight.RouteID = FlightSelList;
                         int phoneID;
                         int.TryParse(PhoneSelList, out phoneID);
                         if (phoneID > 0)
@@ -237,6 +241,7 @@ namespace MVC_Acft_Track.Controllers
                         db.Entry(flight).Property(f => f.FlightName).IsModified = true;
                         db.Entry(flight).Property(f => f.Comments).IsModified = true;
                         db.Entry(flight).Property(p => p.Updated).IsModified = true;
+                        db.Entry(flight).Property(f => f.RouteID).IsModified = true;
 
                         db.SaveChanges();
                         //successFlg = true;

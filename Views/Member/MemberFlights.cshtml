@@ -7,7 +7,7 @@
     var successFlg = ViewBag.successFlg;
     string msg = ViewBag.Msg;
     string msgFightNum = "There are <span class=\"badge\">" + Model.totalRecordCount + "</span> flights recorded in the history";//ViewBag.MsgFightNum;
-    bool sortdirAsc = ViewBag.SortDir == "ASC";
+    //bool sortdirAsc = ViewBag.SortDir == "ASC";
 }
 
 <div class="row">
@@ -20,7 +20,9 @@
                            defaultSort: "RouteID",
                            rowsPerPage: Model.rowsPerPage
                            );
-    grid.SortDirection = sortdirAsc ? SortDirection.Ascending : SortDirection.Descending;
+    //grid.SortDirection = sortdirAsc ? SortDirection.Ascending : SortDirection.Descending;
+    grid.SortColumn = Model.sortCol;
+    grid.SortDirection = Model.sortDir;
 }
 
 @if (Request.IsAuthenticated)
@@ -76,7 +78,8 @@
                 grid.Column(columnName: "IsChecked", header: "Select", format: (item) => Html.CheckBox("flightList[" + (++rowIndex) + "].IsChecked", (bool)(item.IsChecked != null ? item.IsChecked : false), new { id = item.FlightID })),
                 grid.Column(null, header: "", format: (item) => Html.Hidden("flightList[" + (rowIndex) + "].FlightID", (string)item.FlightID.ToString())),
                 grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID, actionBack = @ViewBag.ActionBack }, null)),
-                grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.DropDownList("flightList[" + rowIndex + "].RouteID", new SelectList(Model.flightList.OrderByDescending(m => m.FlightID), "FlightID", "FlightID", item.RouteID == null ? item.FlightID : item.RouteID))),
+                //grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.DropDownList("flightList[" + rowIndex + "].RouteID", new SelectList(Model.flightList.OrderByDescending(m => m.FlightID), "FlightID", "FlightID", item.RouteID == null ? item.FlightID : item.RouteID))),
+                grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left"),
                 grid.Column(columnName: "FlightName", header: "Flight/Arpt", style: "text-align-left"),
                 grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
                 grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
@@ -85,7 +88,7 @@
                 grid.Column(columnName: "IsShared", header: "Public", format: (item) => Html.CheckBox("flightList[" + rowIndex + "].IsShared", (bool)(item.IsShared != null ? item.IsShared : false))),
                 grid.Column(columnName: "IsJunk", header: "Garbage", format: (item) => Html.CheckBox("flightList[" + rowIndex + "].IsJunk", (bool)(item.IsJunk != null ? item.IsJunk : false))),
                 //grid.Column(columnName: "PilotCode", header: "Phone", style: "text-align-left"),
-                grid.Column(columnName: "FlightID", header: "Edit", style: "text-align-left", format: (item) => @Html.ActionLink("edit", "FlightEditAdm", new { id = item.FlightID })),
+                grid.Column(columnName: "FlightID", header: "Edit", style: "text-align-left", format: (item) => @Html.ActionLink("edit", "FlightEdit", new { id = item.FlightID })),
                 grid.Column(columnName: "Comments", header: "Comments", style: "text-align-left")
                 ))
             <br>

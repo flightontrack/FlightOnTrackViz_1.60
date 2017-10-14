@@ -10,6 +10,7 @@ using Ionic.Zip;
 using PagedList;
 using static MVC_Acft_Track.Finals;
 using static MVC_Acft_Track.App;
+using System.Web.Helpers;
 
 namespace MVC_Acft_Track.Controllers
 {
@@ -27,7 +28,7 @@ namespace MVC_Acft_Track.Controllers
             q = new qLINQ(db);
         }
 
-        public ActionResult indexMember(vmSearchRequest searchRequest,int menuitem=1, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "")
+        public ActionResult indexMember(bool isSearchJunk=false, int menuitem=1, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "")
         {
             if (Request.IsAuthenticated)
             {
@@ -80,7 +81,7 @@ namespace MVC_Acft_Track.Controllers
                         //ViewBag.PilotFlightNum = q.flightsByPilot.Count();
                         //ViewBag.MsgFightNum = "There are <span class=\"badge\">" + q.flightsByPilot.Count().ToString() + "</span> flights recorded in the history";
                         //return View("MemberFlights", q.flightsByPilot.ToList());
-                        return View("MemberFlights", new vmSearchRequestFights(new vmSearchRequest { pilotID = p.PilotID.ToString()},15,10000));
+                        return View("MemberFlights", new vmSearchRequestFights(new vmSearchRequest { pilotID = p.PilotID.ToString(), isSearchJunk = isSearchJunk },15,10000, sort, sortdir.Equals("ASC") ? SortDirection.Ascending : SortDirection.Descending));
 
                     default:
                         return View("MemberPilot", p);
@@ -213,7 +214,7 @@ namespace MVC_Acft_Track.Controllers
                     }
                 }
                 else { successFlg = false; }
-                return RedirectToAction("indexMember", new { searchRequest = searchRequest });//, menuitem = i, successFlg = successFlg, buttonEnable = btnEnabl });
+                return RedirectToAction("indexMember", new { isSearchJunk = searchRequest.isSearchJunk, menuitem = i, successFlg = successFlg, buttonEnable = btnEnabl });
             }
             else return RedirectToAction("Login", "Account");
         }
@@ -576,21 +577,19 @@ namespace MVC_Acft_Track.Controllers
             {
                 return HttpNotFound();
             }
-            var acftID = flight.AcftID;
-            var pilotID = flight.PilotID;
-            //int selectedID = db.vAircraftPilots.Where(row=>(row.AcftID==acftID && row.PilotID==pilotID)).Select(row => row.ID).First();
-            int? selectedID = flight.AcftPilotID;
+                var pilotID = flight.PilotID;
+                int? selectedAcftPilotID = flight.AcftPilotID;
 
-            ViewBag.AircraftsSelList = new SelectList(db.vAircraftPilots.Where(row => (row.PilotID == pilotID)).OrderBy(row => row.AcftNumLocal), "ID", "AcftNumLocal", selectedID);
-            //if (User.Identity.Name.Contains("9784295693")) ViewBag.AircraftsSelList = new SelectList(db.vAircraftPilots.OrderBy(row => row.AcftRegNum), "AcftID", "AcftNumLocal", acftID); ;
-            return View(flight);
+                ViewBag.AircraftsSelList = new SelectList(db.vAircraftPilots.Where(row => (row.PilotID == pilotID)).OrderBy(row => row.AcftNumLocal), "ID", "AcftNumLocal", selectedAcftPilotID);
+                ViewBag.FlightSelList = new SelectList(db.Flights.Where(row => (row.PilotID == pilotID)).OrderByDescending(row => row.FlightID), "FlightID", "FlightID", flight.RouteID == null ? flight.FlightID : flight.RouteID);
+                return View(flight);
             }
             else return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FlightEdit(Flight flight, string AircraftsSelList)
+        public ActionResult FlightEdit(Flight flight, string AircraftsSelList,int FlightSelList)
         {
             //bool? successFlg;
             if (Request.IsAuthenticated)
@@ -605,14 +604,16 @@ namespace MVC_Acft_Track.Controllers
                     flight.AcftPilotID = acftPilotID;
                     //var acftId = db.AircraftPilots.Where(row => row.ID == int.Parse(AircraftsSelList)).First().AcftID;
                     flight.AcftID = db.AircraftPilots.Where(row => (row.ID == acftPilotID)).First().AcftID;
+                    flight.RouteID = FlightSelList;
                     db.Flights.Attach(flight);
                     db.Entry(flight).Property(f => f.AcftID).IsModified = true;
                     db.Entry(flight).Property(f => f.AcftPilotID).IsModified = true;
                     db.Entry(flight).Property(f => f.FlightName).IsModified = true;
                     db.Entry(flight).Property(f => f.Comments).IsModified = true;
+                    db.Entry(flight).Property(f => f.RouteID).IsModified = true;
                     db.SaveChanges();
                     //successFlg = true;
-                    return RedirectToAction("FlightsByAcft", new { acftId = flight.AcftID });
+                    return RedirectToAction("indexMember", new { menuitem = 4 });
                 }
                 catch(Exception e)
                 {

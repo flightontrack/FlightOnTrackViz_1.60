@@ -7,7 +7,7 @@ namespace MVC_Acft_Track
         public const string COMPANY_NAME = "SD Data";
         public const string APP_MODIFIER = "- build history of your flights";
         public const string MSG_NOTLOGGED = "You are not logged in. To access your flight history please login to your account on the right.";
-        public const string MSG_LOGINHINT = "Use the User ID and Password on your FONT app (Settings screen) to log in.";
+        public const string MSG_LOGINHINT = "Use the User ID and Password on your smartphone FONT app (Settings screen) to log in.";
         public const string MSG_LOGGED = "The aircrafts you have flown and the flights you have recorded.";
 
         public const int TRUE = 1;
@@ -26,9 +26,10 @@ namespace MVC_Acft_Track
 
         public const string MSG_NOGROUPACTIVACFTS = "There are no active flights in this group";
 
-        //public const string LOG_FILES_PATH = "d:/home/LogFiles/";
-        public const string LOG_FILES_PATH = "c:/temp/ConsoleoutFT/";
+        public const string LOG_FILES_PATH = "d:/home/LogFiles/";
+        //public const string LOG_FILES_PATH = "c:/temp/ConsoleoutFT/";
         public const string ERROR_USEREXISTS = "ERROR_USEREXISTS";
+        public const int DEFAULT_PILOTID = 0;
 
     }
 }

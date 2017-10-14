@@ -11,7 +11,7 @@ namespace MVC_Acft_Track.Helpers
     {
 
         public Entities db;
-        int _pilotId;
+        //int pilotId;
         int _acftId;
         int _flightId;
         int _topNumber = 100;
@@ -25,10 +25,10 @@ namespace MVC_Acft_Track.Helpers
         public qLINQ(Entities dbent) { db = dbent; }
 
         public int topNumber { set { _topNumber = value; } }
-        public int pilotId {
-            set { _pilotId = value; }
-            get { return _pilotId; }
-        }
+        public int pilotId { get; set; }
+        //    set { pilotId = value; }
+        //    get { return pilotId; }
+        //}
 
         public int acftId
         {
@@ -85,7 +85,7 @@ namespace MVC_Acft_Track.Helpers
         }
 
         public Pilot pilot {
-            get { return db.Pilots.Find(_pilotId); }
+            get { return db.Pilots.Find(pilotId); }
         }
 
         public int companyIDint
@@ -97,12 +97,12 @@ namespace MVC_Acft_Track.Helpers
         public IQueryable<vFlightAcftPilot> flightsGetGarbage { get { return db.vFlightAcftPilots.Where(r => r.IsJunk == true).OrderByDescending(r => r.FlightID); } }
         public IQueryable<vFlightAcftPilot> flightsAllTopNum { get { return db.vFlightAcftPilots.Where(r => r.FlightID > 0).OrderByDescending(row => row.FlightID).Take(_topNumber); } } //.AsNoTracking();
         //var q = db.vFlightAcftPilots.ToList();//.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();//.Where(row => row.IsJunk == false).OrderByDescending(row => row.FlightID);//.Take(TIMESPANFLIGHTS);
-        public IQueryable<vPilotLogBook> pilotLogBook { get { return db.vPilotLogBooks.Where(row => row.PilotID == _pilotId).OrderByDescending(row => row.RouteID); } }
-        public IQueryable<vVisualPilotLogBook> visualPilotLogBook { get { return db.vVisualPilotLogBook.Where(row => row.PilotID == _pilotId).OrderByDescending(row => row.RouteID); } }
+        public IQueryable<vPilotLogBook> pilotLogBook { get { return db.vPilotLogBooks.Where(row => row.PilotID == pilotId).OrderByDescending(row => row.RouteID); } }
+        public IQueryable<vVisualPilotLogBook> visualPilotLogBook { get { return db.vVisualPilotLogBook.Where(row => row.PilotID == pilotId).OrderByDescending(row => row.RouteID); } }
 
-        public IQueryable<vVisualPilotLogDestinations> vVisualPilotLogDestinations { get { return db.vVisualPilotLogDestinations.Where(row => row.PilotID == _pilotId).OrderBy(row => row.FlightID); } }
+        public IQueryable<vVisualPilotLogDestinations> vVisualPilotLogDestinations { get { return db.vVisualPilotLogDestinations.Where(row => row.PilotID == pilotId).OrderBy(row => row.FlightID); } }
 
-        public Pilot pilotEntity { get { return db.Pilots.Find(_pilotId); } }
+        public Pilot pilotEntity { get { return db.Pilots.Find(pilotId); } }
 
         public IQueryable<GpsLocation> flightGpsLocations { get { return db.GpsLocations.Where(row => row.FlightID == _flightId); } }
 
@@ -112,7 +112,7 @@ namespace MVC_Acft_Track.Helpers
 
         public IQueryable<vFlightAcftPilot> flightsByPilot { get { return db.vFlightAcftPilots.Where(row => row.PilotID == pilotId); } }
 
-        public IQueryable<vAircraftPilot> aircraftsByPilot { get { return db.vAircraftPilots.Where(r => r.PilotID == _pilotId); } }
+        public IQueryable<vAircraftPilot> aircraftsByPilot { get { return db.vAircraftPilots.Where(r => r.PilotID == pilotId); } }
         public IQueryable<vAircraftPilot> aircraftsByAcftNumLocal { get { return db.vAircraftPilots.Where(row => row.AcftNumLocal == _acftNumLocal); } }
         public IQueryable<AircraftPilot> aircraftsByCompany { get { return db.AircraftPilots.Where(r => r.CompanyID == _companyIDint); } }
 
@@ -124,19 +124,19 @@ namespace MVC_Acft_Track.Helpers
             { return db.vAircraftPilots.OrderBy(row => row.AcftRegNum); }
         }
 
-        //public List<Pilot> selList_Pilot
-        //{
-        //    get
-        //    {
-        //        return db.Pilots.AsEnumerable().Select(p => new Pilot {PilotID=p.PilotID, PilotUserName=p.PilotUserName }).ToList();
-        //    }
-        //}
-
         public IQueryable<Pilot> selList_Pilot
         {
             get
             {
                 return db.Pilots.OrderBy(p=>p.PilotUserName);
+            }
+        }
+
+        public IQueryable<Flight> selList_FlightsByPilot
+        {
+            get
+            {
+                return db.Flights.OrderByDescending(f => f.FlightID).Where(f => f.PilotID == pilotId);
             }
         }
         public IQueryable<AirportCoordinates> airportEntity

@@ -14,6 +14,7 @@ namespace MVC_Acft_Track.ViewModels
         public int topN { get; set; }
         public int rowsPerPage { get; set; }
         public int totalRecordCount { get; set; }
+        public string sortCol { get; set; }
         public SortDirection sortDir { get; set; }
         public vmSearchRequest vmsearchRequest { get; set; }
         public List<vFlightAcftPilot> flightList { get; set; }
@@ -22,10 +23,11 @@ namespace MVC_Acft_Track.ViewModels
         {
         }
 
-        public vmSearchRequestFights(vmSearchRequest p_sr, int p_rowsPerPage=50, int p_topN = 50,SortDirection p_sortdir = SortDirection.Ascending)
+        public vmSearchRequestFights(vmSearchRequest p_sr, int p_rowsPerPage=50, int p_topN = 50, string p_sortCol= "RouteID", SortDirection p_sortdir = SortDirection.Ascending)
         {
             vmsearchRequest = p_sr;
             rowsPerPage = p_rowsPerPage;
+            sortCol = p_sortCol;
             sortDir = p_sortdir;
             topN = p_topN;
 
