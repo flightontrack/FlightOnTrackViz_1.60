@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using static MVC_Acft_Track.Finals;
@@ -45,7 +46,7 @@ namespace MVC_Acft_Track.Controllers
         #endregion
         #region Get Flights Routes
         [HttpGet]
-        public ActionResult GetLatestRoutes()
+        public ActionResult GetLatestRoutes(string sort = "", string sortdir = "")
         {
             try
             {
@@ -53,6 +54,8 @@ namespace MVC_Acft_Track.Controllers
                 //var q = db.vFlightAcftPilots.ToList();//.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();//.Where(row => row.IsJunk == false).OrderByDescending(row => row.FlightID);//.Take(TIMESPANFLIGHTS);
                 var flights = q_flightsLogBook.ToList();
                 ViewBag.ViewTitle = "Recent Public Flights";
+                ViewBag.Sort = sort;
+                ViewBag.SortDir = sortdir.Equals("ASC") ? SortDirection.Ascending : SortDirection.Descending ;
                 //ViewBag.ActionBack = "IndexFlightsPublic";
                 //ViewBag.ActionBack = "GetLatestRoutes";
                 return View("GetLatestRoutes", flights);

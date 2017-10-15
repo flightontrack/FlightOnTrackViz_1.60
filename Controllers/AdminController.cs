@@ -21,6 +21,7 @@ using System.Web.Helpers;
 
 namespace MVC_Acft_Track.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
 

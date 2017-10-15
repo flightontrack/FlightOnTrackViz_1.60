@@ -15,6 +15,7 @@ using System.Web.Helpers;
 namespace MVC_Acft_Track.Controllers
 {
     //[RequireHttps]
+    [Authorize]
     public class MemberController : Controller
     {
         //public bool isDebugMode = true;
