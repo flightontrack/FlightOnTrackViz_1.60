@@ -16,7 +16,7 @@
         grid.SortDirection = SortDirection.Descending;
     }
 
-    @if (ViewBag.AcftNumLocal != null) { <p>View the <a href="https://photos.app.goo.gl/x8rHc25mEUMbvEHg1"><b><span class="badge">@ViewBag.AcftNumLocal</span></b></a> aircraft pictures.</p>}
+    @if (ViewBag.AcftNumLocal != null) { <p><span class="badge">@ViewBag.AcftNumLocal</span> aircraft <a href="https://photos.app.goo.gl/x8rHc25mEUMbvEHg1">  <span class="label label-primary">pictures</span></a> .</p>}
     To view a flight on Google Maps check [Select] checkbox and click <div class="code_ms"> Display on Map</div> button.
     @if (ViewBag.AcftNumLocal == null) {
         using (Html.BeginForm())
