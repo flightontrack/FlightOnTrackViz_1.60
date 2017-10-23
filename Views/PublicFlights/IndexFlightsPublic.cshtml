@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>
 
-@{ bool ifChecked = ViewBag.DisplayChBoxChecked ?? false;}
+@{ bool ifChecked = ViewBag.DisplayChBoxChecked ?? false;
+    var v = ViewBag.Acft;
+    }
 @*<div>
             @if (ViewBag.ActionBack == "Index") {@Html.ActionLink("[__Up__]", "Index", "Home")}
         @if (ViewBag.ActionBack == "GetLatestRoutes") {@Html.ActionLink("[__Up__]", "GetLatestRoutes", "PublicFlights")}
             @if (ViewBag.ActionBack == "SearchByCriteria") {@Html.ActionLink("[__Up__]", "SearchByCriteria", "PublicFlights")}
     </div>*@
 <h2>@ViewBag.ViewTitle</h2>
-<br>
 
 <div>
     @{
@@ -15,29 +16,49 @@
         grid.SortDirection = SortDirection.Descending;
     }
 
-    @*<i>*@
-    To view a flight on Google Maps check [Display] checkbox and click <div class="code_ms"> Display on Map</div> button.
-    @*</i>*@
-
-    @using (Html.BeginForm())
-    {
-        //<input type="hidden" name="areaId" value="@ViewBag.Caller" />
+    @if (ViewBag.AcftNumLocal != null) { <p>View the <a href="https://photos.app.goo.gl/x8rHc25mEUMbvEHg1"><b><span class="badge">@ViewBag.AcftNumLocal</span></b></a> aircraft pictures.</p>}
+    To view a flight on Google Maps check [Select] checkbox and click <div class="code_ms"> Display on Map</div> button.
+    @if (ViewBag.AcftNumLocal == null) {
+        using (Html.BeginForm())
+        {
+            //<input type="hidden" name="areaId" value="@ViewBag.Caller" />
         <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
         <p class="message-error"> @ViewBag.Message</p>
         @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
         columns: grid.Columns(
-        grid.Column(columnName: "FlightID", header: "Display", format: (item) => Html.CheckBox((string)item.FlightID.ToString(), ifChecked)),
+        grid.Column(columnName: "FlightID", header: "Select", format: (item) => Html.CheckBox((string)item.FlightID.ToString(), ifChecked)),
+        grid.Column(columnName: "RouteID", header: "Route ID"),
         grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID, actionBack = "GetLatestRoutes" }, null)),
         grid.Column(columnName: "FlightName", header: "Flight/Arpt", style: "text-align-left"),
         grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
         grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
         grid.Column(columnName: "Pilot", header: "Pilot", style: "text-align-left"),
         grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left"),
-        grid.Column(columnName: "AcftNum", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.AcftNumLocal : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt="+item.AcftRegNum+"\">"+item.AcftRegNum+"</a>"))
-        @*grid.Column(columnName: "AcftNum", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.AcftNumLocal : @<a href="http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=@item.acftregnum">@item.AcftRegNum</a>),*@
-
+        grid.Column(columnName: "AcftNum", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.AcftNumLocal : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=" + item.AcftRegNum + "\">" + item.AcftRegNum + "</a>"))
         ))
-
     }
+    } 
+    else {
+    using (Html.BeginForm())
+    {
+        //<input type="hidden" name="areaId" value="@ViewBag.Caller" />
+        <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
+        <p class="message-error"> @ViewBag.Message</p>
+        @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+        grid.Column(columnName: "FlightID", header: "Select", format: (item) => Html.CheckBox((string)item.FlightID.ToString(), ifChecked)),
+        grid.Column(columnName: "RouteID", header: "Route ID"),
+        grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID, actionBack = "GetLatestRoutes" }, null)),
+        grid.Column(columnName: "FlightName", header: "Flight/Arpt", style: "text-align-left"),
+        grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
+        grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
+        grid.Column(columnName: "Pilot", header: "Pilot", style: "text-align-left")
+        //grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left"),
+        //grid.Column(columnName: "AcftNum", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.AcftNumLocal : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=" + item.AcftRegNum + "\">" + item.AcftRegNum + "</a>"))
+        ))
+    }    
+    }   
+    }
+
 
 </div>

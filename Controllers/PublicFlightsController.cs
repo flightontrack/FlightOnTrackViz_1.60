@@ -198,8 +198,12 @@ namespace MVC_Acft_Track.Controllers
                 //}
                 if (!string.IsNullOrEmpty(acftNumLocal))
                 {
-                    var acftids = db.AircraftPilots.Where(row => row.AcftNumLocal == acftNumLocal).Select(row => row.AcftID).ToList();
+                    var aircraftPilots = db.AircraftPilots.Where(row => row.AcftNumLocal == acftNumLocal);
+                    //var acftids = db.AircraftPilots.Where(row => row.AcftNumLocal == acftNumLocal).Select(row => row.AcftID).ToList();
+                    //var urlPictures = aircraftPilots.
+                    var acftids = aircraftPilots.Select(row => row.AcftID).ToList();
                     f = f.Where(row => acftids.Contains(row.AcftID.Value));
+                    ViewBag.Acft = new { acftNumLocal = acftNumLocal };
                 }
                 if (!string.IsNullOrEmpty(companyID))
                 {
@@ -214,6 +218,8 @@ namespace MVC_Acft_Track.Controllers
                 }
                 flights = f.Where(row=>!row.IsJunk).Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();
             }
+            // temp needs to be replaced by object
+            ViewBag.AcftNumLocal = acftNumLocal;
 
             return View("IndexFlightsPublic", flights);
         }

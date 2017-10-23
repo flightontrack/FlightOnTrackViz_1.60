@@ -21,5 +21,7 @@ namespace MVC_Acft_Track.Models
         public System.DateTime Created { get; set; }
         public string AcftNumLocal { get; set; }
         public Nullable<int> CompanyID { get; set; }
+        public string URLPictures { get; set; }
+        public System.DateTime Updated { get; set; }
     }
 }
