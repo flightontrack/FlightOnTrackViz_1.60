@@ -1,32 +1,43 @@
-﻿@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>
+﻿@*@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>*@
+@model MVC_Acft_Track.ViewModels.vmSearchRequestFights
 
 @{ bool ifChecked = ViewBag.DisplayChBoxChecked ?? false;
-    //var v = ViewBag.Acft;
-    }
-@*<div>
-            @if (ViewBag.ActionBack == "Index") {@Html.ActionLink("[__Up__]", "Index", "Home")}
-        @if (ViewBag.ActionBack == "GetLatestRoutes") {@Html.ActionLink("[__Up__]", "GetLatestRoutes", "PublicFlights")}
-            @if (ViewBag.ActionBack == "SearchByCriteria") {@Html.ActionLink("[__Up__]", "SearchByCriteria", "PublicFlights")}
-    </div>*@
-<h2>@ViewBag.ViewTitle</h2>
-
+    Html.Hidden("!! viewname !!", "FlightsPublicByCriteria");
+}
 <div>
-    @{
-        var grid = new WebGrid(Model, defaultSort: "FlightID", rowsPerPage: 50);
-        grid.SortDirection = SortDirection.Descending;
-    }
+@{
+    var grid = new WebGrid(
+        Model.flightList,
+        defaultSort: "FlightID",
+        rowsPerPage: Model.rowsPerPage,
+        canSort: true,
+        canPage: true
+        );
+    grid.SortColumn = Model.sortCol;
+    grid.SortDirection = Model.sortDir;
+}
+@if (ViewBag.error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <a href="#" class="alert-link">@ViewBag.error</a>
+    </div>
+}
 
-    @if (ViewBag.AcftNumLocal != null) { <p><span class="badge"> Aircraft @ViewBag.AcftNumLocal</span>
-@*     <a href="https://photos.app.goo.gl/x8rHc25mEUMbvEHg1">  <span class="label label-primary">pictures</span></a> .*@</p>
+    @if (Model.vmsearchRequest.acftNumLocal != null){
+        <p><span class="badge"> Aircraft @Model.vmsearchRequest.acftNumLocal</span></p>
     }
     To view a flight on Google Maps check [Select] checkbox and click <div class="code_ms"> Display on Map</div> button.
-    @if (ViewBag.AcftNumLocal == null) {
+    @if (Model.vmsearchRequest.acftNumLocal == null) {
         using (Html.BeginForm())
         {
-            //<input type="hidden" name="areaId" value="@ViewBag.Caller" />
-        <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
+        @*<input type="submit" class="btn btn-default" name="submit" value="Display On Map" />*@
+        <button type="submit" name="buttonClicked" value="DisplayOnMap">Display On Map</button><br>
         <p class="message-error"> @ViewBag.Message</p>
-        @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+        @grid.GetHtml(
+                mode: WebGridPagerModes.All,
+                tableStyle: "webgrid",
+                headerStyle: "webgrid-header",
+                footerStyle: "table-pager",
         columns: grid.Columns(
         grid.Column(columnName: "FlightID", header: "Select", format: (item) => Html.CheckBox((string)item.FlightID.ToString(), ifChecked)),
         grid.Column(columnName: "RouteID", header: "Route ID"),
@@ -38,12 +49,13 @@
         grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left"),
         grid.Column(columnName: "AcftNum", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.AcftNumLocal : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=" + item.AcftRegNum + "\">" + item.AcftRegNum + "</a>"))
         ))
+        }
     }
-    } 
-    else {
-    using (Html.BeginForm())
+    else
     {
-        //<input type="hidden" name="areaId" value="@ViewBag.Caller" />
+        using (Html.BeginForm())
+        {
+            //<input type="hidden" name="areaId" value="@ViewBag.Caller" />
         <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
         <p class="message-error"> @ViewBag.Message</p>
         @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
@@ -60,7 +72,5 @@
         ))
     }    
     }   
-    }
-
 
 </div>

@@ -30,7 +30,7 @@
         @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
         columns: grid.Columns(
         grid.Column(columnName: "RouteID", header: "Select", format: (item) => Html.CheckBox((string)item.RouteID.ToString(), ifChecked)),
-        grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.RouteID.ToString(), "CheckRouteFlightsCount", new { id = item.RouteID, actionBack = "GetLatestRoutes" }, new { data_toggle = "tooltip",data_html = "true", data_title = item.HTMLToolTip })),
+        grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.RouteID.ToString(), "CheckRouteFlightsCount", new { id = item.RouteID}, new { data_toggle = "tooltip",data_html = "true", data_title = item.HTMLToolTip })),
         grid.Column(columnName: "RouteName", header: "Flight", style: "text-align-left", format: item => (item.RouteName == null ? "" : item.RouteName.ToString().Substring(0, Math.Min(15, item.RouteName.ToString().Length)) + (item.RouteName.ToString().Length < 15 ? "" : ".."))),
         grid.Column(columnName: "FlightDateOnly", header: "Date", style: "text-align-left"),
         grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),

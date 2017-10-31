@@ -41,5 +41,6 @@ namespace MVC_Acft_Track.Models
         public string AcftMMS { get; set; }
         public string AcftNum { get; set; }
         public string Pilot { get; set; }
+        public string URLPictures { get; set; }
     }
 }

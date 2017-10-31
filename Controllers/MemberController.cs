@@ -31,8 +31,8 @@ namespace MVC_Acft_Track.Controllers
 
         public ActionResult indexMember(bool isSearchJunk=false, int menuitem=1, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "")
         {
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
                 q.pilotUserName = User.Identity.Name;
                 var p = q.pilotEntity;
                 if(successFlg.HasValue) ViewBag.Msg = ((bool)successFlg? MSG_SAVESUCCESS: MSG_SAVEFAIL);
@@ -87,16 +87,16 @@ namespace MVC_Acft_Track.Controllers
                     default:
                         return View("MemberPilot", p);
                 }
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult indexMember(FormCollection form, vmSearchRequest searchRequest, List<vFlightAcftPilot> flightList, Pilot pilot = null)
         {
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
                 int i = Int32.Parse(form["menuitem"]);
                 //q.pilotUserName = User.Identity.Name;
                 //var pid = q.pilotId;
@@ -216,8 +216,8 @@ namespace MVC_Acft_Track.Controllers
                 }
                 else { successFlg = false; }
                 return RedirectToAction("indexMember", new { isSearchJunk = searchRequest.isSearchJunk, menuitem = i, successFlg = successFlg, buttonEnable = btnEnabl });
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
         public ActionResult AcftEdit(int id = 0, int pilotid = 0)
         {
@@ -232,7 +232,8 @@ namespace MVC_Acft_Track.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AcftEdit(AircraftPilot acft)
         {
-            if (Request.IsAuthenticated && ModelState.IsValid)
+            //if (Request.IsAuthenticated && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 //int pid = q_pilot.First().PilotID;
                 if (Request["submit"] == "Save Changes")
@@ -337,8 +338,8 @@ namespace MVC_Acft_Track.Controllers
 
         public ActionResult FlightsByAcft(int acftId)
         {
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
                 q.pilotUserName = User.Identity.Name;
                 try
                 {
@@ -358,21 +359,21 @@ namespace MVC_Acft_Track.Controllers
                     ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "Database Exception";
                     return View("ExceptionPage");
                 }
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult FlightsByAcft(FormCollection form)
         {
-            if (Request.IsAuthenticated)
-            {
-                q.pilotUserName = User.Identity.Name;
-                var acftId = int.Parse(form.GetValues("acftId")[0]);
+            //if (Request.IsAuthenticated)
+            //{
+            q.pilotUserName = User.Identity.Name;
+            var acftId = int.Parse(form.GetValues("acftId")[0]);
             FlightUpdate(form);
             return RedirectToAction("FlightsByAcft", new { acftId = acftId });
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
 
         public ActionResult AircraftSearchGrid(int id = 0)
@@ -395,180 +396,16 @@ namespace MVC_Acft_Track.Controllers
             //else return RedirectToAction("Login", "Account"); ;
         }
 
-        //public ActionResult DisplayMyFlightMovingMap(int id = 0, string FlightOrRoute = "Flight", int isAutoUpdate = 0, string linkUp = "Index")
-        //{
-        //    ViewBag.FlightID = id;
-        //    ViewBag.FlightOrRoute = FlightOrRoute;
-        //    ViewBag.backUrl = "DisplayFlightData";
-        //    ViewBag.linkUp = linkUp;
-        //    ViewBag.isAutoUpdate = isAutoUpdate;
-        //    return View();
-        //}
-
-        //public JsonResult GetFlightDataJson(int id = 0, string idtype = "Flight", int c = 0)
-        //{
-        //    if (idtype == "Flight")
-        //    {
-        //        var gpslocations = db.GpsLocations.Where(row => row.FlightID == id).OrderBy(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
-        //        return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
-        //    }
-        //    else if (idtype == "Route")
-        //    {
-        //        var routeID = db.Flights.Where(row => row.FlightID == id).Select(row => row.RouteID == null ? row.FlightID : row.RouteID).First();
-        //        var flightIDs = db.Flights.Where(row => row.RouteID == routeID || row.FlightID == routeID).OrderBy(row => row.FlightID).Select(row => row.FlightID).ToArray();
-        //        var gpslocations = db.GpsLocations.Where(row => flightIDs.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum).Select(g => new { routeID, g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
-        //        return this.Json(gpslocations, JsonRequestBehavior.AllowGet);
-        //    }
-        //    return null;
-        //}
         public ActionResult DisplayFlightData(int id = 0, string actionBack = "")
         {
             if (Request.IsAuthenticated) return RedirectToAction("DisplayFlightData", "Flight", new { id = id});
             else return RedirectToAction("Login", "Account");
         }
 
-        //public FileContentResult DownloadFlightCSV(int id = 0)
-        //{
-        //    var gpsloc = db.GpsLocations.Where(row => row.FlightID == id).OrderBy(row => row.onSessionPointNum).ToList();
-        //    string csv = "Num,DateTime,Latitude,Longitude,Altitude_ft,AltitudeM,SpeedMph,SpeedKnot,SpeedKmpH" + Environment.NewLine;
-        //    foreach (var loc in gpsloc)
-        //    {
-        //        csv = csv
-        //            + loc.onSessionPointNum.ToString() + ","
-        //            + loc.gpsTime.ToString() + ","
-        //            + loc.latitude.ToString() + ","
-        //            + loc.longitude.ToString() + ","
-        //            + loc.AltitudeFt.ToString() + ","
-        //            + loc.AltitudeM.ToString() + ","
-        //            + loc.SpeedMph.ToString() + ","
-        //            + loc.SpeedKnot.ToString() + ","
-        //            + loc.SpeedKmpH.ToString()
-        //            + Environment.NewLine;
-        //    }
-        //    return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "Flight_" + id + ".csv");
-        //}
-        //public FileContentResult DownloadKMLStatic(int id = 0)
-        //{
-        //    var route = db.Flights.Where(r => r.FlightID == id).Select(r => r.RouteID).FirstOrDefault();
-        //    if (route == null) route = id; //patch if route is for some reason empty
-        //    var flights = db.Flights.Where(r => r.RouteID == route).Select(r => new { r.FlightID }).ToList();
-
-        //    var doc = new Document();
-        //    doc.Id = "Route";
-        //    doc.Name = "Route";
-        //    var folder = new Folder();
-        //    folder.Id = "Flights";
-        //    folder.Name = "Flights";
-
-        //    foreach (var f in flights)
-        //    {
-        //        var i = flights.IndexOf(f);
-        //        var flightLineStyles = new FlightLineStyles(i);
-        //        var docStyle = flightLineStyles.style;
-        //        folder.AddStyle(docStyle);
-
-        //        var placemark = new FlightPlacemarkLineString(f.FlightID);
-        //        placemark.styleUrlRef = docStyle.Id;
-        //        folder.AddFeature(placemark.placemark);
-        //    }
-        //    doc.AddFeature(folder);
-
-        //    var kml = new Kml();
-        //    kml.Feature = doc;
-        //    KmlFile kmlFile = KmlFile.Create(kml, true);
-
-        //    //using (var stream = System.IO.File.OpenWrite("C:/temp/kmlfile.kml"))
-        //    //{
-        //    //    kmlFile.Save(stream);
-
-        //    //};
-
-        //    using (var stream = new System.IO.MemoryStream())
-        //    {
-        //        kmlFile.Save(stream);
-        //        var kmlFileName = "Flight_" + id + ".kml";
-        //        var fileBytes = new System.Text.UTF8Encoding().GetBytes(new System.Text.UTF8Encoding().GetString(stream.ToArray()));
-        //        return File(fileBytes, "application/vnd.google-earth.kml+xml", kmlFileName);
-        //    };
-        //}
-
-        //public FileContentResult DownloadKMLTimeLine(int id = 0)
-        //{
-        //    var route = db.Flights.Where(r => r.FlightID == id).Select(r => r.RouteID).FirstOrDefault();
-        //    if (route == null) route = id; //patch if route is for some reason empty
-        //    var flights = db.Flights.Where(r => r.RouteID == route).Select(r => new { r.FlightID }).ToList();
-
-        //    var doc = new Document();
-        //    doc.Id = "Route" + id;
-        //    doc.Name = "Route " + id;
-
-        //    foreach (var f in flights)
-        //    {
-        //        var folder = new Folder();
-        //        folder.Id = f.FlightID.ToString();
-        //        folder.Name = "Flight " + f.FlightID;
-        //        var i = flights.IndexOf(f);
-
-        //        var flightPointStylesHide = new FlightPointStyles(i, 0);
-        //        var flightPointStylesShow = new FlightPointStyles(i, 1);
-        //        //var docStyle = flightPointStylesHide.style;
-        //        folder.AddStyle(flightPointStylesHide.style);
-        //        folder.AddStyle(flightPointStylesShow.style);
-        //        var styleMap = new StyleMap(flightPointStylesHide.style, flightPointStylesShow.style).styleMap;
-        //        folder.AddStyle(styleMap);
-
-        //        var flightLineStyles = new FlightLineStyles(i);
-        //        var docStyleLine = flightLineStyles.style;
-        //        folder.AddStyle(docStyleLine);
-
-        //        var placemarkSet = new FlightPlacemarkPoint();
-        //        placemarkSet.styleUrlRef = styleMap.Id;
-        //        placemarkSet.getFlightPlacemarkPoints(f.FlightID);
-        //        foreach (var p in placemarkSet.placemarks)
-        //        {
-        //            folder.AddFeature(p);
-        //        }
-
-        //        var placemarkLineString = new FlightPlacemarkLineString(f.FlightID);
-        //        placemarkLineString.styleUrlRef = docStyleLine.Id;
-        //        folder.AddFeature(placemarkLineString.placemark);
-
-        //        doc.AddFeature(folder);
-        //    }
-
-        //    var kml = new Kml();
-        //    kml.Feature = doc;
-        //    KmlFile kmlFile = KmlFile.Create(kml, true);
-
-        //    //using (var stream = System.IO.File.OpenWrite("C:/temp/kmlfile.kml"))
-        //    //{
-        //    //    kmlFile.Save(stream);
-
-        //    //};
-
-        //    using (var stream = new System.IO.MemoryStream())
-        //    {
-        //        kmlFile.Save(stream);
-        //        var kmlFileName = "Flight_" + id + ".kml";
-        //        var fileBytes = new System.Text.UTF8Encoding().GetBytes(new System.Text.UTF8Encoding().GetString(stream.ToArray()));
-        //        return File(fileBytes, "application/vnd.google-earth.kml+xml", kmlFileName);
-        //    };
-        //}
-
-        //public ActionResult Details(int id = 0)
-        //{
-        //    Flight flight = db.Flights.Find(id);
-        //    if (flight == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(flight);
-        //}
-
         public ActionResult FlightEdit(int id = 0, bool? successFlg = null)
         {
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
             q.pilotUserName = User.Identity.Name;
             Flight flight = db.Flights.Find(id);
             if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
@@ -584,8 +421,8 @@ namespace MVC_Acft_Track.Controllers
                 ViewBag.AircraftsSelList = new SelectList(db.vAircraftPilots.Where(row => (row.PilotID == pilotID)).OrderBy(row => row.AcftNumLocal), "ID", "AcftNumLocal", selectedAcftPilotID);
                 ViewBag.FlightSelList = new SelectList(db.Flights.Where(row => (row.PilotID == pilotID)).OrderByDescending(row => row.FlightID), "FlightID", "FlightID", flight.RouteID == null ? flight.FlightID : flight.RouteID);
                 return View(flight);
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]
@@ -593,8 +430,8 @@ namespace MVC_Acft_Track.Controllers
         public ActionResult FlightEdit(Flight flight, string AircraftsSelList,int FlightSelList)
         {
             //bool? successFlg;
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
             q.pilotUserName = User.Identity.Name;
             if (ModelState.IsValid)
             {
@@ -623,8 +460,8 @@ namespace MVC_Acft_Track.Controllers
                 }
             }
             return View(flight);
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
 
         public FileContentResult DownloadLogBookCSV(FormCollection form)

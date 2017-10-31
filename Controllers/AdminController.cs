@@ -31,8 +31,8 @@ namespace MVC_Acft_Track.Controllers
         // GET: Admin
         public ActionResult Index(int? pilotid = null,string error = null)
         {
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
                 ViewBag.PilotSelList = new SelectList(db.Pilots.OrderBy(row => row.PilotUserName), "PilotID", "PilotUserName");
                 ViewBag.ErrorMsg = error;
 
@@ -45,16 +45,16 @@ namespace MVC_Acft_Track.Controllers
                     ViewBag.UserPsw = spr[0];
                 }
                 return View();
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
         
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public ActionResult Index(FormCollection form)
         {
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
                 if (!String.IsNullOrEmpty(form["PilotID"]))
                 {
                     var pilotId = Int32.Parse(form["PilotID"]);
@@ -82,8 +82,8 @@ namespace MVC_Acft_Track.Controllers
                     return RedirectToAction("Index", new { pilotid = pilotId });
                 }
                 return RedirectToAction("Index");
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
 
         public async Task<ActionResult> GetJunkRecordsAsync()
@@ -140,13 +140,11 @@ namespace MVC_Acft_Track.Controllers
             return junkFlights;
         }
 
-        //public ActionResult GetFlights(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isMarkGarbage = false) {
         public ActionResult GetFlights(vmSearchRequest searchRequest, string sort = "", string sortdir = "") {
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
                 try
                 {
-                    //var fs = new vmSearchRequestFights(new vmSearchRequest(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isMarkGarbage), 50);
                     var fs = new vmSearchRequestFights(searchRequest, 50,10000, sort, sortdir.Equals("ASC") ? SortDirection.Ascending : SortDirection.Descending);
                     return View(fs);
                 }
@@ -155,14 +153,14 @@ namespace MVC_Acft_Track.Controllers
                     ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "GetFlights() error";
                     return View("ErrorPage");
                 }
-            }
-            else return RedirectToAction("Login", "Account"); ;
+            //}
+            //else return RedirectToAction("Login", "Account"); ;
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult GetFlights(FormCollection form, vmSearchRequest searchRequest, List<vFlightAcftPilot> flightList)
         {
-            if (Request.IsAuthenticated) { 
+            //if (Request.IsAuthenticated) { 
                 if (ModelState.IsValid)
                 {
                     //var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
@@ -177,8 +175,8 @@ namespace MVC_Acft_Track.Controllers
                     ViewBag.ExceptionErrorMessage = isDebugMode ? errors : "POST GetFlights() error";
                     return View("ErrorPage");
                 }
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
 
         public ActionResult FlightEditAdm(int id = 0, bool? successFlg = null)
@@ -210,8 +208,8 @@ namespace MVC_Acft_Track.Controllers
         public ActionResult FlightEditAdm(Flight flight, string AircraftsSelList,string PhoneSelList, int FlightSelList)
         {
             //bool? successFlg;
-            if (Request.IsAuthenticated)
-            {
+            //if (Request.IsAuthenticated)
+            //{
                 if (ModelState.IsValid)
                 {
                     try
@@ -256,8 +254,8 @@ namespace MVC_Acft_Track.Controllers
                     }
                 }
                 return View(flight);
-            }
-            else return RedirectToAction("Login", "Account");
+            //}
+            //else return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
@@ -281,104 +279,73 @@ namespace MVC_Acft_Track.Controllers
             }
             return View();
         }
-        //[HttpGet]
-        //public ActionResult SearchByCriteriaResult(string flightID, string airportID, string acftNumLocal, string pilotID, string flightDate, string companyID, bool isJunkAllFlights = false)
-        //{
 
-        //    if (!isJunkAllFlights && string.IsNullOrEmpty(flightID + acftNumLocal + pilotID + flightDate + companyID))
-        //    {
-        //        return RedirectToAction("SearchByCriteria");
-        //    }
-        //    else
-        //    {
-        //        return View("GetFlights", new vmSearchRequestFights(flightID, airportID, acftNumLocal, pilotID, flightDate, companyID, isJunkAllFlights));
-        //    }
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult SearchByCriteriaResult(FormCollection form)
+        //private void FormHandleTodelete(string buttonClicked, List<vFlightAcftPilot> flightList)
         //{
-        //    if (Request.IsAuthenticated)
+        //    if (buttonClicked.Equals("DeleteSelectedFlights"))
         //    {
-        //        if (Request["submit"] == "Mark all Garbage To Delete")
+        //        foreach (var f in flightList)
         //        {
-        //            return RedirectToAction("SearchByCriteriaResult", new { isJunkAllFlights = true });
+        //            if (f.IsChecked??false)
+        //            {
+        //                Flight flight = db.Flights.Find(f.FlightID);
+        //                db.Flights.Remove(flight);
+        //                db.SaveChanges();
+        //            }
         //        }
-        //        FormHandle(form);
-        //        var searchRequest = form["searchRequest"];
-        //        var dict = searchRequest.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty).Split(',').Select(r => r.Split('=')).ToDictionary(r => r[0], r => r[1]);
-        //        return RedirectToAction("SearchByCriteriaResult", new { flightID=dict["flightID"], airportID = dict["airportID"], acftNumLocal = dict["acftNumLocal"], pilotID = dict["pilotID"], flightDate = dict["flightDate"], companyID = dict["companyID"] });
+        //        return;
         //    }
-        //    else return RedirectToAction("Login", "Account");
+        //    if (buttonClicked.Equals("MergeSelectedFlights"))
+        //    {
+        //        ArrayList flightsToMerge = new ArrayList();
+        //        foreach (var f in flightList)
+        //        {
+        //            if (f.IsChecked ?? false)
+        //            {
+        //                flightsToMerge.Add((string)f.FlightID.ToString());
+        //            }
+        //        }
+        //        flightsToMerge.Sort();
+        //        string flightsToMergeString = String.Join(",", (string[])flightsToMerge.ToArray(typeof(string)));
+        //        db.merge_Flights(flightsToMergeString);
+        //        return;
+        //    }
+        //    if (buttonClicked.Equals("SaveChanges"))
+        //    {
+        //        DateTime timeUtcNow = DateTime.UtcNow;
+        //        foreach (var f in flightList)
+        //        {
+        //            Flight flight = db.Flights.Find(f.FlightID);
+        //            if ((f.IsShared ?? false) ^ (flight.IsShared ?? false))
+        //            {
+        //                flight.IsShared = (f.IsShared ?? false);
+        //                flight.Updated = timeUtcNow;
+        //                db.Flights.Attach(flight);
+        //                db.Entry(flight).Property(p => p.IsShared).IsModified = true;
+        //                db.Entry(flight).Property(p => p.Updated).IsModified = true;
+        //                db.SaveChanges();
+        //            };
+
+        //            if (f.IsJunk ^ (flight.IsJunk??false))
+        //            {
+        //                flight.IsJunk = f.IsJunk;
+        //                db.Flights.Attach(flight);
+        //                db.Entry(flight).Property(p => p.IsJunk).IsModified = true;
+        //                db.SaveChanges();
+        //            };
+
+        //            if (f.RouteID != (flight.RouteID.HasValue ? flight.RouteID : flight.FlightID))
+        //            {
+        //                flight.RouteID = f.RouteID;
+        //                flight.Updated = timeUtcNow;
+        //                db.Flights.Attach(flight);
+        //                db.Entry(flight).Property(p => p.RouteID).IsModified = true;
+        //                db.Entry(flight).Property(p => p.Updated).IsModified = true;
+        //                db.SaveChanges();
+        //            }
+        //        }
+        //    }
         //}
-
-        private void FormHandle(string buttonClicked, List<vFlightAcftPilot> flightList)
-        {
-            if (buttonClicked.Equals("DeleteSelectedFlights"))
-            {
-                foreach (var f in flightList)
-                {
-                    if (f.IsChecked??false)
-                    {
-                        Flight flight = db.Flights.Find(f.FlightID);
-                        db.Flights.Remove(flight);
-                        db.SaveChanges();
-                    }
-                }
-                return;
-            }
-            if (buttonClicked.Equals("MergeSelectedFlights"))
-            {
-                ArrayList flightsToMerge = new ArrayList();
-                foreach (var f in flightList)
-                {
-                    if (f.IsChecked ?? false)
-                    {
-                        flightsToMerge.Add((string)f.FlightID.ToString());
-                    }
-                }
-                flightsToMerge.Sort();
-                string flightsToMergeString = String.Join(",", (string[])flightsToMerge.ToArray(typeof(string)));
-                db.merge_Flights(flightsToMergeString);
-                return;
-            }
-            if (buttonClicked.Equals("SaveChanges"))
-            {
-                DateTime timeUtcNow = DateTime.UtcNow;
-                foreach (var f in flightList)
-                {
-                    Flight flight = db.Flights.Find(f.FlightID);
-                    if ((f.IsShared ?? false) ^ (flight.IsShared ?? false))
-                    {
-                        flight.IsShared = (f.IsShared ?? false);
-                        flight.Updated = timeUtcNow;
-                        db.Flights.Attach(flight);
-                        db.Entry(flight).Property(p => p.IsShared).IsModified = true;
-                        db.Entry(flight).Property(p => p.Updated).IsModified = true;
-                        db.SaveChanges();
-                    };
-
-                    if (f.IsJunk ^ (flight.IsJunk??false))
-                    {
-                        flight.IsJunk = f.IsJunk;
-                        db.Flights.Attach(flight);
-                        db.Entry(flight).Property(p => p.IsJunk).IsModified = true;
-                        db.SaveChanges();
-                    };
-
-                    if (f.RouteID != (flight.RouteID.HasValue ? flight.RouteID : flight.FlightID))
-                    {
-                        flight.RouteID = f.RouteID;
-                        flight.Updated = timeUtcNow;
-                        db.Flights.Attach(flight);
-                        db.Entry(flight).Property(p => p.RouteID).IsModified = true;
-                        db.Entry(flight).Property(p => p.Updated).IsModified = true;
-                        db.SaveChanges();
-                    }
-                }
-            }
-        }
 
     }
 

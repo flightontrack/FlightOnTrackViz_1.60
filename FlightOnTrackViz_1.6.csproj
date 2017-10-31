@@ -602,6 +602,7 @@
     <Content Include="Views\Shared\SearchByCriteria.cshtml" />
     <Content Include="Views\Account\LoginGroup.cshtml" />
     <Content Include="Views\PublicFlights\SearchByGroup.cshtml" />
+    <Content Include="Views\PublicFlights\FlightsPublicByCriteria.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -246,6 +246,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vFlightAcftPilot' does not have
           <Property Name="AcftNumLocal" Type="nvarchar" MaxLength="50" />
           <Property Name="AcftNum" Type="nvarchar" MaxLength="50" />
           <Property Name="Acft" Type="nvarchar" MaxLength="100" />
+          <Property Name="URLPictures" Type="nvarchar" MaxLength="250" />
           <Property Name="AcftID" Type="int" />
           <Property Name="PilotID" Type="int" />
           <Property Name="Updated" Type="datetime" />
@@ -503,6 +504,7 @@ FROM [dbo].[vAircraftPilot] AS [vAircraftPilot]</DefiningQuery>
 [vFlightAcftPilot].[AcftNumLocal] AS [AcftNumLocal], 
 [vFlightAcftPilot].[AcftNum] AS [AcftNum], 
 [vFlightAcftPilot].[Acft] AS [Acft], 
+[vFlightAcftPilot].[URLPictures] AS [URLPictures], 
 [vFlightAcftPilot].[AcftID] AS [AcftID], 
 [vFlightAcftPilot].[PilotID] AS [PilotID], 
 [vFlightAcftPilot].[Updated] AS [Updated], 
@@ -782,6 +784,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="false" />
           <Property Name="AcftNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Pilot" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="URLPictures" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vListAircraft">
           <Key>
@@ -1125,6 +1128,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySetMapping Name="vFlightAcftPilots">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.vFlightAcftPilot">
               <MappingFragment StoreEntitySet="vFlightAcftPilot">
+                <ScalarProperty Name="URLPictures" ColumnName="URLPictures" />
                 <ScalarProperty Name="Pilot" ColumnName="Pilot" />
                 <ScalarProperty Name="AcftNum" ColumnName="AcftNum" />
                 <ScalarProperty Name="AcftMMS" ColumnName="AcftMMS" />

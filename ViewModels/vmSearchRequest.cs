@@ -45,6 +45,10 @@ namespace MVC_Acft_Track.ViewModels
                 int flightIDint = int.Parse(vmsearchRequest.flightID);
                 f = f.Where(row => row.FlightID == flightIDint);
             }
+            if (!(vmsearchRequest.routeID==null))
+            {
+                f = f.Where(row => row.RouteID == vmsearchRequest.routeID);
+            }
             if (!string.IsNullOrEmpty(vmsearchRequest.flightDate))
             {
                 var flightDatedate = DateTime.Parse(vmsearchRequest.flightDate);
@@ -75,6 +79,10 @@ namespace MVC_Acft_Track.ViewModels
             {
                 f = f.Where(row => row.IsJunk == true);
             }
+            if (vmsearchRequest.isNoJunk)
+            {
+                f = f.Where(row => row.IsJunk == false);
+            }
             totalRecordCount = f.Count();
             flightList = f.Take(topN).ToList();
         }
@@ -82,25 +90,17 @@ namespace MVC_Acft_Track.ViewModels
     public class vmSearchRequest
     {
         public string flightID { get; set; }
+        public int? routeID { get; set; }
         public string airportID { get; set; }
         public string acftNumLocal { get; set; }
         public string pilotID { get; set; }
         public string flightDate { get; set; }
         public string companyID { get; set; }
         public bool isSearchJunk { get; set; }
+        public bool isNoJunk { get; set; }
         public vmSearchRequest()
         {
         }
 
-    //    public vmSearchRequest(string p_flightID = null, string p_airportID = null, string p_acftNumLocal = null, string p_pilotID = null, string p_flightDate = null, string p_companyID = null,bool p_isSearchJunk = false)
-    //    {
-    //        flightID = p_flightID;
-    //        airportID = p_airportID;
-    //        acftNumLocal = p_acftNumLocal;
-    //        pilotID = p_pilotID;
-    //        flightDate = p_flightDate;
-    //        companyID = p_companyID;
-    //        isSearchJunk = p_isSearchJunk;
-    //}
 }
 }
