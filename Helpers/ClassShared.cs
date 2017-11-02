@@ -35,9 +35,12 @@ namespace MVC_Acft_Track.Helpers
                         flightsToMerge.Add((string)f.FlightID.ToString());
                     }
                 }
-                flightsToMerge.Sort();
-                string flightsToMergeString = String.Join(",", (string[])flightsToMerge.ToArray(typeof(string)));
-                db.merge_Flights(flightsToMergeString);
+                if (flightsToMerge.Count > 0)
+                {
+                    flightsToMerge.Sort();
+                    string flightsToMergeString = String.Join(",", (string[])flightsToMerge.ToArray(typeof(string)));
+                    db.merge_Flights(flightsToMergeString);
+                }
                 return;
             }
             if (buttonClicked.Equals("SaveChanges"))
