@@ -28,5 +28,6 @@ namespace MVC_Acft_Track.Models
         public int PilotID { get; set; }
         public string PilotCode { get; set; }
         public string AcftNumLocal { get; set; }
+        public string URLPictures { get; set; }
     }
 }

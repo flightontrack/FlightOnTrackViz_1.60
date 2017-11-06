@@ -67,15 +67,15 @@ namespace MVC_Acft_Track.Helpers
                         db.SaveChanges();
                     };
 
-                    if (f.RouteID != (flight.RouteID.HasValue ? flight.RouteID : flight.FlightID))
-                    {
-                        flight.RouteID = f.RouteID;
-                        flight.Updated = timeUtcNow;
-                        db.Flights.Attach(flight);
-                        db.Entry(flight).Property(p => p.RouteID).IsModified = true;
-                        db.Entry(flight).Property(p => p.Updated).IsModified = true;
-                        db.SaveChanges();
-                    }
+                    //if (f.RouteID != (flight.RouteID.HasValue ? flight.RouteID : flight.FlightID))
+                    //{
+                    //    flight.RouteID = f.RouteID;
+                    //    flight.Updated = timeUtcNow;
+                    //    db.Flights.Attach(flight);
+                    //    db.Entry(flight).Property(p => p.RouteID).IsModified = true;
+                    //    db.Entry(flight).Property(p => p.Updated).IsModified = true;
+                    //    db.SaveChanges();
+                    //}
                 }
             }
         }

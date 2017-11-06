@@ -188,7 +188,7 @@ namespace MVC_Acft_Track.Controllers
         [HttpPost]
         public ActionResult FlightsPublicByCriteria(FormCollection form)
         {
-            if (form["buttonClicked"] == "SelectAllGarbage")
+            if (form["buttonClicked"] == "DisplayOnMap")
             {
                 var flightIds = new List<int>();
                 var c = form.Count;

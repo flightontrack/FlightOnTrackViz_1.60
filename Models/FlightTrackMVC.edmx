@@ -218,6 +218,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vAircraftPilot' does not have a
           <Property Name="Created" Type="datetime" />
           <Property Name="FlightTime" Type="numeric" Precision="9" Scale="2" />
           <Property Name="PilotID" Type="int" Nullable="false" />
+          <Property Name="URLPictures" Type="nvarchar" MaxLength="250" />
           <Property Name="PilotCode" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -482,6 +483,7 @@ FROM [dbo].[SearchRequest] AS [SearchRequest]</DefiningQuery>
 [vAircraftPilot].[Created] AS [Created], 
 [vAircraftPilot].[FlightTime] AS [FlightTime], 
 [vAircraftPilot].[PilotID] AS [PilotID], 
+[vAircraftPilot].[URLPictures] AS [URLPictures], 
 [vAircraftPilot].[PilotCode] AS [PilotCode]
 FROM [dbo].[vAircraftPilot] AS [vAircraftPilot]</DefiningQuery>
           </EntitySet>
@@ -725,6 +727,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="PilotID" Type="Int32" Nullable="false" />
           <Property Name="PilotCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="URLPictures" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vPilotLogBook">
           <Key>
@@ -1078,6 +1081,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySetMapping Name="vAircraftPilots">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.vAircraftPilot">
               <MappingFragment StoreEntitySet="vAircraftPilot">
+                <ScalarProperty Name="URLPictures" ColumnName="URLPictures" />
                 <ScalarProperty Name="AcftNumLocal" ColumnName="AcftNumLocal" />
                 <ScalarProperty Name="PilotCode" ColumnName="PilotCode" />
                 <ScalarProperty Name="PilotID" ColumnName="PilotID" />

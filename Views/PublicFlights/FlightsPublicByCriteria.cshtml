@@ -46,7 +46,7 @@
         grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
         grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
         grid.Column(columnName: "Pilot", header: "Pilot", style: "text-align-left"),
-        grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left"),
+        grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left", format: item => item.URLPictures == null ? item.Acft : Html.Raw("<a href=\"" + item.URLPictures + "\">  <span class=\"label label-primary\">" + item.Acft + "</span></a>")),
         grid.Column(columnName: "AcftNum", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.AcftNumLocal : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=" + item.AcftRegNum + "\">" + item.AcftRegNum + "</a>"))
         ))
         }
@@ -56,7 +56,7 @@
         using (Html.BeginForm())
         {
             //<input type="hidden" name="areaId" value="@ViewBag.Caller" />
-        <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
+        <button type="submit" name="buttonClicked" value="DisplayOnMap">Display On Map</button><br>
         <p class="message-error"> @ViewBag.Message</p>
         @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
         columns: grid.Columns(
@@ -67,7 +67,7 @@
         grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
         grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
         grid.Column(columnName: "Pilot", header: "Pilot", style: "text-align-left"),
-        grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left", format: item => item.URLPictures == null? item.Acft : Html.Raw("<a href=\""+item.URLPictures+"\">  <span class=\"label label-primary\">pictures</span></a>"))
+        grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left", format: item => item.URLPictures == null? item.Acft : Html.Raw("<a href=\""+item.URLPictures+ "\">  <span class=\"label label-primary\">"+item.Acft+"</span></a>"))
         //grid.Column(columnName: "AcftNum", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.AcftNumLocal : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=" + item.AcftRegNum + "\">" + item.AcftRegNum + "</a>"))
         ))
     }    

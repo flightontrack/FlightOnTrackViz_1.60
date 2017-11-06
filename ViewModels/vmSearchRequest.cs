@@ -70,10 +70,18 @@ namespace MVC_Acft_Track.ViewModels
                 var acftids = q.aircraftsByCompany.Select(row => row.AcftID).ToList();
                 f = f.Where(row => acftids.Contains(row.AcftID.Value));
             }
-            if (!string.IsNullOrEmpty(vmsearchRequest.pilotID))
+            //if (!string.IsNullOrEmpty(vmsearchRequest.pilotID))
+            //{
+            //    var pilotIDint = int.Parse(vmsearchRequest.pilotID);
+            //    f = f.Where(row => row.PilotID == pilotIDint);
+            //}
+            if (!(vmsearchRequest.pilotID==null))
             {
-                var pilotIDint = int.Parse(vmsearchRequest.pilotID);
-                f = f.Where(row => row.PilotID == pilotIDint);
+                f = f.Where(row => row.PilotID == vmsearchRequest.pilotID);
+            }
+            if (!(vmsearchRequest.aicrftID == null))
+            {
+                f = f.Where(row => row.AcftID == vmsearchRequest.aicrftID);
             }
             if (vmsearchRequest.isSearchJunk)
             {
@@ -92,8 +100,9 @@ namespace MVC_Acft_Track.ViewModels
         public string flightID { get; set; }
         public int? routeID { get; set; }
         public string airportID { get; set; }
+        public int? aicrftID { get; set; }
         public string acftNumLocal { get; set; }
-        public string pilotID { get; set; }
+        public int? pilotID { get; set; }
         public string flightDate { get; set; }
         public string companyID { get; set; }
         public bool isSearchJunk { get; set; }

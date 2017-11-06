@@ -592,7 +592,6 @@
     <Content Include="Views\Member\AcftEdit.cshtml" />
     <Content Include="Views\Member\FlightEdit.cshtml" />
     <Content Include="Views\Shared\DisplayFlightData.cshtml" />
-    <Content Include="Views\Flight\1DisplayLatestFlightsStaticMap.cshtml" />
     <Content Include="Views\Member\LogBookNotFound.cshtml" />
     <Content Include="Views\Member\PilotLogBookMobile.cshtml" />
     <Content Include="Views\Shared\ExceptionPage.cshtml" />
