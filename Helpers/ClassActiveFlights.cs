@@ -3,7 +3,6 @@ using System.Linq;
 using MVC_Acft_Track.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using static MVC_Acft_Track.Finals;
 

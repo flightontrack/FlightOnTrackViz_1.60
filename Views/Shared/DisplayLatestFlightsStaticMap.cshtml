@@ -9,9 +9,7 @@
     var imgintermpoint = Url.Content("~/Images/1484298852_blue-pin.png");
 }
 
-<!DOCTYPE html>
-<html>
-<head>
+@*<head>*@
     @*<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <meta http-equiv='cache-control' content='no-cache'>
@@ -22,80 +20,77 @@
     <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/googlemap.css" rel="stylesheet" type="text/css" />*@
     <sheettitle hidden>Flight Map (DisplayLatestFlightsStaticMap)</sheettitle>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAIm-QyYK0jc3jyTMA6rgCTnx-9nWILiiQ"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyAIm-QyYK0jc3jyTMA6rgCTnx-9nWILiiQ"></script>
     <script src="~/Scripts/getDrawStaticFlights.js"></script>
-    <script>
-    //var messages;
-    var map;
-    var bounds;
-    //var iconUrl;
-    var mapOptions;
-    var cookieName = "fontZoomLevel=";
-    var defaultZoomLevel = 13;
-    var markersStore = [];
-    var flightPathStore = [];
-    //var isRefresh = true;
-    //var cnt =0;
-    var defaultCenter;
-    //var centerOnDefault = false;
 
-    //---------------------------------------------------------------
-    function init() {
-        // set the map center dd zoom cookie
-        var zoomLevel = (getCookie(cookieName) == '' ? defaultZoomLevel : parseInt(getCookie(cookieName)));
-        defaultCenter = new google.maps.LatLng(@ViewBag.AreaCenterLat, @ViewBag.AreaCenterLong);
-            mapOptions = {
-                zoom: zoomLevel,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                center: defaultCenter
-            };
-            map = new google.maps.Map(document.getElementById('map_div'), mapOptions);
-            google.maps.event.addListener(map, 'zoom_changed', function () {
-                var zooooom = map.getZoom();
-                document.cookie = cookieName + zooooom;
-            });
-            map.setCenter(defaultCenter);
-            bounds  = new google.maps.LatLngBounds();
-            getDrawStaticFlights(@jsonData,'@imgstartpoint','@imgendpoint','@imgtracepoint','@imgintermpoint');
-            map.fitBounds(bounds);       // auto-zoom
-            map.panToBounds(bounds);     // auto-center
-    }
-
-    //---------------------------------------------------------------
-    function getCookie(cname) {
-        var cookieArray = document.cookie.split(';');
-        if (cookieArray[0].indexOf(cname) == 0) return cookieArray[0].split('=')[1];
-        return "";
-    }
-    //---------------------------------------------------------------
-    function buttonback() {
-        var url = '@Url.Action(@ViewBag.ActionBack)';
-        window.location.assign(url);
-    }
-    function buttonAutoRefresh() {
-        location.reload();
-    }
-    //---------------------------------------------------------------
-    $(document).ready(function () {
-        init();
-    });
-    </script>
-</head>
-<body style="padding-top: 60px">
-    <div class="row">
+@*</head>*@
+@*<div style="padding-top: 30px">*@
+    @*<div class="row" style="margin:3px">
         <table style="margin:3px">
             <tr>
                 <td style="padding-right:10px"></td>
-                @*<td><input class="btn btn-primary active" type="submit" name="RequestVisualLogBook" value="Request Visual LogBook" /></td>*@
-                @*<td><button onclick="buttonback()" class="btn btn-primary active" type="submit">Back</button></td>*@
-                @*<td style="padding-right:10px"></td>*@
                 <td><button onclick="buttonAutoRefresh()" class="btn btn-default" type="submit">Refresh Page</button></td>
             </tr>
         </table>
-    </div>
+    </div>*@
     <div class="row">
         <div id="map_div"></div>
     </div>
-</body>
-</html>
+@*</div>*@
+    <script>
+        //var messages;
+        var map;
+        var bounds;
+        //var iconUrl;
+        var mapOptions;
+        var cookieName = "fontZoomLevel=";
+        var defaultZoomLevel = 13;
+        var markersStore = [];
+        var flightPathStore = [];
+        //var isRefresh = true;
+        //var cnt =0;
+        var defaultCenter;
+        //var centerOnDefault = false;
+
+        //---------------------------------------------------------------
+        function init() {
+            // set the map center dd zoom cookie
+            var zoomLevel = (getCookie(cookieName) == '' ? defaultZoomLevel : parseInt(getCookie(cookieName)));
+            defaultCenter = new google.maps.LatLng(@ViewBag.AreaCenterLat, @ViewBag.AreaCenterLong);
+                mapOptions = {
+                    zoom: zoomLevel,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    center: defaultCenter
+                };
+                map = new google.maps.Map(document.getElementById('map_div'), mapOptions);
+                google.maps.event.addListener(map, 'zoom_changed', function () {
+                    var zooooom = map.getZoom();
+                    document.cookie = cookieName + zooooom;
+                });
+                map.setCenter(defaultCenter);
+                bounds  = new google.maps.LatLngBounds();
+                getDrawStaticFlights(@jsonData,'@imgstartpoint','@imgendpoint','@imgtracepoint','@imgintermpoint');
+                map.fitBounds(bounds);       // auto-zoom
+                map.panToBounds(bounds);     // auto-center
+        }
+
+        //---------------------------------------------------------------
+        function getCookie(cname) {
+            var cookieArray = document.cookie.split(';');
+            if (cookieArray[0].indexOf(cname) == 0) return cookieArray[0].split('=')[1];
+            return "";
+        }
+        //---------------------------------------------------------------
+        function buttonback() {
+            var url = '@Url.Action(@ViewBag.ActionBack)';
+            window.location.assign(url);
+        }
+        function buttonAutoRefresh() {
+            location.reload();
+        }
+        //---------------------------------------------------------------
+        $(document).ready(function () {
+            init();
+        });
+    </script>

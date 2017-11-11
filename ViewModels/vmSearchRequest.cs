@@ -91,8 +91,9 @@ namespace MVC_Acft_Track.ViewModels
             {
                 f = f.Where(row => row.IsJunk == false);
             }
-            totalRecordCount = f.Count();
-            flightList = f.Take(topN).ToList();
+            flightList = f.ToList();
+            totalRecordCount = flightList.Count();
+            flightList = flightList.Take(topN).ToList();
         }
     }
     public class vmSearchRequest

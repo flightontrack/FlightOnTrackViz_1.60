@@ -19,8 +19,8 @@
         grid.Column(columnName: "AcftName", header: "Friendly Name", style: "text-align-left"),
         grid.Column(columnName: "AcftRegNum", header: "Reg Num", style: "text-align-left"),
         grid.Column(columnName: "FlightTime", header: "Hours Logged", style: "text-align-left"),
-        grid.Column(columnName: "AcftID", header: "Edit", style: "text-align-left", format: (item) => Html.ActionLink("edit", "AcftEdit", new { id = item.ID})),
-        grid.Column(columnName: "URLPictures", header: "Url", style: "text-align-left")
+        grid.Column(columnName: "URLPictures", header: "Url", style: "text-align-left"),
+        grid.Column(columnName: "AcftID", header: "Edit", style: "text-align-left", format: (item) => Html.ActionLink("edit", "AcftEdit", new { id = item.ID}))
         ))
     </div>
 </div>
