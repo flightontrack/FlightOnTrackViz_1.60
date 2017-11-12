@@ -15,6 +15,7 @@
         );
     grid.SortColumn = Model.sortCol;
     grid.SortDirection = Model.sortDir;
+    var topNumber = Model.topN > Model.totalRecordCount ? Model.totalRecordCount : Model.topN;
 }
 @if (ViewBag.error != null)
 {
@@ -28,7 +29,7 @@
     {
         @Html.AntiForgeryToken();
     <p><i>
-        Top <span class="badge">@Model.topN </span> records are listed out of total <span class="badge">@Model.totalRecordCount </span> in the history.
+        Top <span class="badge">@topNumber </span> records are listed out of total <span class="badge">@Model.totalRecordCount </span> in the history.
         To sort flights click on a column title.  To delete or share selected flights use the buttons below.<br>
     </i></p>
         @*@Html.Hidden("acftNumLocal", Model.vmsearchRequest.acftNumLocal);

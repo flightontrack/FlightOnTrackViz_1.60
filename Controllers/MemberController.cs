@@ -29,7 +29,7 @@ namespace MVC_Acft_Track.Controllers
             q = new qLINQ(db);
         }
 
-        public ActionResult indexMember(bool isSearchJunk = false, int menuitem = 1, int? acftId = null, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "")
+        public ActionResult indexMember(bool isSearchJunk = false, int menuitem = 1, int? acftId = null, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "",int page=1)
         {
             //if (Request.IsAuthenticated)
             //{
@@ -402,7 +402,7 @@ namespace MVC_Acft_Track.Controllers
             else return RedirectToAction("Login", "Account");
         }
 
-        public ActionResult FlightEdit(int id = 0, bool? successFlg = null)
+        public ActionResult FlightEdit(int id = 0, bool? successFlg = null, int page=1)
         {
             //if (Request.IsAuthenticated)
             //{
@@ -420,6 +420,7 @@ namespace MVC_Acft_Track.Controllers
 
                 ViewBag.AircraftsSelList = new SelectList(db.vAircraftPilots.Where(row => (row.PilotID == pilotID)).OrderBy(row => row.AcftNumLocal), "ID", "AcftNumLocal", selectedAcftPilotID);
                 ViewBag.FlightSelList = new SelectList(db.Flights.Where(row => (row.PilotID == pilotID)).OrderByDescending(row => row.FlightID), "FlightID", "FlightID", flight.RouteID == null ? flight.FlightID : flight.RouteID);
+                ViewBag.Page = page;
                 return View(flight);
             //}
             //else return RedirectToAction("Login", "Account");
@@ -427,7 +428,7 @@ namespace MVC_Acft_Track.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FlightEdit(Flight flight, string AircraftsSelList,int FlightSelList)
+        public ActionResult FlightEdit(Flight flight, string AircraftsSelList,int FlightSelList,int page)
         {
             //bool? successFlg;
             //if (Request.IsAuthenticated)
@@ -451,7 +452,7 @@ namespace MVC_Acft_Track.Controllers
                     db.Entry(flight).Property(f => f.RouteID).IsModified = true;
                     db.SaveChanges();
                     //successFlg = true;
-                    return RedirectToAction("indexMember", new { menuitem = 4 });
+                    return RedirectToAction("indexMember", new { menuitem = 4, page=page });
                 }
                 catch(Exception e)
                 {
