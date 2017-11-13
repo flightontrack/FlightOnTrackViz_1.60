@@ -25,14 +25,6 @@
             <td>@Html.EditorFor(model => model.Comments)</td>
         </tr>
         <tr>
-            <td>Aircraft</td>
-            <td>@Html.DropDownList("AircraftsSelList")</td>
-        </tr>
-        <tr>
-            <td>Route</td>
-            <td>@Html.DropDownList("FlightSelList")</td>
-        </tr>
-        <tr>
             <td>Pilot Phone</td>
             <td>@if (ViewBag.selectedPilotID == null) {
                 @Html.DropDownList("PhoneSelList","Select")
@@ -41,6 +33,14 @@
                 @Html.DropDownList("PhoneSelList") 
             }
             </td>
+        </tr>
+        <tr>
+            <td>Aircraft</td>
+            <td>@Html.DropDownList("AircraftsSelList")</td>
+        </tr>
+        <tr>
+            <td>Route</td>
+            <td>@Html.DropDownList("FlightSelList")</td>
         </tr>
     </table>
     <p>

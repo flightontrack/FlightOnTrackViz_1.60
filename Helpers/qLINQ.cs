@@ -121,6 +121,12 @@ namespace MVC_Acft_Track.Helpers
         public IQueryable<vAircraftPilot> selList_vAircraftPilot
         {
             get
+            { return db.vAircraftPilots.Where(f => f.PilotID == pilotId).OrderBy(row => row.AcftRegNum); }
+        }
+
+        public IQueryable<vAircraftPilot> selList_vAircraftPilotAll
+        {
+            get
             { return db.vAircraftPilots.OrderBy(row => row.AcftRegNum); }
         }
 

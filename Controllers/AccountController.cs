@@ -16,7 +16,6 @@ namespace MVC_Acft_Track.Controllers
 {
 
     [Authorize]
-    [RequireHttps]
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
@@ -25,6 +24,7 @@ namespace MVC_Acft_Track.Controllers
         // GET: /Account/Login
 
         [AllowAnonymous]
+        [RequireHttps]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -36,6 +36,7 @@ namespace MVC_Acft_Track.Controllers
         // POST: /Account/Login
 
         [HttpPost]
+        [RequireHttps]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
