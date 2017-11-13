@@ -11,13 +11,15 @@ namespace MVC_Acft_Track.ViewModels
 {
     public class vmSearchRequestFights
     {
-        public int topN { get; set; }
-        public int rowsPerPage { get; set; }
-        public int totalRecordCount { get; set; }
-        public string sortCol { get; set; }
-        public SortDirection sortDir { get; set; }
+        public bool isRouteListRequest { get; set; } = false;
+        public int topN { get; set; } = 1000;
+        public int rowsPerPage { get; set; } = 50;
+        public int totalRecordCount { get; set; } = 0;
+        public string sortCol { get; set; } = "RouteID";
+        public SortDirection sortDir { get; set; } = SortDirection.Descending;
         public vmSearchRequest vmsearchRequest { get; set; }
         public List<vFlightAcftPilot> flightList { get; set; }
+        public List<vPilotLogBook> routeList { get; set; }
 
         public vmSearchRequestFights()
         {
@@ -33,6 +35,7 @@ namespace MVC_Acft_Track.ViewModels
 
             var q = new qLINQ();
             var f = q.flightsAll;
+            var rt = q.routesAll;
 
             if (vmsearchRequest.isSearchJunk)
             {
@@ -90,6 +93,12 @@ namespace MVC_Acft_Track.ViewModels
             if (vmsearchRequest.isNoJunk)
             {
                 f = f.Where(row => row.IsJunk == false);
+            }
+            if (isRouteListRequest)
+            {
+                var routeIds = f.Select(r => r.RouteID);
+                routeList = rt.Where(row => routeIds.Contains(row.RouteID)).ToList();
+                totalRecordCount = routeList.Count();
             }
             flightList = f.ToList();
             totalRecordCount = flightList.Count();

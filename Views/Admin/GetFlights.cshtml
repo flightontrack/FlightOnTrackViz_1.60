@@ -32,13 +32,6 @@
         Top <span class="badge">@topNumber </span> records are listed out of total <span class="badge">@Model.totalRecordCount </span> in the history.
         To sort flights click on a column title.  To delete or share selected flights use the buttons below.<br>
     </i></p>
-        @*@Html.Hidden("acftNumLocal", Model.vmsearchRequest.acftNumLocal);
-        @Html.Hidden("acftNumLocal", Model.vmsearchRequest.flightID);
-        @Html.Hidden("acftNumLocal", Model.vmsearchRequest.airportID);
-        @Html.Hidden("acftNumLocal", Model.vmsearchRequest.pilotID);
-        @Html.Hidden("acftNumLocal", Model.vmsearchRequest.flightDate);
-        @Html.Hidden("acftNumLocal", Model.vmsearchRequest.companyID);*@
-        @*@Html.Hidden("acftNumLocal", Model.vmsearchRequest.isSearchJunk);*@
 
         <button type="submit" name="buttonClicked" value="SelectAllGarbage">Select All Garbage</button><br>
         <button type="submit" name="buttonClicked" value="DeleteSelectedFlights">Delete Selected Flights</button><br>

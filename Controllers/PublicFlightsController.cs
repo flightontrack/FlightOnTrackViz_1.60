@@ -19,12 +19,13 @@ namespace MVC_Acft_Track.Controllers
     {
 
         private Entities db = new Entities();
+        private qLINQ q = new qLINQ();
         private IEnumerable<vFlightAcftPilot> q_flightsRecent;
         //private IEnumerable<vFlightAcftPilot> q_flightsActive;
         //private IEnumerable<vFlightAcftPilot> q_acftGroupFlightsActive;
         private IEnumerable<GpsLocation> q_gpslocationsActive;
         //private IEnumerable<DimArea> q_getAreaCenter;
-        private IEnumerable<vPilotLogBook> q_flightsLogBook;
+        private IQueryable<vPilotLogBook> q_flightsLogBook;
         private IEnumerable<vFlightAcftPilot> q_flightsByRoute;
         //private IEnumerable<vFlightAcftPilot> q_isPositionCurrent;
         private int flightId;
@@ -36,7 +37,8 @@ namespace MVC_Acft_Track.Controllers
         public PublicFlightsController()
         {
             q_flightsRecent = db.vFlightAcftPilots.Where(row => row.IsShared == null ? false : (bool)row.IsShared).Where(row => row.IsJunk == false).OrderByDescending(row => row.FlightID).Take(TIMESPANFLIGHTS);
-            q_flightsLogBook = db.vPilotLogBooks.OrderByDescending(row => row.RouteID).Take(TIMESPANFLIGHTS);
+            //q_flightsLogBook = db.vPilotLogBooks.OrderByDescending(row => row.RouteID).Take(TIMESPANFLIGHTS);
+            q_flightsLogBook = q.routesAll.Take(TIMESPANFLIGHTS);
 
             //q_flightsActive = db.vFlightAcftPilots.Where(r => r.isInFlight == TRUE).Where(r => r.Points > 0);
 
@@ -166,7 +168,8 @@ namespace MVC_Acft_Track.Controllers
             if (form["submit"] == "Search")
             {
                 if (form["FlightID"].Equals("") && form["AcftNumLocal"].Equals("") && form["PilotID"].Equals("") && form["FlightDate"].Equals("") && form["GroupID"].Equals("")) return RedirectToAction("SearchByCriteria", new { message = SELECTSOMTHING });
-                return RedirectToAction("FlightsPublicByCriteria", vmsearchRequest);
+                //return RedirectToAction("FlightsPublicByCriteria", vmsearchRequest);
+                return RedirectToAction("RoutesPublicByCriteria", vmsearchRequest);
             }
             return View();
         }
@@ -180,7 +183,7 @@ namespace MVC_Acft_Track.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "SearchByCriteriaResult() error";
+                ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "FlightsPublicByCriteria() error";
                 return View("ErrorPage");
             }
         }
@@ -210,7 +213,20 @@ namespace MVC_Acft_Track.Controllers
             }
             return View();
         }
-
+        [HttpGet]
+        public ActionResult RoutesPublicByCriteria(vmSearchRequest searchRequest, string sort = "", string sortdir = "")
+        {
+            try
+            {
+                var rts = new vmSearchRequestFights { vmsearchRequest = searchRequest, isRouteListRequest=true, sortDir = sortdir.Equals("ASC") ? SortDirection.Ascending : SortDirection.Descending };
+                return View("GetRoutes",rts);
+            }
+            catch (Exception e)
+            {
+                ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "RoutesPublicByCriteria() error";
+                return View("ErrorPage");
+            }
+        }
         #endregion
         #region Area Flights
         [HttpGet]

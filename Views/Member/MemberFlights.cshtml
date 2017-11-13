@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<MVC_Acft_Track.Models.vFlightAcftPilot>*@
-@model MVC_Acft_Track.ViewModels.vmSearchRequestFights
+﻿@model MVC_Acft_Track.ViewModels.vmSearchRequestFights
 
 @{
     var menuitem = 4;
@@ -35,12 +34,6 @@
             @Html.AntiForgeryToken()
             @Html.Hidden("menuitem", menuitem);
             @Html.Hidden("acftId", acftId)
-            @*@Html.Hidden("acftNumLocal", Model.vmsearchRequest.acftNumLocal);
-            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.flightID);
-            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.airportID);
-            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.pilotID);
-            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.flightDate);
-            @Html.Hidden("acftNumLocal", Model.vmsearchRequest.companyID);*@
 
             int rowIndex = -1;
             <button type="submit" class="btn btn-default active" name="buttonClicked" value="DeleteSelectedFlights">Delete Selected Flights</button>
