@@ -310,6 +310,9 @@
     <Compile Include="Models\vPilotLogBook.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\vRoute.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\vVisualPilotLogBook.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -557,7 +560,6 @@
     </Content>
     <Content Include="Views\Flight\Delete.cshtml" />
     <Content Include="Views\Flight\DisplayFlightData.cshtml" />
-    <Content Include="Views\Flight\ErrorPage.cshtml" />
     <Content Include="Views\Account\CreateUserR.cshtml" />
     <Content Include="Views\Home\AuthError.cshtml" />
     <Content Include="Views\Home\HelpBeTester.cshtml" />

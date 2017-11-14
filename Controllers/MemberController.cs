@@ -199,7 +199,7 @@ namespace MVC_Acft_Track.Controllers
                                     var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }).ToString();
                                     LogHelper.onFailureLog("CreateUserPilot()", errors);
                                     ViewBag.ExceptionErrorMessage = isDebugMode ? errors : "POST GetFlights() error";
-                                    return View("ErrorPage");
+                                    return View("ExceptionPage");
                                 }                                
                                 //FlightUpdate(form);
                                 break;

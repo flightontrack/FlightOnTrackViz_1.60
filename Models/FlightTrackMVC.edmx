@@ -312,6 +312,27 @@ warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a 
           <Property Name="IsShared" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'flighttrack-db.dbo.vRoute' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vRoute">
+          <Key>
+            <PropertyRef Name="IsJunk" />
+          </Key>
+          <Property Name="RouteID" Type="int" />
+          <Property Name="FlightDateOnly" Type="varchar" MaxLength="10" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="HTMLToolTip" Type="nvarchar(max)" />
+          <Property Name="AcftMMS" Type="nvarchar" MaxLength="57" />
+          <Property Name="Acft" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcftRegNum" Type="varchar" MaxLength="9" />
+          <Property Name="PilotID" Type="int" />
+          <Property Name="NoLandings" Type="int" />
+          <Property Name="FlightDurationMin" Type="int" />
+          <Property Name="RouteName" Type="nvarchar(max)" />
+          <Property Name="IsJunk" Type="bit" Nullable="false" />
+          <Property Name="IsShared" Type="bit" />
+          <Property Name="URLPictures" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vVisualPilotLogBook">
           <Key>
@@ -557,6 +578,24 @@ FROM [dbo].[vListPilot] AS [vListPilot]</DefiningQuery>
 [vPilotLogBook].[IsShared] AS [IsShared]
 FROM [dbo].[vPilotLogBook] AS [vPilotLogBook]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="vRoute" EntityType="Self.vRoute" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[vRoute].[RouteID] AS [RouteID], 
+[vRoute].[FlightDateOnly] AS [FlightDateOnly], 
+[vRoute].[Comments] AS [Comments], 
+[vRoute].[HTMLToolTip] AS [HTMLToolTip], 
+[vRoute].[AcftMMS] AS [AcftMMS], 
+[vRoute].[Acft] AS [Acft], 
+[vRoute].[AcftRegNum] AS [AcftRegNum], 
+[vRoute].[PilotID] AS [PilotID], 
+[vRoute].[NoLandings] AS [NoLandings], 
+[vRoute].[FlightDurationMin] AS [FlightDurationMin], 
+[vRoute].[RouteName] AS [RouteName], 
+[vRoute].[IsJunk] AS [IsJunk], 
+[vRoute].[IsShared] AS [IsShared], 
+[vRoute].[URLPictures] AS [URLPictures]
+FROM [dbo].[vRoute] AS [vRoute]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vVisualPilotLogBook" EntityType="Self.vVisualPilotLogBook" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [vVisualPilotLogBook].[RouteID] AS [RouteID], 
@@ -640,6 +679,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <FunctionImport Name="merge_Flights">
           <Parameter Name="flightsstring" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="vRoutes" EntityType="FlightTrackMVCModel.vRoute" />
         </EntityContainer>
         <EntityType Name="DimArea">
           <Key>
@@ -998,6 +1038,25 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="AcftID" Type="Int32" />
           <Property Name="GroupID" Type="Int32" />
           <Property Name="Created" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="vRoute">
+          <Key>
+            <PropertyRef Name="IsJunk" />
+          </Key>
+          <Property Name="RouteID" Type="Int32" />
+          <Property Name="FlightDateOnly" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HTMLToolTip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="true" />
+          <Property Name="Acft" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftRegNum" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="PilotID" Type="Int32" />
+          <Property Name="NoLandings" Type="Int32" />
+          <Property Name="FlightDurationMin" Type="Int32" />
+          <Property Name="RouteName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsJunk" Type="Boolean" Nullable="false" />
+          <Property Name="IsShared" Type="Boolean" />
+          <Property Name="URLPictures" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1386,6 +1445,26 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="merge_Flights" FunctionName="FlightTrackMVCModel.Store.merge_Flights" />
+          <EntitySetMapping Name="vRoutes">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.vRoute">
+              <MappingFragment StoreEntitySet="vRoute">
+                <ScalarProperty Name="URLPictures" ColumnName="URLPictures" />
+                <ScalarProperty Name="IsShared" ColumnName="IsShared" />
+                <ScalarProperty Name="IsJunk" ColumnName="IsJunk" />
+                <ScalarProperty Name="RouteName" ColumnName="RouteName" />
+                <ScalarProperty Name="FlightDurationMin" ColumnName="FlightDurationMin" />
+                <ScalarProperty Name="NoLandings" ColumnName="NoLandings" />
+                <ScalarProperty Name="PilotID" ColumnName="PilotID" />
+                <ScalarProperty Name="AcftRegNum" ColumnName="AcftRegNum" />
+                <ScalarProperty Name="Acft" ColumnName="Acft" />
+                <ScalarProperty Name="AcftMMS" ColumnName="AcftMMS" />
+                <ScalarProperty Name="HTMLToolTip" ColumnName="HTMLToolTip" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="FlightDateOnly" ColumnName="FlightDateOnly" />
+                <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

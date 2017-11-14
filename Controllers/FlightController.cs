@@ -57,7 +57,7 @@ namespace MVC_Acft_Track.Controllers
                 }
                 catch (Exception e) {
                     ViewBag.ExceptionErrorMessage = debugmode?e.Message:"Database Exception";
-                    return View("ErrorPage");
+                    return View("ExceptionPage");
                 }
             }
             else return RedirectToAction("Login", "Account");
@@ -161,7 +161,7 @@ namespace MVC_Acft_Track.Controllers
                 catch (Exception e)
                 {
                     ViewBag.ExceptionErrorMessage = debugmode ? e.Message : "Database Exception";
-                    return View("ErrorPage");
+                    return View("ExceptionPage");
                 }
             }
             else return RedirectToAction("Login", "Account");
@@ -259,7 +259,7 @@ namespace MVC_Acft_Track.Controllers
                 {
                     //ViewBag.ErrorMessage = "Can not connect to the database";
                     ViewBag.ExceptionErrorMessage = e.Message;
-                    return View("ErrorPage");
+                    return View("ExceptionPage");
                 };
             //}
             //else return RedirectToAction("Login", "Account"); ;

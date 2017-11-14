@@ -76,7 +76,7 @@ namespace MVC_Acft_Track.Controllers
                         catch (Exception e)
                         {
                             ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "Error in Index method";
-                            return View("ErrorPage");
+                            return View("ExceptionPage");
                         }
                     }
                     return RedirectToAction("Index", new { pilotid = pilotId });
@@ -151,7 +151,7 @@ namespace MVC_Acft_Track.Controllers
                 catch (Exception e)
                 {
                     ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "GetFlights() error";
-                    return View("ErrorPage");
+                    return View("ExceptionPage");
                 }
             //}
             //else return RedirectToAction("Login", "Account"); ;
@@ -173,7 +173,7 @@ namespace MVC_Acft_Track.Controllers
                     var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }).ToString();
                     LogHelper.onFailureLog("CreateUserPilot()", errors);
                     ViewBag.ExceptionErrorMessage = isDebugMode ? errors : "POST GetFlights() error";
-                    return View("ErrorPage");
+                    return View("ExceptionPage");
                 }
             //}
             //else return RedirectToAction("Login", "Account");

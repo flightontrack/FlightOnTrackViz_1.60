@@ -1,20 +1,7 @@
 ﻿@model MVC_Acft_Track.ViewModels.vmSearchRequestFights
 
-
 <h2>@ViewBag.ViewTitle</h2>
-
-<div>
-    @*@{
-        var grid = new WebGrid(Model,
-            defaultSort: "FlightID",
-            rowsPerPage: 50);
-
-            grid.SortColumn = ViewBag.Sort;
-            grid.SortDirection = ViewBag.SortDir;
-    }*@
-
-        Public flights are the records that pilots shares with everybody.<br>
-        To view flights in the route on Google Maps check [Select] checkbox and click <div class="code_ms"> Display on Map</div> button.
+@Html.Hidden("!! viewname !!", "GetRoutes");
     @{
         var grid = new WebGrid(
             Model.routeList,
@@ -27,6 +14,15 @@
         grid.SortDirection = Model.sortDir;
         var topNumber = Model.topN > Model.totalRecordCount ? Model.totalRecordCount : Model.topN;
     }
+<div>
+    @if (Model.vmsearchRequest.acftNumLocal != null)
+    {
+        <p><span class="badge"> Aircraft @Model.vmsearchRequest.acftNumLocal </span></p>
+    }
+        Public flights are the records that a pilot shares with everybody.<br>
+        Top <span class="badge">@topNumber </span> records are listed out of total <span class="badge">@Model.totalRecordCount </span> in the history.<br>
+        To view flights in a route on Google Maps check [Select] checkbox and click <div class="code_ms"> Display on Map</div> button.
+
     @using (Html.BeginForm())
     {
         <input type="submit" class="btn btn-default" name="submit" value="Display On Map" />
