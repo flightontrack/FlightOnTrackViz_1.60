@@ -14,7 +14,7 @@ namespace MVC_Acft_Track.Models
     
     public partial class vVisualPilotLogBook
     {
-        public Nullable<int> RouteID { get; set; }
+        public int RouteID { get; set; }
         public Nullable<System.DateTime> FlightDate { get; set; }
         public string AcftMMS { get; set; }
         public string Acft { get; set; }

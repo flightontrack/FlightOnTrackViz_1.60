@@ -6,14 +6,15 @@ using MVC_Acft_Track.Helpers;
 using System.Data.Entity;
 using MVC_Acft_Track.Models;
 using System.Web.Helpers;
+using static MVC_Acft_Track.Finals;
 
 namespace MVC_Acft_Track.ViewModels
 {
     public class vmSearchRequestFights
     {
         public bool isRouteListRequest { get; set; } = false;
-        public int topN { get; set; } = 1000;
-        public int rowsPerPage { get; set; } = 50;
+        public int topN { get; set; } = DEFAULT_TOPN;
+        public int rowsPerPage { get; set; } = DEFAULT_ROWPERPAGE;
         public int totalRecordCount { get; set; } = 0;
         public string sortCol { get; set; } = "RouteID";
         public SortDirection sortDir { get; set; } = SortDirection.Descending;
@@ -87,9 +88,10 @@ namespace MVC_Acft_Track.ViewModels
             }
             if (isRouteListRequest)
             {
-                var routeIds = f.Select(r => r.RouteID);
+                var routeIds = f.Select(r => r.RouteID).ToArray();
                 routeList = rt.Where(row => routeIds.Contains(row.RouteID)).ToList();
                 totalRecordCount = routeList.Count();
+                routeList = routeList.Take(topN).ToList();
             }
             else
             {

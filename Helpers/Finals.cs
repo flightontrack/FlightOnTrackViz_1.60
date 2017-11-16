@@ -30,6 +30,8 @@ namespace MVC_Acft_Track
         //public const string LOG_FILES_PATH = "c:/temp/ConsoleoutFT/";
         public const string ERROR_USEREXISTS = "ERROR_USEREXISTS";
         public const int DEFAULT_PILOTID = 0;
+        public const int DEFAULT_TOPN = 1000;
+        public const int DEFAULT_ROWPERPAGE = 50;
 
     }
 }

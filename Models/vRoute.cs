@@ -14,7 +14,7 @@ namespace MVC_Acft_Track.Models
     
     public partial class vRoute
     {
-        public Nullable<int> RouteID { get; set; }
+        public int RouteID { get; set; }
         public string FlightDateOnly { get; set; }
         public string Comments { get; set; }
         public string HTMLToolTip { get; set; }

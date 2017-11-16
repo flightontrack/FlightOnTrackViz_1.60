@@ -1,19 +1,19 @@
 ﻿@model MVC_Acft_Track.ViewModels.vmSearchRequestFights
 
 <h2>@ViewBag.ViewTitle</h2>
-@Html.Hidden("!! viewname !!", "GetRoutes");
-    @{
-        var grid = new WebGrid(
-            Model.routeList,
-            defaultSort: "RouteID",
-            rowsPerPage: Model.rowsPerPage,
-            canSort: true,
-            canPage: true
-            );
-        grid.SortColumn = Model.sortCol;
-        grid.SortDirection = Model.sortDir;
-        var topNumber = Model.topN > Model.totalRecordCount ? Model.totalRecordCount : Model.topN;
-    }
+@Html.Hidden("!! viewname !!", "GetRoutes")
+@{
+    var grid = new WebGrid(
+        Model.routeList,
+        defaultSort: "RouteID",
+        rowsPerPage: Model.rowsPerPage,
+        canSort: true,
+        canPage: true
+        );
+    grid.SortColumn = Model.sortCol;
+    grid.SortDirection = Model.sortDir;
+    var topNumber = Model.topN > Model.totalRecordCount ? Model.totalRecordCount : Model.topN;
+}
 <div>
     @if (Model.vmsearchRequest.acftNumLocal != null)
     {
@@ -33,8 +33,9 @@
         grid.Column(columnName: "RouteName", header: "Flight/Arpt", style: "text-align-left", format: item => (item.RouteName == null ? "" : item.RouteName.ToString().Substring(0, Math.Min(15, item.RouteName.ToString().Length)) + (item.RouteName.ToString().Length < 15 ? "" : ".."))),
         grid.Column(columnName: "FlightDateOnly", header: "Date", style: "text-align-left"),
         grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
-        //grid.Column(columnName: "AcftMMS", header: "Aircraft", style: "text-align-left"),
-        grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.Acft : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=" + item.AcftRegNum + "\">" + item.AcftRegNum + "</a>"))
+                //grid.Column(columnName: "AcftMMS", header: "Aircraft", style: "text-align-left"),
+        grid.Column(columnName: "Acft", header: "Aircraft", style: "text-align-left", format: item => item.URLPictures == null ? item.Acft : Html.Raw("<a href=\"" + item.URLPictures + "\">  <span class=\"label label-primary\">" + item.Acft + "</span></a>")),
+        grid.Column(columnName: "AcftNum", header: "Acft Num", style: "text-align-left", format: item => item.AcftRegNum.Contains("Not") ? item.Acft : Html.Raw("<a href=\"http://registry.faa.gov/aircraftinquiry/NNum_Results.aspx?NNumbertxt=" + item.AcftRegNum + "\">" + item.AcftRegNum + "</a>"))
 
              ))
         

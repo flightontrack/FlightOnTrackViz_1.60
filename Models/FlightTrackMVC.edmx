@@ -315,9 +315,9 @@ warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a 
 warning 6002: The table/view 'flighttrack-db.dbo.vRoute' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vRoute">
           <Key>
-            <PropertyRef Name="IsJunk" />
+            <PropertyRef Name="RouteID" />
           </Key>
-          <Property Name="RouteID" Type="int" />
+          <Property Name="RouteID" Type="int" Nullable="false" />
           <Property Name="FlightDateOnly" Type="varchar" MaxLength="10" />
           <Property Name="Comments" Type="nvarchar(max)" />
           <Property Name="HTMLToolTip" Type="nvarchar(max)" />
@@ -338,11 +338,9 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not h
           <Key>
             <PropertyRef Name="FlightID" />
             <PropertyRef Name="order_id" />
-            
-            <PropertyRef Name="longitude" />
-            <PropertyRef Name="latitude" />
+            <PropertyRef Name="RouteID" />
           </Key>
-          <Property Name="RouteID" Type="int" />
+          <Property Name="RouteID" Type="int" Nullable="false" />
           <Property Name="FlightDate" Type="date" />
           <Property Name="AcftMMS" Type="nvarchar" MaxLength="57" />
           <Property Name="Acft" Type="nvarchar" MaxLength="50" />
@@ -936,10 +934,9 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Key>
             <PropertyRef Name="FlightID" />
             <PropertyRef Name="order_id" />
-            <PropertyRef Name="longitude" />
-            <PropertyRef Name="latitude" />
+            <PropertyRef Name="RouteID" />
           </Key>
-          <Property Name="RouteID" Type="Int32" />
+          <Property Name="RouteID" Type="Int32" Nullable="false" />
           <Property Name="FlightDate" Type="DateTime" Precision="0" />
           <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="true" />
           <Property Name="Acft" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1041,9 +1038,9 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
         </EntityType>
         <EntityType Name="vRoute">
           <Key>
-            <PropertyRef Name="IsJunk" />
+            <PropertyRef Name="RouteID" />
           </Key>
-          <Property Name="RouteID" Type="Int32" />
+          <Property Name="RouteID" Type="Int32" Nullable="false" />
           <Property Name="FlightDateOnly" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="HTMLToolTip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
