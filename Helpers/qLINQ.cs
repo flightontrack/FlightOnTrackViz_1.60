@@ -11,13 +11,10 @@ namespace MVC_Acft_Track.Helpers
     {
 
         public Entities db;
-        //int pilotId;
         int _acftId;
         int _flightId;
         int _topNumber = 100;
-        string _acftNumLocal;
-        int _companyIDint;
-        //Flight flight;
+        //string _acftNumLocal;
 
         public qLINQ() { db = new Entities(); }
 
@@ -26,20 +23,13 @@ namespace MVC_Acft_Track.Helpers
 
         public int topNumber { set { _topNumber = value; } }
         public int pilotId { get; set; }
-        //    set { pilotId = value; }
-        //    get { return pilotId; }
-        //}
-
         public int acftId
         {
             set { _acftId = value; }
             get { return _acftId; }
         }
         public string acftNumLocal
-        {
-            set { _acftNumLocal = value; }
-            get { return _acftNumLocal; }
-        }
+        { get; set; }
         string _pilotUserName;
         public string pilotUserName {
             set {
@@ -49,11 +39,7 @@ namespace MVC_Acft_Track.Helpers
         }
 
         int? _airportId;
-        public int? airportId
-        {
-            set { _airportId = value; }
-            get { return _airportId; }
-        }
+        public int? airportId { get; set; }
         string _airportCode;
         public string airportCode
         {
@@ -77,8 +63,7 @@ namespace MVC_Acft_Track.Helpers
         public Flight flight {
             get { return db.Flights.Find(_flightId); }
         }
-
-        
+     
         public DimAircraftRemote acftRemote
         {
             get { return db.DimAircraftRemotes.Find(_acftId); }
@@ -88,11 +73,9 @@ namespace MVC_Acft_Track.Helpers
             get { return db.Pilots.Find(pilotId); }
         }
 
-        public int companyIDint
-        {
-            set { _companyIDint = value; }
-            get { return _companyIDint; }
-        }
+        public int companyIDint { get; set; }
+
+        public IQueryable<Flight> flightsOnlyAll { get { return db.Flights; } }
         public IQueryable<vFlightAcftPilot> flightsAll { get { return db.vFlightAcftPilots.Where(r => r.FlightID > 0).OrderByDescending(r => r.FlightID); } }
         public IQueryable<vRoute> routesAll { get { return db.vRoutes; } }
         public IQueryable<vFlightAcftPilot> flightsGetGarbage { get { return db.vFlightAcftPilots.Where(r => r.IsJunk == true).OrderByDescending(r => r.FlightID); } }
@@ -114,8 +97,8 @@ namespace MVC_Acft_Track.Helpers
         public IQueryable<vFlightAcftPilot> flightsByPilot { get { return db.vFlightAcftPilots.Where(row => row.PilotID == pilotId); } }
 
         public IQueryable<vAircraftPilot> aircraftsByPilot { get { return db.vAircraftPilots.Where(r => r.PilotID == pilotId); } }
-        public IQueryable<vAircraftPilot> aircraftsByAcftNumLocal { get { return db.vAircraftPilots.Where(row => row.AcftNumLocal == _acftNumLocal); } }
-        public IQueryable<AircraftPilot> aircraftsByCompany { get { return db.AircraftPilots.Where(r => r.CompanyID == _companyIDint); } }
+        public IQueryable<vAircraftPilot> aircraftsByAcftNumLocal { get { return db.vAircraftPilots.Where(row => row.AcftNumLocal == acftNumLocal); } }
+        public IQueryable<AircraftPilot> aircraftsByCompany { get { return db.AircraftPilots.Where(r => r.CompanyID == companyIDint); } }
 
 
         ///Select Lista

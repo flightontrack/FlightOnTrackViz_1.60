@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Web;
 using MVC_Acft_Track.Helpers;
 using System.Data.Entity;
@@ -56,7 +57,7 @@ namespace MVC_Acft_Track.ViewModels
             if (!string.IsNullOrEmpty(vmsearchRequest.acftNumLocal))
             {
                 q.acftNumLocal = vmsearchRequest.acftNumLocal;
-                var acftids = q.aircraftsByAcftNumLocal.Select(row => row.AcftID).ToList();
+                var acftids = q.aircraftsByAcftNumLocal.Select(row => row.AcftID).ToArray();
                 f = f.Where(row => acftids.Contains(row.AcftID.Value));
             }
             if (!string.IsNullOrEmpty(vmsearchRequest.companyID))
@@ -89,9 +90,10 @@ namespace MVC_Acft_Track.ViewModels
             if (isRouteListRequest)
             {
                 var routeIds = f.Select(r => r.RouteID).ToArray();
-                routeList = rt.Where(row => routeIds.Contains(row.RouteID)).ToList();
-                totalRecordCount = routeList.Count();
-                routeList = routeList.Take(topN).ToList();
+                string sortexpression = sortCol+(sortDir == SortDirection.Descending ? " DESC" : " ASC");
+                rt = rt.Where(r => routeIds.Contains(r.RouteID)).OrderBy(sortexpression);
+                totalRecordCount = rt.Count();
+                routeList = rt.Take(topN).ToList();
             }
             else
             {
@@ -195,6 +197,8 @@ namespace MVC_Acft_Track.ViewModels
         public string companyID { get; set; }
         public bool isSearchJunk { get; set; }
         public bool isNoJunk { get; set; }
+        public int vmSearchRequestTopN { get; set; }
+        public string vmSearchRequestTitle { get; set; }
         public vmSearchRequest()
         {
         }
