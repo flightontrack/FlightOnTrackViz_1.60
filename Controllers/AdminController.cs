@@ -6,20 +6,20 @@ using System.Linq;
 using System.Web.Mvc;
 using FontBing;
 using WebMatrix.WebData;
-using MVC_Acft_Track.Models;
-using MVC_Acft_Track.Helpers;
-using static MVC_Acft_Track.App;
-using static MVC_Acft_Track.Finals;
+using FontNameSpace.Models;
+using FontNameSpace.Helpers;
+using static FontNameSpace.App;
+using static FontNameSpace.Finals;
 using System.Threading.Tasks;
 using System.Collections;
-using MVC_Acft_Track.ViewModels;
+using FontNameSpace.ViewModels;
 using System.Web.Helpers;
 
 /// 9784934810.0139
 /// 82$befc
 /// 79$bec3
 
-namespace MVC_Acft_Track.Controllers
+namespace FontNameSpace.Controllers
 {
     [Authorize]
     public class AdminController : Controller

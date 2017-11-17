@@ -8,11 +8,11 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
-using MVC_Acft_Track.Filters;
-using MVC_Acft_Track.Models;
-using static MVC_Acft_Track.Finals;
+using FontNameSpace.Filters;
+using FontNameSpace.Models;
+using static FontNameSpace.Finals;
 
-namespace MVC_Acft_Track.Controllers
+namespace FontNameSpace.Controllers
 {
 
     [Authorize]

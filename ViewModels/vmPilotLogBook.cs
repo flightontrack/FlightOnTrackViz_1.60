@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using MVC_Acft_Track.Models;
+using FontNameSpace.Models;
 
-namespace MVC_Acft_Track.ViewModels
+namespace FontNameSpace.ViewModels
 {
     public class vmPilotLogBook
     {

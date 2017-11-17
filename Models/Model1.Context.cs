@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_Acft_Track.Models
+namespace FontNameSpace.Models
 {
     using System;
     using System.Data.Entity;

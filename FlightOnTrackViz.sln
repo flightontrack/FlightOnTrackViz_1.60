@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightOnTrackViz_1.6", "FlightOnTrackViz_1.6.csproj", "{F9B072FA-D7F6-465D-B039-6B3AF5F2F721}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightOnTrackViz", "FlightOnTrackViz.csproj", "{F9B072FA-D7F6-465D-B039-6B3AF5F2F721}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

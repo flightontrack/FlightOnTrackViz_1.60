@@ -1,6 +1,6 @@
-﻿using MVC_Acft_Track.Helpers;
-using MVC_Acft_Track.Models;
-using MVC_Acft_Track.ViewModels;
+﻿using FontNameSpace.Helpers;
+using FontNameSpace.Models;
+using FontNameSpace.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,10 +10,10 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using static MVC_Acft_Track.App;
-using static MVC_Acft_Track.Finals;
+using static FontNameSpace.App;
+using static FontNameSpace.Finals;
 
-namespace MVC_Acft_Track.Controllers
+namespace FontNameSpace.Controllers
 {
     public class PublicFlightsController : Controller
     {

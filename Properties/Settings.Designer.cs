@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_Acft_Track.Properties {
+namespace FontNameSpace.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

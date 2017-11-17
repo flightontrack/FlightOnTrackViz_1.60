@@ -2,11 +2,11 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using WebMatrix.WebData;
-using MVC_Acft_Track.Models;
+using FontNameSpace.Models;
 using System.Linq;
-using static MVC_Acft_Track.Finals;
+using static FontNameSpace.Finals;
 
-namespace MVC_Acft_Track.Controllers
+namespace FontNameSpace.Controllers
 {
     public class PilotUserController : Controller
     {

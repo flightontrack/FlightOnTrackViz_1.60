@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
-using MVC_Acft_Track.Helpers;
+using FontNameSpace.Helpers;
 using System.Data.Entity;
-using MVC_Acft_Track.Models;
+using FontNameSpace.Models;
 using System.Web.Helpers;
-using static MVC_Acft_Track.Finals;
+using static FontNameSpace.Finals;
 
-namespace MVC_Acft_Track.ViewModels
+namespace FontNameSpace.ViewModels
 {
     public class vmSearchRequestFights
     {

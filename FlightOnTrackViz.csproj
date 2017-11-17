@@ -570,7 +570,6 @@
     <Content Include="Views\Home\HelpTracking.cshtml" />
     <Content Include="Views\Home\ScreenshotVideo.cshtml" />
     <Content Include="Views\Home\HelpWebSite.cshtml" />
-    <Content Include="Views\Home\IndexAdmin.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date1.cshtml" />
     <Content Include="Views\PublicFlights\IndexFlightsPublic.cshtml" />
     <Content Include="Views\Home\HelpiPhoneUser.cshtml" />
@@ -580,7 +579,6 @@
     <Content Include="Views\Flight\DisplayMyFlightMovingMap.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\GetJunkRecordsAsync.cshtml" />
-    <Content Include="Views\PublicFlights\GetLatestRoutes.cshtml" />
     <Content Include="Views\Admin\GetFlights.cshtml" />
     <Content Include="Views\Admin\FlightEditAdm.cshtml" />
     <Content Include="Views\Home\IndexLogBook.cshtml" />

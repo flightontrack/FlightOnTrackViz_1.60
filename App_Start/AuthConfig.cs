@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Web.WebPages.OAuth;
-using MVC_Acft_Track.Models;
+using FontNameSpace.Models;
 
-namespace MVC_Acft_Track
+namespace FontNameSpace
 {
     public static class AuthConfig
     {

@@ -1,10 +1,10 @@
 ﻿using System.Data.Entity;
 using System.Linq;
-using MVC_Acft_Track.Models;
+using FontNameSpace.Models;
 using System.Activities.Expressions;
 using System.Collections.Generic;
 
-namespace MVC_Acft_Track.Helpers
+namespace FontNameSpace.Helpers
 {
 
     public class Queryables

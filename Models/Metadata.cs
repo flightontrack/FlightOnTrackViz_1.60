@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace MVC_Acft_Track.Models
+namespace FontNameSpace.Models
 {
     public partial class SearchRequestMetadata
     {

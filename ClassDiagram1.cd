@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="MVC_Acft_Track.Controllers.HomeController">
+  <Class Name="FontNameSpace.Controllers.HomeController">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <NestedTypes>
-      <Enum Name="MVC_Acft_Track.Controllers.HomeController.EPilotCertificates">
+      <Enum Name="FontNameSpace.Controllers.HomeController.EPilotCertificates">
         <TypeIdentifier>
           <NewMemberFileName>Controllers\HomeController.cs</NewMemberFileName>
         </TypeIdentifier>

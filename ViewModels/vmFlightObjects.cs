@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using MVC_Acft_Track.Models;
-using MVC_Acft_Track.Helpers;
+using FontNameSpace.Models;
+using FontNameSpace.Helpers;
 
-namespace MVC_Acft_Track.ViewModels
+namespace FontNameSpace.ViewModels
 {
     public class vmFlight
     {

@@ -4,9 +4,9 @@ using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
 using WebMatrix.WebData;
-using MVC_Acft_Track.Models;
+using FontNameSpace.Models;
 
-namespace MVC_Acft_Track.Filters
+namespace FontNameSpace.Filters
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class InitializeSimpleMembershipAttribute : ActionFilterAttribute

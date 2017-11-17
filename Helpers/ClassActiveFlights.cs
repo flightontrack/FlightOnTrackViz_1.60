@@ -1,12 +1,12 @@
 ﻿using System.Data.Entity;
 using System.Linq;
-using MVC_Acft_Track.Models;
+using FontNameSpace.Models;
 using System;
 using System.Collections.Generic;
 using System.Web;
-using static MVC_Acft_Track.Finals;
+using static FontNameSpace.Finals;
 
-namespace MVC_Acft_Track.Helpers
+namespace FontNameSpace.Helpers
 {
     public class ClassActiveFlights
     {

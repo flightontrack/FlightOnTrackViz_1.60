@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
 
-namespace MVC_Acft_Track.Models
+namespace FontNameSpace.Models
 {
     public class UsersContext : DbContext
     {

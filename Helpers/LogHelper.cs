@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using static MVC_Acft_Track.Finals;
+using static FontNameSpace.Finals;
 
-namespace MVC_Acft_Track
+namespace FontNameSpace
 {
     public class LogHelper
     {

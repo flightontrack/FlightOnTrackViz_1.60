@@ -15,12 +15,12 @@ using SharpKml.Engine;
 using kmlStyles;
 using kmlFlightPlacemarkPoint;
 using kmlFlightPlacemarkLineString;
-using MVC_Acft_Track.Models;
-using MVC_Acft_Track.ViewModels;
-using MVC_Acft_Track.Helpers;
+using FontNameSpace.Models;
+using FontNameSpace.ViewModels;
+using FontNameSpace.Helpers;
 using Ionic.Zip;
 
-namespace MVC_Acft_Track.Controllers
+namespace FontNameSpace.Controllers
 { 
 
     public class FlightController : Controller
