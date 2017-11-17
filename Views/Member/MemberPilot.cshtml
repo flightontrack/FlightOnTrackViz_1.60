@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <label for="BaseAirport" class="col-sm-2 control-label">Base Airport Code</label>
                         <div class="col-sm-8">
-                            <small class="form-text text-muted">Please enter at least 3 symbols.</small>
+                            <small class="form-text text-muted">Please enter at least 3 symbols</small>
                             <input type="text" class="form-control" id="BaseAirport" name="BaseAirport" value="@Model.BaseAirport">
                         </div>
                     </div>
@@ -53,6 +53,7 @@
                     <div class="form-group">
                         <label for="PilotName" class="col-sm-2 control-label">Callsign</label>
                         <div class="col-sm-8">
+                            <small class="form-text text-muted">See Quick Help on the left</small>
                             <input type="text" class="form-control" id="PilotName" name="PilotName" value="@Model.PilotName" disabled>
                             @Html.HiddenFor(model => model.PilotName)
                         </div>

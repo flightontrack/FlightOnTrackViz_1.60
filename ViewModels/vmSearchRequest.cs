@@ -23,7 +23,7 @@ namespace MVC_Acft_Track.ViewModels
         public List<vFlightAcftPilot> flightList { get; set; }
         public List<vRoute> routeList { get; set; }
 
-        static qLINQ q = new qLINQ();
+        static Queryables q = new Queryables();
         IQueryable<vFlightAcftPilot> f = q.flightsAll;
         IQueryable<vRoute> rt = q.routesAll;
 
@@ -113,7 +113,7 @@ namespace MVC_Acft_Track.ViewModels
             sortDir = p_sortdir;
             topN = p_topN;
 
-            q = new qLINQ();
+            q = new Queryables();
             f = q.flightsAll;
             rt = q.routesAll;
 

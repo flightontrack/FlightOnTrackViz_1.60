@@ -36,7 +36,6 @@ namespace MVC_Acft_Track.Models
         public virtual DbSet<vPilotLogBook> vPilotLogBooks { get; set; }
         public virtual DbSet<DimAircraftRemote> DimAircraftRemotes { get; set; }
         public virtual DbSet<vFlightAcftPilot> vFlightAcftPilots { get; set; }
-        public virtual DbSet<vListAircraft> vListAircrafts { get; set; }
         public virtual DbSet<Flight> Flights { get; set; }
         public virtual DbSet<GpsLocation> GpsLocations { get; set; }
         public virtual DbSet<Pilot> Pilots { get; set; }
@@ -46,6 +45,7 @@ namespace MVC_Acft_Track.Models
         public virtual DbSet<DimAcftGroup> DimAcftGroups { get; set; }
         public virtual DbSet<AircraftGroup> AircraftGroups { get; set; }
         public virtual DbSet<vRoute> vRoutes { get; set; }
+        public virtual DbSet<vListAircraft> vListAircrafts { get; set; }
     
         public virtual ObjectResult<Nullable<bool>> get_isArea(Nullable<int> gpsLocationID, Nullable<int> areaID, string radius)
         {

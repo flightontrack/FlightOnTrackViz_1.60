@@ -26,7 +26,7 @@ namespace MVC_Acft_Track.Controllers
     public class FlightController : Controller
     {
         public bool debugmode = true;
-        private qLINQ q = new qLINQ { db = new Entities()};
+        private Queryables q = new Queryables { db = new Entities()};
 
         private Entities db = new Entities();
         private int pilotid;

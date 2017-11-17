@@ -241,7 +241,7 @@
     <Compile Include="Helpers\kmlStyles.cs" />
     <Compile Include="Helpers\ListsDD.cs" />
     <Compile Include="Helpers\LogHelper.cs" />
-    <Compile Include="Helpers\qLINQ.cs" />
+    <Compile Include="Helpers\Queryables.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AircraftGroup.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -607,7 +607,7 @@
     <Content Include="Views\Shared\SearchByCriteria.cshtml" />
     <Content Include="Views\Account\LoginGroup.cshtml" />
     <Content Include="Views\PublicFlights\SearchByGroup.cshtml" />
-    <Content Include="Views\PublicFlights\FlightsPublicByCriteria.cshtml" />
+    <Content Include="Views\PublicFlights\GetRouteFlights.cshtml" />
     <Content Include="Views\PublicFlights\GetRoutes.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -262,14 +262,12 @@ warning 6002: The table/view 'flighttrack-db.dbo.vFlightAcftPilot' does not have
         <!--Errors Found During Generation:
 warning 6002: The table/view 'flighttrack-db.dbo.vListAircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vListAircraft">
-          
           <Key>
             <PropertyRef Name="AcftID" />
           </Key>
-          <Property Name="a" Type="int" Nullable="false" />
           <Property Name="AcftID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AcftNumLocal" Type="nvarchar" MaxLength="50" />
-          <Property Name="c" Type="bigint" />
+          <Property Name="isFilghtExists" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'flighttrack-db.dbo.vListAirport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -315,6 +313,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a 
 warning 6002: The table/view 'flighttrack-db.dbo.vRoute' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vRoute">
           <Key>
+            
             <PropertyRef Name="RouteID" />
           </Key>
           <Property Name="RouteID" Type="int" Nullable="false" />
@@ -338,6 +337,9 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not h
           <Key>
             <PropertyRef Name="FlightID" />
             <PropertyRef Name="order_id" />
+            
+            
+            
             <PropertyRef Name="RouteID" />
           </Key>
           <Property Name="RouteID" Type="int" Nullable="false" />
@@ -540,10 +542,9 @@ FROM [dbo].[vFlightAcftPilot] AS [vFlightAcftPilot]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vListAircraft" EntityType="Self.vListAircraft" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-[vListAircraft].[a] AS [a], 
 [vListAircraft].[AcftID] AS [AcftID], 
 [vListAircraft].[AcftNumLocal] AS [AcftNumLocal], 
-[vListAircraft].[c] AS [c]
+[vListAircraft].[isFilghtExists] AS [isFilghtExists]
 FROM [dbo].[vListAircraft] AS [vListAircraft]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vListAirport" EntityType="Self.vListAirport" store:Type="Views" store:Schema="dbo">
@@ -649,7 +650,6 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <EntitySet Name="vPilotLogBooks" EntityType="FlightTrackMVCModel.vPilotLogBook" />
           <EntitySet Name="DimAircraftRemotes" EntityType="FlightTrackMVCModel.DimAircraftRemote" />
           <EntitySet Name="vFlightAcftPilots" EntityType="FlightTrackMVCModel.vFlightAcftPilot" />
-          <EntitySet Name="vListAircrafts" EntityType="FlightTrackMVCModel.vListAircraft" />
           <EntitySet Name="Flights" EntityType="FlightTrackMVCModel.Flight" />
           <EntitySet Name="GpsLocations" EntityType="FlightTrackMVCModel.GpsLocation" />
           <EntitySet Name="Pilots" EntityType="FlightTrackMVCModel.Pilot" />
@@ -678,6 +678,7 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Parameter Name="flightsstring" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="vRoutes" EntityType="FlightTrackMVCModel.vRoute" />
+          <EntitySet Name="vListAircrafts" EntityType="FlightTrackMVCModel.vListAircraft" />
         </EntityContainer>
         <EntityType Name="DimArea">
           <Key>
@@ -826,15 +827,6 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="AcftNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Pilot" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="URLPictures" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="vListAircraft">
-          <Key>
-            <PropertyRef Name="AcftID" />
-          </Key>
-          <Property Name="a" Type="Int32" Nullable="false" />
-          <Property Name="AcftID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="c" Type="Int64" />
         </EntityType>
         <EntityType Name="Flight">
           <Key>
@@ -1055,6 +1047,14 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
           <Property Name="IsShared" Type="Boolean" />
           <Property Name="URLPictures" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="vListAircraft">
+          <Key>
+            <PropertyRef Name="AcftID" />
+          </Key>
+          <Property Name="AcftID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isFilghtExists" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1216,16 +1216,6 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
                 <ScalarProperty Name="FlightName" ColumnName="FlightName" />
                 <ScalarProperty Name="RouteID" ColumnName="RouteID" />
                 <ScalarProperty Name="FlightID" ColumnName="FlightID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vListAircrafts">
-            <EntityTypeMapping TypeName="FlightTrackMVCModel.vListAircraft">
-              <MappingFragment StoreEntitySet="vListAircraft">
-                <ScalarProperty Name="c" ColumnName="c" />
-                <ScalarProperty Name="AcftNumLocal" ColumnName="AcftNumLocal" />
-                <ScalarProperty Name="AcftID" ColumnName="AcftID" />
-                <ScalarProperty Name="a" ColumnName="a" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1459,6 +1449,15 @@ FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</Defin
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
                 <ScalarProperty Name="FlightDateOnly" ColumnName="FlightDateOnly" />
                 <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vListAircrafts">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.vListAircraft">
+              <MappingFragment StoreEntitySet="vListAircraft">
+                <ScalarProperty Name="isFilghtExists" ColumnName="isFilghtExists" />
+                <ScalarProperty Name="AcftNumLocal" ColumnName="AcftNumLocal" />
+                <ScalarProperty Name="AcftID" ColumnName="AcftID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

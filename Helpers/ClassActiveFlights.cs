@@ -62,7 +62,7 @@ namespace MVC_Acft_Track.Helpers
             {
                 if (f.UpdateDelay < delay) { delay = f.UpdateDelay;fId = f.FlightID; }
             }
-            var q = new qLINQ (db);
+            var q = new Queryables (db);
             q.flightId = fId;
             var loc = q.flightGpsLocationsOrderDesc.ToList()[0];
             return new ClassArea.AreaCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS };
@@ -77,7 +77,7 @@ namespace MVC_Acft_Track.Helpers
             {
                 if (f.UpdateDelay < delay) { delay = f.UpdateDelay; fId = f.FlightID; }
             }
-            var q = new qLINQ(db);
+            var q = new Queryables(db);
             q.flightId = fId;
             var loc = q.flightGpsLocationsOrderDesc.ToList()[0];
             return new ClassArea.AreaCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS  };

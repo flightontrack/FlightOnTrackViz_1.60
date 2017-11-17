@@ -18,7 +18,7 @@ namespace MVC_Acft_Track.Controllers
     {
 
         //public enum EPilotCertificates { Student_Pilot, Sport_Pilot, Recreational_Pilot, Private_Pilot, Commercial_Pilot, Airline_Transport_Pilot, Other };
-        private qLINQ q = new qLINQ { db = new Entities() };
+        private Queryables q = new Queryables { db = new Entities() };
         private Entities db = new Entities();
         private int pilotid;
         private IEnumerable<vFlightAcftPilot> q_flightsByPilot;
@@ -140,52 +140,52 @@ namespace MVC_Acft_Track.Controllers
 
         //}
         // GET:
-        public ActionResult PilotEdit(int id = 0)
-        {
-            Pilot pilot = db.Pilots.Find(id);
+        //public ActionResult PilotEdit(int id = 0)
+        //{
+        //    Pilot pilot = db.Pilots.Find(id);
 
-            //EPilotCertificates enumIndexSelected;
-            //Enum.TryParse(pilot.CertType, out enumIndexSelected);
-            //List<SelectListItem> items = new List<SelectListItem>();
+        //    //EPilotCertificates enumIndexSelected;
+        //    //Enum.TryParse(pilot.CertType, out enumIndexSelected);
+        //    //List<SelectListItem> items = new List<SelectListItem>();
 
-            //items.Add(new SelectListItem { Text = "Student", Value = "0" });
-            //items.Add(new SelectListItem { Text = "Sport Pilot", Value = "1" });
-            //items.Add(new SelectListItem { Text = "Recreational Pilot", Value = "2" });
-            //items.Add(new SelectListItem { Text = "Private Pilot", Value = "3", Selected = true });
-            //items.Add(new SelectListItem { Text = "Commercial Pilot", Value = "4" });
-            //items.Add(new SelectListItem { Text = "Flight Instructor", Value = "5", Selected = true });
-            //items.Add(new SelectListItem { Text = "Airline Transport Pilot", Value = "6" });
-            //ViewBag.Cert = items;
+        //    //items.Add(new SelectListItem { Text = "Student", Value = "0" });
+        //    //items.Add(new SelectListItem { Text = "Sport Pilot", Value = "1" });
+        //    //items.Add(new SelectListItem { Text = "Recreational Pilot", Value = "2" });
+        //    //items.Add(new SelectListItem { Text = "Private Pilot", Value = "3", Selected = true });
+        //    //items.Add(new SelectListItem { Text = "Commercial Pilot", Value = "4" });
+        //    //items.Add(new SelectListItem { Text = "Flight Instructor", Value = "5", Selected = true });
+        //    //items.Add(new SelectListItem { Text = "Airline Transport Pilot", Value = "6" });
+        //    //ViewBag.Cert = items;
 
-            //SetViewBagCertType(enumIndexSelected);
-            ViewBag.Certif = ListsDD.getCertificates(pilot.CertType);
-            if (pilot == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.Pilotphone = pilot.PilotCode;
-            ViewBag.PilotNickname = pilot.PilotName;
-            ViewBag.Certif = ListsDD.getCertificates(pilot.CertType);
-            return View(pilot);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult PilotEdit(Pilot pilot, string Certif)
-        {
-            if (ModelState.IsValid)
-            {
-                pilot.CertType = Certif.Replace("_", " ");
-                db.Pilots.Attach(pilot);
-                db.Entry(pilot).Property(p => p.NameLast).IsModified = true;
-                db.Entry(pilot).Property(p => p.NameFirst).IsModified = true;
-                db.Entry(pilot).Property(p => p.BaseAirport).IsModified = true;
-                db.Entry(pilot).Property(p => p.CertType).IsModified = true;
-                //db.Entry(pilot).Property(p => p.PilotName).IsModified = true;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(pilot);
-        }
+        //    //SetViewBagCertType(enumIndexSelected);
+        //    ViewBag.Certif = ListsDD.getCertificates(pilot.CertType);
+        //    if (pilot == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.Pilotphone = pilot.PilotCode;
+        //    ViewBag.PilotNickname = pilot.PilotName;
+        //    ViewBag.Certif = ListsDD.getCertificates(pilot.CertType);
+        //    return View(pilot);
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult PilotEdit(Pilot pilot, string Certif)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        pilot.CertType = Certif.Replace("_", " ");
+        //        db.Pilots.Attach(pilot);
+        //        db.Entry(pilot).Property(p => p.NameLast).IsModified = true;
+        //        db.Entry(pilot).Property(p => p.NameFirst).IsModified = true;
+        //        db.Entry(pilot).Property(p => p.BaseAirport).IsModified = true;
+        //        db.Entry(pilot).Property(p => p.CertType).IsModified = true;
+        //        //db.Entry(pilot).Property(p => p.PilotName).IsModified = true;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(pilot);
+        //}
 
         public ActionResult IndexLogBook()
         {

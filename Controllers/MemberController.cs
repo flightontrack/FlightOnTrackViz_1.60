@@ -20,13 +20,13 @@ namespace MVC_Acft_Track.Controllers
     {
         //public bool isDebugMode = true;
         private Entities db;
-        private qLINQ q;
+        private Queryables q;
         private int pilotid;
 
         public MemberController()
         {
             db = new Entities();
-            q = new qLINQ(db);
+            q = new Queryables(db);
         }
 
         public ActionResult indexMember(bool isSearchJunk = false, int menuitem = 1, int? acftId = null, bool? buttonEnable = null,bool? successFlg = null, string sort= "", string sortdir = "",int page=1)

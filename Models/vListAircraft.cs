@@ -14,9 +14,8 @@ namespace MVC_Acft_Track.Models
     
     public partial class vListAircraft
     {
-        public int a { get; set; }
         public string AcftID { get; set; }
         public string AcftNumLocal { get; set; }
-        public Nullable<long> c { get; set; }
+        public int isFilghtExists { get; set; }
     }
 }

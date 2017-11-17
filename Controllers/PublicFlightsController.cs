@@ -19,17 +19,17 @@ namespace MVC_Acft_Track.Controllers
     {
 
         private Entities db = new Entities();
-        private qLINQ q = new qLINQ();
+        private Queryables q = new Queryables();
         //private IEnumerable<vFlightAcftPilot> q_flightsRecent;
         //private IEnumerable<vFlightAcftPilot> q_flightsActive;
         //private IEnumerable<vFlightAcftPilot> q_acftGroupFlightsActive;
         private IEnumerable<GpsLocation> q_gpslocationsActive;
         //private IEnumerable<DimArea> q_getAreaCenter;
-        private IQueryable<vPilotLogBook> q_flightsLogBook;
+        //private IQueryable<vPilotLogBook> q_flightsLogBook;
         //private IQueryable<vFlightAcftPilot> q_flightsByRoute;
         //private IEnumerable<vFlightAcftPilot> q_isPositionCurrent;
         private int flightId;
-        private int routeid;
+        //private int routeid;
         //private int areaID;
         private int top;
 
@@ -65,15 +65,15 @@ namespace MVC_Acft_Track.Controllers
                 try
                 {
                     ViewBag.ViewTitle = "Route " + id + " Flights";
-                    ViewBag.ActionBack = "GetLatestRoutes";
+                    //ViewBag.ActionBack = "GetLatestRoutes";
                     ViewBag.Message = message;
                     ViewBag.DisplayChBoxChecked = true;
-                    var sr = new vmSearchRequest{ routeID= id,isNoJunk = true};
-                    var fs = new vmSearchRequestFights(sr, 50, 10000);
+                    //var sr = new vmSearchRequest{ routeID= id,isNoJunk = true};
+                    var fs = new vmSearchRequestFights { vmsearchRequest=new vmSearchRequest { routeID = id, isNoJunk = true }}.Search();
                     //return View(fs);
                 //routeid = id;
                     //var q = q_flightsByRoute.ToList();
-                    return View("FlightsPublicByCriteria", fs);
+                    return View(fs);
                 }
                 catch (Exception e)
                 {
@@ -100,46 +100,46 @@ namespace MVC_Acft_Track.Controllers
             return RedirectToAction("GetRouteFlights", "Flight", new { flightIds = flightIdsString });
             //return View("DisplayLatestFlightsStaticMap");
         }
-        [HttpGet]
-        public ActionResult FlightsPublicByCriteria(vmSearchRequest searchRequest, string sort = "", string sortdir = "")
-        {
-            try
-            {
-                var fs = new vmSearchRequestFights(searchRequest, 50, 10000, sort, sortdir.Equals("ASC") ? SortDirection.Ascending : SortDirection.Descending);
-                return View(fs);
-            }
-            catch (Exception e)
-            {
-                ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "FlightsPublicByCriteria() error";
-                return View("ExceptionPage");
-            }
-        }
+        //[HttpGet]
+        //public ActionResult FlightsPublicByCriteria(vmSearchRequest searchRequest, string sort = "", string sortdir = "")
+        //{
+        //    try
+        //    {
+        //        var fs = new vmSearchRequestFights(searchRequest, 50, 10000, sort, sortdir.Equals("ASC") ? SortDirection.Ascending : SortDirection.Descending);
+        //        return View(fs);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "FlightsPublicByCriteria() error";
+        //        return View("ExceptionPage");
+        //    }
+        //}
 
-        [HttpPost]
-        public ActionResult FlightsPublicByCriteria(FormCollection form)
-        {
-            if (form["buttonClicked"] == "DisplayOnMap")
-            {
-                var flightIds = new List<int>();
-                var c = form.Count;
-                foreach (string id in form)
-                {
-                    if (form[id] == "Compare") continue;
-                    if (form.GetValues(id).Contains("true"))
-                    {
-                        flightIds.Add(int.Parse(id));
-                    }
-                }
-                if (flightIds.Count == 0) return View();
-                var gpslocations = db.GpsLocations.Where(row => flightIds.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                ViewBag.FlightsJsonData = serializer.Serialize(gpslocations);
-                ViewBag.AreaCenterLat = gpslocations.FirstOrDefault().latitude;
-                ViewBag.AreaCenterLong = gpslocations.FirstOrDefault().longitude;
-                return View("DisplayLatestFlightsStaticMap");
-            }
-            return View();
-        }
+        //[HttpPost]
+        //public ActionResult FlightsPublicByCriteria(FormCollection form)
+        //{
+        //    if (form["buttonClicked"] == "DisplayOnMap")
+        //    {
+        //        var flightIds = new List<int>();
+        //        var c = form.Count;
+        //        foreach (string id in form)
+        //        {
+        //            if (form[id] == "Compare") continue;
+        //            if (form.GetValues(id).Contains("true"))
+        //            {
+        //                flightIds.Add(int.Parse(id));
+        //            }
+        //        }
+        //        if (flightIds.Count == 0) return View();
+        //        var gpslocations = db.GpsLocations.Where(row => flightIds.Contains(row.FlightID)).OrderBy(g => g.FlightID).ThenBy(g => g.onSessionPointNum).Select(g => new { g.FlightID, g.onSessionPointNum, g.SpeedKnot, g.SpeedKmpH, g.gpsTimeOnly, g.AirportCode, g.AltitudeFt, g.AltitudeM, g.latitude, g.longitude }).ToList();
+        //        JavaScriptSerializer serializer = new JavaScriptSerializer();
+        //        ViewBag.FlightsJsonData = serializer.Serialize(gpslocations);
+        //        ViewBag.AreaCenterLat = gpslocations.FirstOrDefault().latitude;
+        //        ViewBag.AreaCenterLong = gpslocations.FirstOrDefault().longitude;
+        //        return View("DisplayLatestFlightsStaticMap");
+        //    }
+        //    return View();
+        //}
         [HttpGet]
         //public ActionResult RoutesPublicByCriteria(vmSearchRequest searchRequest, string sort = "", string sortdir = "")
         public ActionResult GetRoutes(vmSearchRequest searchRequest, string sort = "RouteID", string sortdir = "")
@@ -200,7 +200,8 @@ namespace MVC_Acft_Track.Controllers
         [HttpGet]
         public ActionResult SearchByCriteria(string message = "")
         {
-            ViewBag.AircraftsSelList = new SelectList(db.vListAircrafts.OrderBy(row => row.AcftNumLocal), "AcftID", "AcftNumLocal");
+            ViewBag.AircraftsSelList = new SelectList(q.selList_vAircraftDistinctWithFlightsPublic.ToList(), "AcftID", "AcftNumLocal");
+            //new SelectList(db.vListAircrafts.OrderBy(row => row.AcftNumLocal), "AcftID", "AcftNumLocal");
             ViewBag.PilotSelList = new SelectList(db.vListPilots.OrderBy(row => row.PilotCode), "PilotID", "PilotCode");
             ViewBag.AirportSelList = new SelectList(db.vListAirports.OrderBy(row => row.AirportCode), "AirportID", "AirportCode");
             ViewBag.GroupSelList = new SelectList(db.DimAcftGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName");

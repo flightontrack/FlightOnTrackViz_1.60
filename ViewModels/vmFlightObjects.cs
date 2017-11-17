@@ -29,7 +29,7 @@ namespace MVC_Acft_Track.ViewModels
         public vmFlight(int id) {
             Flightid = id;
             //var entities = new Entities();
-            var q = new qLINQ(id);
+            var q = new Queryables(id);
             Flight = q.flight;
             FlightName = Flight.FlightName;
             RouteId = Flight.RouteID ?? id;
@@ -68,7 +68,7 @@ namespace MVC_Acft_Track.ViewModels
         public vmPilot(int id)
         {
             //var entities = new Entities();
-            var q = new qLINQ();
+            var q = new Queryables();
             q.pilotId = id;
             var p = q.pilot;
             if (p != null)

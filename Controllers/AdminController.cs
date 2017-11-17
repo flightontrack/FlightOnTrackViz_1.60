@@ -26,7 +26,7 @@ namespace MVC_Acft_Track.Controllers
     {
 
         private Entities db = new Entities();
-        private qLINQ q = new qLINQ();
+        private Queryables q = new Queryables();
 
         // GET: Admin
         public ActionResult Index(int? pilotid = null,string error = null)

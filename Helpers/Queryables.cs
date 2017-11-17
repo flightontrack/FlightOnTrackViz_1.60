@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace MVC_Acft_Track.Helpers
 {
 
-    public class qLINQ
+    public class Queryables
     {
 
         public Entities db;
@@ -16,10 +16,10 @@ namespace MVC_Acft_Track.Helpers
         int _topNumber = 100;
         //string _acftNumLocal;
 
-        public qLINQ() { db = new Entities(); }
+        public Queryables() { db = new Entities(); }
 
-        public qLINQ(int flightId) { db = new Entities(); _flightId = flightId; }
-        public qLINQ(Entities dbent) { db = dbent; }
+        public Queryables(int flightId) { db = new Entities(); _flightId = flightId; }
+        public Queryables(Entities dbent) { db = dbent; }
 
         public int topNumber { set { _topNumber = value; } }
         public int pilotId { get; set; }
@@ -107,7 +107,16 @@ namespace MVC_Acft_Track.Helpers
             get
             { return db.vAircraftPilots.Where(f => f.PilotID == pilotId).OrderBy(row => row.AcftRegNum); }
         }
-
+        public IQueryable<vListAircraft> selList_vAircraftDistinctAllPublic
+        {
+            get
+            { return db.vListAircrafts.OrderBy(r => r.AcftNumLocal); }
+        }
+        public IQueryable<vListAircraft> selList_vAircraftDistinctWithFlightsPublic
+        {
+            get
+            { return db.vListAircrafts.Where(r=>r.isFilghtExists==1).OrderBy(r => r.AcftNumLocal); }
+        }
         public IQueryable<vAircraftPilot> selList_vAircraftPilotAll
         {
             get
