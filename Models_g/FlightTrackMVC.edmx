@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FlightTrackMVCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FlightTrackMVCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AircraftGroup">
           <Key>
             <PropertyRef Name="Id" />
@@ -338,6 +338,10 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not h
           <Key>
             <PropertyRef Name="FlightID" />
             <PropertyRef Name="order_id" />
+            
+            
+            
+            <PropertyRef Name="RouteID" />
           </Key>
           <Property Name="RouteID" Type="int" Nullable="false" />
           <Property Name="FlightDate" Type="date" />
@@ -363,14 +367,17 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not h
 warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vVisualPilotLogDestinations">
           <Key>
+            <PropertyRef Name="FlightID" />
             <PropertyRef Name="dest_order_id" />
-            <PropertyRef Name="flightN" />
+            
+            <PropertyRef Name="longitude" />
+            <PropertyRef Name="latitude" />
+            <PropertyRef Name="AirportCode" />
           </Key>
           <Property Name="RouteID" Type="int" />
-          <Property Name="RouteName" Type="varchar" MaxLength="10" />
           <Property Name="PilotID" Type="int" />
           <Property Name="FlightID" Type="int" Nullable="false" />
-          <Property Name="flightN" Type="numeric" Precision="27" Scale="6" Nullable="false" />
+          <Property Name="flightN" Type="numeric" Precision="27" Scale="6" />
           <Property Name="longitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
           <Property Name="latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
           <Property Name="dest_order_id" Type="int" Nullable="false" />
@@ -403,183 +410,182 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <EntitySet Name="Pilot" EntityType="Self.Pilot" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimArea" EntityType="Self.DimArea" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [DimArea].[AreaID] AS [AreaID], 
-    [DimArea].[AreaName] AS [AreaName], 
-    [DimArea].[CenterLat] AS [CenterLat], 
-    [DimArea].[CenterLong] AS [CenterLong], 
-    [DimArea].[CenterPoint] AS [CenterPoint], 
-    [DimArea].[Radius] AS [Radius], 
-    [DimArea].[Area] AS [Area], 
-    [DimArea].[GeoLocBuffer] AS [GeoLocBuffer], 
-    [DimArea].[Radius_3] AS [Radius_3], 
-    [DimArea].[Radius_5] AS [Radius_5], 
-    [DimArea].[Radius_10] AS [Radius_10], 
-    [DimArea].[Radius_15] AS [Radius_15], 
-    [DimArea].[GeoLocBuffer_3] AS [GeoLocBuffer_3], 
-    [DimArea].[GeoLocBuffer_5] AS [GeoLocBuffer_5], 
-    [DimArea].[GeoLocBuffer_10] AS [GeoLocBuffer_10], 
-    [DimArea].[GeoLocBuffer_15] AS [GeoLocBuffer_15]
-    FROM [dbo].[DimArea] AS [DimArea]</DefiningQuery>
+[DimArea].[AreaID] AS [AreaID], 
+[DimArea].[AreaName] AS [AreaName], 
+[DimArea].[CenterLat] AS [CenterLat], 
+[DimArea].[CenterLong] AS [CenterLong], 
+[DimArea].[CenterPoint] AS [CenterPoint], 
+[DimArea].[Radius] AS [Radius], 
+[DimArea].[Area] AS [Area], 
+[DimArea].[GeoLocBuffer] AS [GeoLocBuffer], 
+[DimArea].[Radius_3] AS [Radius_3], 
+[DimArea].[Radius_5] AS [Radius_5], 
+[DimArea].[Radius_10] AS [Radius_10], 
+[DimArea].[Radius_15] AS [Radius_15], 
+[DimArea].[GeoLocBuffer_3] AS [GeoLocBuffer_3], 
+[DimArea].[GeoLocBuffer_5] AS [GeoLocBuffer_5], 
+[DimArea].[GeoLocBuffer_10] AS [GeoLocBuffer_10], 
+[DimArea].[GeoLocBuffer_15] AS [GeoLocBuffer_15]
+FROM [dbo].[DimArea] AS [DimArea]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="SearchRequest" EntityType="Self.SearchRequest" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [SearchRequest].[SearchID] AS [SearchID], 
-    [SearchRequest].[FlightDate] AS [FlightDate], 
-    [SearchRequest].[AirportID] AS [AirportID], 
-    [SearchRequest].[PilotID] AS [PilotID], 
-    [SearchRequest].[AircraftID] AS [AircraftID], 
-    [SearchRequest].[AirportCode] AS [AirportCode], 
-    [SearchRequest].[AcftRegNum] AS [AcftRegNum], 
-    [SearchRequest].[AcftNumLocal] AS [AcftNumLocal], 
-    [SearchRequest].[PilotCode] AS [PilotCode], 
-    [SearchRequest].[FlightID] AS [FlightID], 
-    [SearchRequest].[AreaID] AS [AreaID], 
-    [SearchRequest].[GroupID] AS [GroupID], 
-    [SearchRequest].[GroupName] AS [GroupName]
-    FROM [dbo].[SearchRequest] AS [SearchRequest]</DefiningQuery>
+[SearchRequest].[SearchID] AS [SearchID], 
+[SearchRequest].[FlightDate] AS [FlightDate], 
+[SearchRequest].[AirportID] AS [AirportID], 
+[SearchRequest].[PilotID] AS [PilotID], 
+[SearchRequest].[AircraftID] AS [AircraftID], 
+[SearchRequest].[AirportCode] AS [AirportCode], 
+[SearchRequest].[AcftRegNum] AS [AcftRegNum], 
+[SearchRequest].[AcftNumLocal] AS [AcftNumLocal], 
+[SearchRequest].[PilotCode] AS [PilotCode], 
+[SearchRequest].[FlightID] AS [FlightID], 
+[SearchRequest].[AreaID] AS [AreaID], 
+[SearchRequest].[GroupID] AS [GroupID], 
+[SearchRequest].[GroupName] AS [GroupName]
+FROM [dbo].[SearchRequest] AS [SearchRequest]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vAircraftPilot" EntityType="Self.vAircraftPilot" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vAircraftPilot].[ID] AS [ID], 
-    [vAircraftPilot].[AcftID] AS [AcftID], 
-    [vAircraftPilot].[AcftName] AS [AcftName], 
-    [vAircraftPilot].[AcftTagID] AS [AcftTagID], 
-    [vAircraftPilot].[AcftMake] AS [AcftMake], 
-    [vAircraftPilot].[AcftModel] AS [AcftModel], 
-    [vAircraftPilot].[AcftRegNum] AS [AcftRegNum], 
-    [vAircraftPilot].[AcftMMS] AS [AcftMMS], 
-    [vAircraftPilot].[SerNum] AS [SerNum], 
-    [vAircraftPilot].[AcftNumLocal] AS [AcftNumLocal], 
-    [vAircraftPilot].[Created] AS [Created], 
-    [vAircraftPilot].[FlightTime] AS [FlightTime], 
-    [vAircraftPilot].[PilotID] AS [PilotID], 
-    [vAircraftPilot].[URLPictures] AS [URLPictures], 
-    [vAircraftPilot].[PilotCode] AS [PilotCode]
-    FROM [dbo].[vAircraftPilot] AS [vAircraftPilot]</DefiningQuery>
+[vAircraftPilot].[ID] AS [ID], 
+[vAircraftPilot].[AcftID] AS [AcftID], 
+[vAircraftPilot].[AcftName] AS [AcftName], 
+[vAircraftPilot].[AcftTagID] AS [AcftTagID], 
+[vAircraftPilot].[AcftMake] AS [AcftMake], 
+[vAircraftPilot].[AcftModel] AS [AcftModel], 
+[vAircraftPilot].[AcftRegNum] AS [AcftRegNum], 
+[vAircraftPilot].[AcftMMS] AS [AcftMMS], 
+[vAircraftPilot].[SerNum] AS [SerNum], 
+[vAircraftPilot].[AcftNumLocal] AS [AcftNumLocal], 
+[vAircraftPilot].[Created] AS [Created], 
+[vAircraftPilot].[FlightTime] AS [FlightTime], 
+[vAircraftPilot].[PilotID] AS [PilotID], 
+[vAircraftPilot].[URLPictures] AS [URLPictures], 
+[vAircraftPilot].[PilotCode] AS [PilotCode]
+FROM [dbo].[vAircraftPilot] AS [vAircraftPilot]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vFlightAcftPilot" EntityType="Self.vFlightAcftPilot" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vFlightAcftPilot].[FlightID] AS [FlightID], 
-    [vFlightAcftPilot].[RouteID] AS [RouteID], 
-    [vFlightAcftPilot].[FlightName] AS [FlightName], 
-    [vFlightAcftPilot].[FlightDate] AS [FlightDate], 
-    [vFlightAcftPilot].[FlightDateOnly] AS [FlightDateOnly], 
-    [vFlightAcftPilot].[FlightTimeStart] AS [FlightTimeStart], 
-    [vFlightAcftPilot].[FlightDurationMin] AS [FlightDurationMin], 
-    [vFlightAcftPilot].[IsShared] AS [IsShared], 
-    [vFlightAcftPilot].[Points] AS [Points], 
-    [vFlightAcftPilot].[IsChecked] AS [IsChecked], 
-    [vFlightAcftPilot].[IsJunk] AS [IsJunk], 
-    [vFlightAcftPilot].[Comments] AS [Comments], 
-    [vFlightAcftPilot].[AcftRegNum] AS [AcftRegNum], 
-    [vFlightAcftPilot].[AcftMMS] AS [AcftMMS], 
-    [vFlightAcftPilot].[AcftNumLocal] AS [AcftNumLocal], 
-    [vFlightAcftPilot].[AcftNum] AS [AcftNum], 
-    [vFlightAcftPilot].[Acft] AS [Acft], 
-    [vFlightAcftPilot].[URLPictures] AS [URLPictures], 
-    [vFlightAcftPilot].[AcftID] AS [AcftID], 
-    [vFlightAcftPilot].[PilotID] AS [PilotID], 
-    [vFlightAcftPilot].[Updated] AS [Updated], 
-    [vFlightAcftPilot].[PilotCode] AS [PilotCode], 
-    [vFlightAcftPilot].[Pilot] AS [Pilot], 
-    [vFlightAcftPilot].[AcftName] AS [AcftName], 
-    [vFlightAcftPilot].[isPositionCurrent] AS [isPositionCurrent], 
-    [vFlightAcftPilot].[isInFlight] AS [isInFlight], 
-    [vFlightAcftPilot].[UpdateDelay] AS [UpdateDelay], 
-    [vFlightAcftPilot].[AltitudeFt] AS [AltitudeFt]
-    FROM [dbo].[vFlightAcftPilot] AS [vFlightAcftPilot]</DefiningQuery>
+[vFlightAcftPilot].[FlightID] AS [FlightID], 
+[vFlightAcftPilot].[RouteID] AS [RouteID], 
+[vFlightAcftPilot].[FlightName] AS [FlightName], 
+[vFlightAcftPilot].[FlightDate] AS [FlightDate], 
+[vFlightAcftPilot].[FlightDateOnly] AS [FlightDateOnly], 
+[vFlightAcftPilot].[FlightTimeStart] AS [FlightTimeStart], 
+[vFlightAcftPilot].[FlightDurationMin] AS [FlightDurationMin], 
+[vFlightAcftPilot].[IsShared] AS [IsShared], 
+[vFlightAcftPilot].[Points] AS [Points], 
+[vFlightAcftPilot].[IsChecked] AS [IsChecked], 
+[vFlightAcftPilot].[IsJunk] AS [IsJunk], 
+[vFlightAcftPilot].[Comments] AS [Comments], 
+[vFlightAcftPilot].[AcftRegNum] AS [AcftRegNum], 
+[vFlightAcftPilot].[AcftMMS] AS [AcftMMS], 
+[vFlightAcftPilot].[AcftNumLocal] AS [AcftNumLocal], 
+[vFlightAcftPilot].[AcftNum] AS [AcftNum], 
+[vFlightAcftPilot].[Acft] AS [Acft], 
+[vFlightAcftPilot].[URLPictures] AS [URLPictures], 
+[vFlightAcftPilot].[AcftID] AS [AcftID], 
+[vFlightAcftPilot].[PilotID] AS [PilotID], 
+[vFlightAcftPilot].[Updated] AS [Updated], 
+[vFlightAcftPilot].[PilotCode] AS [PilotCode], 
+[vFlightAcftPilot].[Pilot] AS [Pilot], 
+[vFlightAcftPilot].[AcftName] AS [AcftName], 
+[vFlightAcftPilot].[isPositionCurrent] AS [isPositionCurrent], 
+[vFlightAcftPilot].[isInFlight] AS [isInFlight], 
+[vFlightAcftPilot].[UpdateDelay] AS [UpdateDelay], 
+[vFlightAcftPilot].[AltitudeFt] AS [AltitudeFt]
+FROM [dbo].[vFlightAcftPilot] AS [vFlightAcftPilot]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vListAircraft" EntityType="Self.vListAircraft" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vListAircraft].[AcftID] AS [AcftID], 
-    [vListAircraft].[AcftNumLocal] AS [AcftNumLocal], 
-    [vListAircraft].[isFilghtExists] AS [isFilghtExists]
-    FROM [dbo].[vListAircraft] AS [vListAircraft]</DefiningQuery>
+[vListAircraft].[AcftID] AS [AcftID], 
+[vListAircraft].[AcftNumLocal] AS [AcftNumLocal], 
+[vListAircraft].[isFilghtExists] AS [isFilghtExists]
+FROM [dbo].[vListAircraft] AS [vListAircraft]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vListAirport" EntityType="Self.vListAirport" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vListAirport].[AirportID] AS [AirportID], 
-    [vListAirport].[AirportCode] AS [AirportCode]
-    FROM [dbo].[vListAirport] AS [vListAirport]</DefiningQuery>
+[vListAirport].[AirportID] AS [AirportID], 
+[vListAirport].[AirportCode] AS [AirportCode]
+FROM [dbo].[vListAirport] AS [vListAirport]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vListPilot" EntityType="Self.vListPilot" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vListPilot].[PilotID] AS [PilotID], 
-    [vListPilot].[PilotCode] AS [PilotCode], 
-    [vListPilot].[c] AS [c]
-    FROM [dbo].[vListPilot] AS [vListPilot]</DefiningQuery>
+[vListPilot].[PilotID] AS [PilotID], 
+[vListPilot].[PilotCode] AS [PilotCode], 
+[vListPilot].[c] AS [c]
+FROM [dbo].[vListPilot] AS [vListPilot]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vPilotLogBook" EntityType="Self.vPilotLogBook" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vPilotLogBook].[RouteID] AS [RouteID], 
-    [vPilotLogBook].[FlightDateOnly] AS [FlightDateOnly], 
-    [vPilotLogBook].[Comments] AS [Comments], 
-    [vPilotLogBook].[HTMLToolTip] AS [HTMLToolTip], 
-    [vPilotLogBook].[AcftMMS] AS [AcftMMS], 
-    [vPilotLogBook].[Acft] AS [Acft], 
-    [vPilotLogBook].[AcftRegNum] AS [AcftRegNum], 
-    [vPilotLogBook].[PilotID] AS [PilotID], 
-    [vPilotLogBook].[NoLandings] AS [NoLandings], 
-    [vPilotLogBook].[FlightDurationMin] AS [FlightDurationMin], 
-    [vPilotLogBook].[RouteName] AS [RouteName], 
-    [vPilotLogBook].[IsJunk] AS [IsJunk], 
-    [vPilotLogBook].[IsShared] AS [IsShared]
-    FROM [dbo].[vPilotLogBook] AS [vPilotLogBook]</DefiningQuery>
+[vPilotLogBook].[RouteID] AS [RouteID], 
+[vPilotLogBook].[FlightDateOnly] AS [FlightDateOnly], 
+[vPilotLogBook].[Comments] AS [Comments], 
+[vPilotLogBook].[HTMLToolTip] AS [HTMLToolTip], 
+[vPilotLogBook].[AcftMMS] AS [AcftMMS], 
+[vPilotLogBook].[Acft] AS [Acft], 
+[vPilotLogBook].[AcftRegNum] AS [AcftRegNum], 
+[vPilotLogBook].[PilotID] AS [PilotID], 
+[vPilotLogBook].[NoLandings] AS [NoLandings], 
+[vPilotLogBook].[FlightDurationMin] AS [FlightDurationMin], 
+[vPilotLogBook].[RouteName] AS [RouteName], 
+[vPilotLogBook].[IsJunk] AS [IsJunk], 
+[vPilotLogBook].[IsShared] AS [IsShared]
+FROM [dbo].[vPilotLogBook] AS [vPilotLogBook]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vRoute" EntityType="Self.vRoute" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vRoute].[RouteID] AS [RouteID], 
-    [vRoute].[FlightDateOnly] AS [FlightDateOnly], 
-    [vRoute].[Comments] AS [Comments], 
-    [vRoute].[HTMLToolTip] AS [HTMLToolTip], 
-    [vRoute].[AcftMMS] AS [AcftMMS], 
-    [vRoute].[Acft] AS [Acft], 
-    [vRoute].[AcftRegNum] AS [AcftRegNum], 
-    [vRoute].[PilotID] AS [PilotID], 
-    [vRoute].[NoLandings] AS [NoLandings], 
-    [vRoute].[FlightDurationMin] AS [FlightDurationMin], 
-    [vRoute].[RouteName] AS [RouteName], 
-    [vRoute].[IsJunk] AS [IsJunk], 
-    [vRoute].[IsShared] AS [IsShared], 
-    [vRoute].[URLPictures] AS [URLPictures]
-    FROM [dbo].[vRoute] AS [vRoute]</DefiningQuery>
+[vRoute].[RouteID] AS [RouteID], 
+[vRoute].[FlightDateOnly] AS [FlightDateOnly], 
+[vRoute].[Comments] AS [Comments], 
+[vRoute].[HTMLToolTip] AS [HTMLToolTip], 
+[vRoute].[AcftMMS] AS [AcftMMS], 
+[vRoute].[Acft] AS [Acft], 
+[vRoute].[AcftRegNum] AS [AcftRegNum], 
+[vRoute].[PilotID] AS [PilotID], 
+[vRoute].[NoLandings] AS [NoLandings], 
+[vRoute].[FlightDurationMin] AS [FlightDurationMin], 
+[vRoute].[RouteName] AS [RouteName], 
+[vRoute].[IsJunk] AS [IsJunk], 
+[vRoute].[IsShared] AS [IsShared], 
+[vRoute].[URLPictures] AS [URLPictures]
+FROM [dbo].[vRoute] AS [vRoute]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vVisualPilotLogBook" EntityType="Self.vVisualPilotLogBook" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vVisualPilotLogBook].[RouteID] AS [RouteID], 
-    [vVisualPilotLogBook].[FlightDate] AS [FlightDate], 
-    [vVisualPilotLogBook].[AcftMMS] AS [AcftMMS], 
-    [vVisualPilotLogBook].[Acft] AS [Acft], 
-    [vVisualPilotLogBook].[AcftRegNum] AS [AcftRegNum], 
-    [vVisualPilotLogBook].[PilotID] AS [PilotID], 
-    [vVisualPilotLogBook].[RouteDurationMin] AS [RouteDurationMin], 
-    [vVisualPilotLogBook].[RouteName] AS [RouteName], 
-    [vVisualPilotLogBook].[NoLandings] AS [NoLandings], 
-    [vVisualPilotLogBook].[FlightID] AS [FlightID], 
-    [vVisualPilotLogBook].[FlightName] AS [FlightName], 
-    [vVisualPilotLogBook].[FlightDurationMin] AS [FlightDurationMin], 
-    [vVisualPilotLogBook].[Comments] AS [Comments], 
-    [vVisualPilotLogBook].[Points] AS [Points], 
-    [vVisualPilotLogBook].[GPSLocationID] AS [GPSLocationID], 
-    [vVisualPilotLogBook].[order_id] AS [order_id], 
-    [vVisualPilotLogBook].[AirportCode] AS [AirportCode], 
-    [vVisualPilotLogBook].[longitude] AS [longitude], 
-    [vVisualPilotLogBook].[latitude] AS [latitude]
-    FROM [dbo].[vVisualPilotLogBook] AS [vVisualPilotLogBook]</DefiningQuery>
+[vVisualPilotLogBook].[RouteID] AS [RouteID], 
+[vVisualPilotLogBook].[FlightDate] AS [FlightDate], 
+[vVisualPilotLogBook].[AcftMMS] AS [AcftMMS], 
+[vVisualPilotLogBook].[Acft] AS [Acft], 
+[vVisualPilotLogBook].[AcftRegNum] AS [AcftRegNum], 
+[vVisualPilotLogBook].[PilotID] AS [PilotID], 
+[vVisualPilotLogBook].[RouteDurationMin] AS [RouteDurationMin], 
+[vVisualPilotLogBook].[RouteName] AS [RouteName], 
+[vVisualPilotLogBook].[NoLandings] AS [NoLandings], 
+[vVisualPilotLogBook].[FlightID] AS [FlightID], 
+[vVisualPilotLogBook].[FlightName] AS [FlightName], 
+[vVisualPilotLogBook].[FlightDurationMin] AS [FlightDurationMin], 
+[vVisualPilotLogBook].[Comments] AS [Comments], 
+[vVisualPilotLogBook].[Points] AS [Points], 
+[vVisualPilotLogBook].[GPSLocationID] AS [GPSLocationID], 
+[vVisualPilotLogBook].[order_id] AS [order_id], 
+[vVisualPilotLogBook].[AirportCode] AS [AirportCode], 
+[vVisualPilotLogBook].[longitude] AS [longitude], 
+[vVisualPilotLogBook].[latitude] AS [latitude]
+FROM [dbo].[vVisualPilotLogBook] AS [vVisualPilotLogBook]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vVisualPilotLogDestinations" EntityType="Self.vVisualPilotLogDestinations" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vVisualPilotLogDestinations].[RouteID] AS [RouteID], 
-    [vVisualPilotLogDestinations].[RouteName] AS [RouteName], 
-    [vVisualPilotLogDestinations].[PilotID] AS [PilotID], 
-    [vVisualPilotLogDestinations].[FlightID] AS [FlightID], 
-    [vVisualPilotLogDestinations].[flightN] AS [flightN], 
-    [vVisualPilotLogDestinations].[longitude] AS [longitude], 
-    [vVisualPilotLogDestinations].[latitude] AS [latitude], 
-    [vVisualPilotLogDestinations].[dest_order_id] AS [dest_order_id], 
-    [vVisualPilotLogDestinations].[AirportCode] AS [AirportCode], 
-    [vVisualPilotLogDestinations].[flightweight] AS [flightweight]
-    FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</DefiningQuery>
+[vVisualPilotLogDestinations].[RouteID] AS [RouteID], 
+[vVisualPilotLogDestinations].[PilotID] AS [PilotID], 
+[vVisualPilotLogDestinations].[FlightID] AS [FlightID], 
+[vVisualPilotLogDestinations].[flightN] AS [flightN], 
+[vVisualPilotLogDestinations].[longitude] AS [longitude], 
+[vVisualPilotLogDestinations].[latitude] AS [latitude], 
+[vVisualPilotLogDestinations].[dest_order_id] AS [dest_order_id], 
+[vVisualPilotLogDestinations].[AirportCode] AS [AirportCode], 
+[vVisualPilotLogDestinations].[flightweight] AS [flightweight]
+FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -877,6 +883,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Key>
             <PropertyRef Name="FlightID" />
             <PropertyRef Name="order_id" />
+            <PropertyRef Name="RouteID" />
           </Key>
           <Property Name="RouteID" Type="Int32" Nullable="false" />
           <Property Name="FlightDate" Type="DateTime" Precision="0" />
@@ -900,19 +907,21 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
         </EntityType>
         <EntityType Name="vVisualPilotLogDestinations">
           <Key>
+            <PropertyRef Name="FlightID" />
+            <PropertyRef Name="longitude" />
+            <PropertyRef Name="latitude" />
             <PropertyRef Name="dest_order_id" />
-            <PropertyRef Name="flightN" />
+            <PropertyRef Name="AirportCode" />
           </Key>
           <Property Name="PilotID" Type="Int32" />
           <Property Name="FlightID" Type="Int32" Nullable="false" />
-          <Property Name="flightN" Type="Decimal" Precision="27" Scale="6" Nullable="false" />
+          <Property Name="flightN" Type="Decimal" Precision="27" Scale="6" />
           <Property Name="longitude" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
           <Property Name="latitude" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
           <Property Name="dest_order_id" Type="Int32" Nullable="false" />
           <Property Name="AirportCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="flightweight" Type="Int32" Nullable="false" />
           <Property Name="RouteID" Type="Int32" />
-          <Property Name="RouteName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <ComplexType Name="fVisualPilotLogBook_Result">
           <Property Type="Int32" Name="RouteID" Nullable="true" />
@@ -1295,7 +1304,6 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <EntitySetMapping Name="vVisualPilotLogDestinations">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.vVisualPilotLogDestinations">
               <MappingFragment StoreEntitySet="vVisualPilotLogDestinations">
-                <ScalarProperty Name="RouteName" ColumnName="RouteName" />
                 <ScalarProperty Name="RouteID" ColumnName="RouteID" />
                 <ScalarProperty Name="flightweight" ColumnName="flightweight" />
                 <ScalarProperty Name="AirportCode" ColumnName="AirportCode" />
@@ -1390,7 +1398,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
-        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

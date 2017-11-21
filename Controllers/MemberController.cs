@@ -509,8 +509,8 @@ namespace FontNameSpace.Controllers
             q.pilotId = pid;
 
             //var pilotLogBook = q.visualPilotLogBook.ToList();
-            var pilotLogBook = db.fVisualPilotLogBook(pid).ToList();
-            var pilotLogDestinations = db.fVisualPilotLogDestinations(pid).ToList();
+            var pilotLogBook = db.vVisualPilotLogBook.Where(r=>r.PilotID== pid).ToList();
+            var pilotLogDestinations = db.vVisualPilotLogDestinations.Where(r => r.PilotID == pid).OrderBy(r=>r.RouteID).OrderBy(r => r.flightN).ThenBy(r=>r.dest_order_id).ToList();
             int? routeID = 0;
 
             string csvVisualPilotLogBook = "RouteID,FlightDate,AcftMMS,Acft,AcftRegNum,PilotID,RouteDurationMin,RouteName,NoLandings,FlightID,FlightName,FlightDurationMin,Comments,Points,GPSLocationID,order_id,AirportCode,longitude,latitude" + Environment.NewLine;
@@ -547,20 +547,32 @@ namespace FontNameSpace.Controllers
                 int? r = routeID;
                 csvVisualPilotLogBook = csvVisualPilotLogBook + Environment.NewLine + "LogBook generation failed on RouteID = " + r + Environment.NewLine + "Some fields are null";
             }
-            string csvPilotLogDestinations = "PilotID,FlightID,flightN,longitude,latitude,dest_order_id,AirportCode,flightweight" + Environment.NewLine;
-            foreach (var rec in pilotLogDestinations)
+            string csvPilotLogDestinations = "PilotID,RouteID,RouteName,FlightID,flightN,longitude,latitude,dest_order_id,AirportCode,flightweight" + Environment.NewLine;
+            try
             {
-                csvPilotLogDestinations = csvPilotLogDestinations
-                    + '"' + rec.PilotID.ToString() + '"' + ","
-                    + '"' + rec.FlightID.ToString() + '"' + ","
-                    + '"' + rec.flightN.ToString() + '"' + ","
-                    + '"' + rec.longitude.ToString() + '"' + ","
-                    + '"' + rec.latitude.ToString() + '"' + ","
-                    + '"' + rec.dest_order_id.ToString() + '"' + ","
-                    + '"' + rec.AirportCode.ToString() + '"' + ","
-                    + '"' + rec.flightweight.ToString() + '"' + ","
-                    + Environment.NewLine;
+                foreach (var rec in pilotLogDestinations)
+                {
+                    routeID = rec.RouteID;
+                    csvPilotLogDestinations = csvPilotLogDestinations
+                        + '"' + rec.PilotID.ToString() + '"' + ","
+                        + '"' + rec.RouteID.ToString() + '"' + ","
+                        + '"' + (rec.RouteName ?? "").ToString() + '"' + ","
+                        + '"' + rec.FlightID.ToString() + '"' + ","
+                        + '"' + rec.flightN.ToString() + '"' + ","
+                        + '"' + rec.longitude.ToString() + '"' + ","
+                        + '"' + rec.latitude.ToString() + '"' + ","
+                        + '"' + rec.dest_order_id.ToString() + '"' + ","
+                        + '"' + rec.AirportCode.ToString() + '"' + ","
+                        + '"' + rec.flightweight.ToString() + '"' + ","
+                        + Environment.NewLine;
+                }
             }
+            catch (Exception e)
+            {
+                int? r = routeID;
+                csvVisualPilotLogBook = csvVisualPilotLogBook + Environment.NewLine + "LogBook Destination generation failed on RouteID = " + r + Environment.NewLine + "Some fields are null";
+            }
+
             using (var outputStream = new System.IO.MemoryStream())
             {
                 using (var zip = new ZipFile())

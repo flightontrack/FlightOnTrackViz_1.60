@@ -12,17 +12,20 @@ namespace FontNameSpace.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class vVisualPilotLogDestinations
+    public partial class SearchRequest
     {
+        public int SearchID { get; set; }
+        public Nullable<System.DateTime> FlightDate { get; set; }
+        public Nullable<int> AirportID { get; set; }
         public Nullable<int> PilotID { get; set; }
-        public int FlightID { get; set; }
-        public decimal flightN { get; set; }
-        public decimal longitude { get; set; }
-        public decimal latitude { get; set; }
-        public int dest_order_id { get; set; }
+        public Nullable<int> AircraftID { get; set; }
         public string AirportCode { get; set; }
-        public int flightweight { get; set; }
-        public Nullable<int> RouteID { get; set; }
-        public string RouteName { get; set; }
+        public string AcftRegNum { get; set; }
+        public string PilotCode { get; set; }
+        public Nullable<int> FlightID { get; set; }
+        public Nullable<int> AreaID { get; set; }
+        public string AcftNumLocal { get; set; }
+        public Nullable<int> GroupID { get; set; }
+        public string GroupName { get; set; }
     }
 }
