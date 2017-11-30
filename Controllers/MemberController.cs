@@ -509,11 +509,11 @@ namespace FontNameSpace.Controllers
             q.pilotId = pid;
 
             //var pilotLogBook = q.visualPilotLogBook.ToList();
-            var pilotLogBook = db.vVisualPilotLogBook.Where(r=>r.PilotID== pid).ToList();
-            var pilotLogDestinations = db.vVisualPilotLogDestinations.Where(r => r.PilotID == pid).OrderBy(r=>r.RouteID).OrderBy(r => r.flightN).ThenBy(r=>r.dest_order_id).ToList();
+            var pilotLogBook = q.visualPilotLogBook.OrderByDescending(r => r.RouteID).ToList();
+            var pilotLogDestinations = db.vVisualPilotLogDestinations.Where(r => r.PilotID == pid).OrderBy(r=>r.RouteID).ToList();
             int? routeID = 0;
 
-            string csvVisualPilotLogBook = "RouteID,FlightDate,AcftMMS,Acft,AcftRegNum,PilotID,RouteDurationMin,RouteName,NoLandings,FlightID,FlightName,FlightDurationMin,Comments,Points,GPSLocationID,order_id,AirportCode,longitude,latitude" + Environment.NewLine;
+            string csvVisualPilotLogBook = "RouteID,FlightDate,AcftMMS,AcftRegNum,PilotID,RouteDurationMin,RouteName,NoLandings,AirportCode" + Environment.NewLine;
             try
             {
                 foreach (var rec in pilotLogBook)
@@ -523,22 +523,22 @@ namespace FontNameSpace.Controllers
                         + '"' + rec.RouteID.ToString() + '"' + ","
                         + '"' + rec.FlightDate.ToString() + '"' + ","
                         + '"' + rec.AcftMMS.ToString() + '"' + ","
-                        + '"' + rec.Acft.ToString() + '"' + ","
+                        //+ '"' + rec.Acft.ToString() + '"' + ","
                         + '"' + rec.AcftRegNum.ToString() + '"' + ","
                         + '"' + rec.PilotID.ToString() + '"' + ","
                         + '"' + rec.RouteDurationMin.ToString() + '"' + ","
                         + '"' + (rec.RouteName == null ? "" : rec.RouteName) + '"' + ","
-                        + '"' + rec.NoLandings.ToString() + '"' + ","
-                        + '"' + rec.FlightID.ToString() + '"' + ","
-                        + '"' + (rec.FlightName.ToString() == null ? "" : rec.FlightName) + '"' + ","
-                        + '"' + (rec.FlightDurationMin == null ? "" : rec.FlightDurationMin.ToString()) + '"' + ","
-                        + '"' + (rec.Comments == null ? "" : rec.Comments.ToString()) + '"' + ","
-                        + '"' + rec.Points.ToString() + '"' + ","
-                        + '"' + rec.GPSLocationID.ToString() + '"' + ","
-                        + '"' + rec.order_id.ToString() + '"' + ","
+                        + '"' + rec.RouteNoLandings.ToString() + '"' + ","
+                        //+ '"' + rec.FlightID.ToString() + '"' + ","
+                        //+ '"' + (rec.FlightName.ToString() == null ? "" : rec.FlightName) + '"' + ","
+                        //+ '"' + (rec.FlightDurationMin == null ? "" : rec.FlightDurationMin.ToString()) + '"' + ","
+                        //+ '"' + (rec.Comments == null ? "" : rec.Comments.ToString()) + '"' + ","
+                        //+ '"' + rec.Points.ToString() + '"' + ","
+                        //+ '"' + rec.GPSLocationID.ToString() + '"' + ","
+                        //+ '"' + rec.order_id.ToString() + '"' + ","
                         + '"' + rec.AirportCode.ToString() + '"' + ","
-                        + '"' + rec.longitude.ToString() + '"' + ","
-                        + '"' + rec.latitude.ToString() + '"'
+                        //+ '"' + rec.longitude.ToString() + '"' + ","
+                        //+ '"' + rec.latitude.ToString() + '"'
                         + Environment.NewLine;
                 }
             }
@@ -547,7 +547,7 @@ namespace FontNameSpace.Controllers
                 int? r = routeID;
                 csvVisualPilotLogBook = csvVisualPilotLogBook + Environment.NewLine + "LogBook generation failed on RouteID = " + r + Environment.NewLine + "Some fields are null";
             }
-            string csvPilotLogDestinations = "PilotID,RouteID,RouteName,FlightID,flightN,longitude,latitude,dest_order_id,AirportCode,flightweight" + Environment.NewLine;
+            string csvPilotLogDestinations = "PilotID,RouteID,RouteName,longitude,latitude,AirportCode,flightweight" + Environment.NewLine;
             try
             {
                 foreach (var rec in pilotLogDestinations)
@@ -557,11 +557,11 @@ namespace FontNameSpace.Controllers
                         + '"' + rec.PilotID.ToString() + '"' + ","
                         + '"' + rec.RouteID.ToString() + '"' + ","
                         + '"' + (rec.RouteName ?? "").ToString() + '"' + ","
-                        + '"' + rec.FlightID.ToString() + '"' + ","
-                        + '"' + rec.flightN.ToString() + '"' + ","
+                        //+ '"' + rec.FlightID.ToString() + '"' + ","
+                        //+ '"' + rec.flightN.ToString() + '"' + ","
                         + '"' + rec.longitude.ToString() + '"' + ","
                         + '"' + rec.latitude.ToString() + '"' + ","
-                        + '"' + rec.dest_order_id.ToString() + '"' + ","
+                        //+ '"' + rec.dest_order_id.ToString() + '"' + ","
                         + '"' + rec.AirportCode.ToString() + '"' + ","
                         + '"' + rec.flightweight.ToString() + '"' + ","
                         + Environment.NewLine;

@@ -332,49 +332,42 @@ warning 6002: The table/view 'flighttrack-db.dbo.vRoute' does not have a primary
           <Property Name="IsShared" Type="bit" />
           <Property Name="URLPictures" Type="nvarchar" MaxLength="250" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vVisualPilotLogBook">
           <Key>
-            <PropertyRef Name="FlightID" />
-            <PropertyRef Name="order_id" />
+            <PropertyRef Name="RouteID" />
+            <PropertyRef Name="longitude" />
+            <PropertyRef Name="latitude" />
+            <PropertyRef Name="AirportCode" />
           </Key>
-          <Property Name="RouteID" Type="int" Nullable="false" />
+          <Property Name="RouteID" Type="int"  Nullable="false"/>
           <Property Name="FlightDate" Type="date" />
-          <Property Name="AcftMMS" Type="nvarchar" MaxLength="57" />
-          <Property Name="Acft" Type="nvarchar" MaxLength="50" />
-          <Property Name="AcftRegNum" Type="varchar" MaxLength="9" />
+          <Property Name="AcftMMS" Type="varchar" MaxLength="50" />
+          <Property Name="AcftRegNum" Type="varchar" MaxLength="10" />
           <Property Name="PilotID" Type="int" />
           <Property Name="RouteDurationMin" Type="int" />
-          <Property Name="RouteName" Type="varchar" MaxLength="10" />
-          <Property Name="NoLandings" Type="int" />
-          <Property Name="FlightID" Type="int" Nullable="false" />
-          <Property Name="FlightName" Type="varchar" MaxLength="250" />
-          <Property Name="FlightDurationMin" Type="int" />
-          <Property Name="Comments" Type="nvarchar" MaxLength="250" />
-          <Property Name="Points" Type="int" />
-          <Property Name="GPSLocationID" Type="int" />
-          <Property Name="order_id" Type="varchar" MaxLength="1" Nullable="false" />
-          <Property Name="AirportCode" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="longitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
-          <Property Name="latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
+          <Property Name="RouteName" Type="varchar" MaxLength="50" />
+          <Property Name="RouteNoLandings" Type="int" />
+          <Property Name="AirportCode" Type="varchar" MaxLength="10"  Nullable="false"/>
+          <Property Name="longitude" Type="decimal" Precision="10" Scale="6"  Nullable="false"/>
+          <Property Name="latitude" Type="decimal" Precision="10" Scale="6"  Nullable="false"/>
+          <Property Name="Comments" Type="varchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vVisualPilotLogDestinations">
+          
           <Key>
-            <PropertyRef Name="dest_order_id" />
-            <PropertyRef Name="flightN" />
+            <PropertyRef Name="RouteID" />
+            <PropertyRef Name="longitude" />
+            <PropertyRef Name="latitude" />
+            <PropertyRef Name="flightweight" />
           </Key>
-          <Property Name="RouteID" Type="int" />
-          <Property Name="RouteName" Type="varchar" MaxLength="10" />
+          <Property Name="RouteID" Type="int" Nullable="false" />
+          <Property Name="RouteName" Type="varchar" MaxLength="100" />
           <Property Name="PilotID" Type="int" />
-          <Property Name="FlightID" Type="int" Nullable="false" />
-          <Property Name="flightN" Type="numeric" Precision="27" Scale="6" Nullable="false" />
-          <Property Name="longitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
-          <Property Name="latitude" Type="decimal" Precision="10" Scale="6" Nullable="false" />
-          <Property Name="dest_order_id" Type="int" Nullable="false" />
-          <Property Name="AirportCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="longitude" Type="decimal" Precision="13" Scale="8" Nullable="false" />
+          <Property Name="latitude" Type="decimal" Precision="13" Scale="8" Nullable="false" />
+          <Property Name="AirportCode" Type="nvarchar" MaxLength="50" />
           <Property Name="flightweight" Type="int" Nullable="false" />
         </EntityType>
         <Function Name="get_isArea" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -401,6 +394,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <EntitySet Name="Flight" EntityType="Self.Flight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GpsLocation" EntityType="Self.GpsLocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pilot" EntityType="Self.Pilot" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vVisualPilotLogBook" EntityType="Self.vVisualPilotLogBook" store:Type="Views" store:Schema="dbo" />
           <EntitySet Name="DimArea" EntityType="Self.DimArea" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DimArea].[AreaID] AS [AreaID], 
@@ -544,39 +538,13 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
     [vRoute].[URLPictures] AS [URLPictures]
     FROM [dbo].[vRoute] AS [vRoute]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vVisualPilotLogBook" EntityType="Self.vVisualPilotLogBook" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vVisualPilotLogBook].[RouteID] AS [RouteID], 
-    [vVisualPilotLogBook].[FlightDate] AS [FlightDate], 
-    [vVisualPilotLogBook].[AcftMMS] AS [AcftMMS], 
-    [vVisualPilotLogBook].[Acft] AS [Acft], 
-    [vVisualPilotLogBook].[AcftRegNum] AS [AcftRegNum], 
-    [vVisualPilotLogBook].[PilotID] AS [PilotID], 
-    [vVisualPilotLogBook].[RouteDurationMin] AS [RouteDurationMin], 
-    [vVisualPilotLogBook].[RouteName] AS [RouteName], 
-    [vVisualPilotLogBook].[NoLandings] AS [NoLandings], 
-    [vVisualPilotLogBook].[FlightID] AS [FlightID], 
-    [vVisualPilotLogBook].[FlightName] AS [FlightName], 
-    [vVisualPilotLogBook].[FlightDurationMin] AS [FlightDurationMin], 
-    [vVisualPilotLogBook].[Comments] AS [Comments], 
-    [vVisualPilotLogBook].[Points] AS [Points], 
-    [vVisualPilotLogBook].[GPSLocationID] AS [GPSLocationID], 
-    [vVisualPilotLogBook].[order_id] AS [order_id], 
-    [vVisualPilotLogBook].[AirportCode] AS [AirportCode], 
-    [vVisualPilotLogBook].[longitude] AS [longitude], 
-    [vVisualPilotLogBook].[latitude] AS [latitude]
-    FROM [dbo].[vVisualPilotLogBook] AS [vVisualPilotLogBook]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="vVisualPilotLogDestinations" EntityType="Self.vVisualPilotLogDestinations" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vVisualPilotLogDestinations].[RouteID] AS [RouteID], 
     [vVisualPilotLogDestinations].[RouteName] AS [RouteName], 
     [vVisualPilotLogDestinations].[PilotID] AS [PilotID], 
-    [vVisualPilotLogDestinations].[FlightID] AS [FlightID], 
-    [vVisualPilotLogDestinations].[flightN] AS [flightN], 
     [vVisualPilotLogDestinations].[longitude] AS [longitude], 
     [vVisualPilotLogDestinations].[latitude] AS [latitude], 
-    [vVisualPilotLogDestinations].[dest_order_id] AS [dest_order_id], 
     [vVisualPilotLogDestinations].[AirportCode] AS [AirportCode], 
     [vVisualPilotLogDestinations].[flightweight] AS [flightweight]
     FROM [dbo].[vVisualPilotLogDestinations] AS [vVisualPilotLogDestinations]</DefiningQuery>
@@ -875,44 +843,38 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
         </EntityType>
         <EntityType Name="vVisualPilotLogBook">
           <Key>
-            <PropertyRef Name="FlightID" />
-            <PropertyRef Name="order_id" />
+            <PropertyRef Name="RouteID" />
+            <PropertyRef Name="AirportCode" />
+            <PropertyRef Name="longitude" />
+            <PropertyRef Name="latitude" />
           </Key>
           <Property Name="RouteID" Type="Int32" Nullable="false" />
           <Property Name="FlightDate" Type="DateTime" Precision="0" />
-          <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="true" />
-          <Property Name="Acft" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="false" />
           <Property Name="AcftRegNum" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="PilotID" Type="Int32" />
           <Property Name="RouteDurationMin" Type="Int32" />
           <Property Name="RouteName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="NoLandings" Type="Int32" />
-          <Property Name="FlightID" Type="Int32" Nullable="false" />
-          <Property Name="FlightName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="FlightDurationMin" Type="Int32" />
-          <Property Name="Comments" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Points" Type="Int32" />
-          <Property Name="GPSLocationID" Type="Int32" />
-          <Property Name="order_id" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Comments" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="AirportCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="longitude" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
           <Property Name="latitude" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
+          <Property Name="RouteNoLandings" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="vVisualPilotLogDestinations">
           <Key>
-            <PropertyRef Name="dest_order_id" />
-            <PropertyRef Name="flightN" />
+            <PropertyRef Name="RouteID" />
+            <PropertyRef Name="longitude" />
+            <PropertyRef Name="latitude" />
+            <PropertyRef Name="flightweight" />
           </Key>
           <Property Name="PilotID" Type="Int32" />
-          <Property Name="FlightID" Type="Int32" Nullable="false" />
-          <Property Name="flightN" Type="Decimal" Precision="27" Scale="6" Nullable="false" />
-          <Property Name="longitude" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
-          <Property Name="latitude" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
-          <Property Name="dest_order_id" Type="Int32" Nullable="false" />
-          <Property Name="AirportCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="longitude" Type="Decimal" Precision="13" Scale="8" Nullable="false" />
+          <Property Name="latitude" Type="Decimal" Precision="13" Scale="8" Nullable="false" />
+          <Property Name="AirportCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="flightweight" Type="Int32" Nullable="false" />
-          <Property Name="RouteID" Type="Int32" />
-          <Property Name="RouteName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RouteID" Type="Int32" Nullable="false" />
+          <Property Name="RouteName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <ComplexType Name="fVisualPilotLogBook_Result">
           <Property Type="Int32" Name="RouteID" Nullable="true" />
@@ -1267,31 +1229,6 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="get_PilotP" FunctionName="FlightTrackMVCModel.Store.get_PilotP" />
           <FunctionImportMapping FunctionImportName="update_PilotGuid" FunctionName="FlightTrackMVCModel.Store.update_PilotGuid" />
-          <EntitySetMapping Name="vVisualPilotLogBook">
-            <EntityTypeMapping TypeName="FlightTrackMVCModel.vVisualPilotLogBook">
-              <MappingFragment StoreEntitySet="vVisualPilotLogBook">
-                <ScalarProperty Name="latitude" ColumnName="latitude" />
-                <ScalarProperty Name="longitude" ColumnName="longitude" />
-                <ScalarProperty Name="AirportCode" ColumnName="AirportCode" />
-                <ScalarProperty Name="order_id" ColumnName="order_id" />
-                <ScalarProperty Name="GPSLocationID" ColumnName="GPSLocationID" />
-                <ScalarProperty Name="Points" ColumnName="Points" />
-                <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="FlightDurationMin" ColumnName="FlightDurationMin" />
-                <ScalarProperty Name="FlightName" ColumnName="FlightName" />
-                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
-                <ScalarProperty Name="NoLandings" ColumnName="NoLandings" />
-                <ScalarProperty Name="RouteName" ColumnName="RouteName" />
-                <ScalarProperty Name="RouteDurationMin" ColumnName="RouteDurationMin" />
-                <ScalarProperty Name="PilotID" ColumnName="PilotID" />
-                <ScalarProperty Name="AcftRegNum" ColumnName="AcftRegNum" />
-                <ScalarProperty Name="Acft" ColumnName="Acft" />
-                <ScalarProperty Name="AcftMMS" ColumnName="AcftMMS" />
-                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
-                <ScalarProperty Name="RouteID" ColumnName="RouteID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vVisualPilotLogDestinations">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.vVisualPilotLogDestinations">
               <MappingFragment StoreEntitySet="vVisualPilotLogDestinations">
@@ -1299,12 +1236,27 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
                 <ScalarProperty Name="RouteID" ColumnName="RouteID" />
                 <ScalarProperty Name="flightweight" ColumnName="flightweight" />
                 <ScalarProperty Name="AirportCode" ColumnName="AirportCode" />
-                <ScalarProperty Name="dest_order_id" ColumnName="dest_order_id" />
                 <ScalarProperty Name="latitude" ColumnName="latitude" />
                 <ScalarProperty Name="longitude" ColumnName="longitude" />
-                <ScalarProperty Name="flightN" ColumnName="flightN" />
-                <ScalarProperty Name="FlightID" ColumnName="FlightID" />
                 <ScalarProperty Name="PilotID" ColumnName="PilotID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vVisualPilotLogBook">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.vVisualPilotLogBook">
+              <MappingFragment StoreEntitySet="vVisualPilotLogBook">
+                <ScalarProperty Name="RouteName" ColumnName="RouteName" />
+                <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+                <ScalarProperty Name="FlightDate" ColumnName="FlightDate" />
+                <ScalarProperty Name="AirportCode" ColumnName="AirportCode" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="PilotID" ColumnName="PilotID" />
+                <ScalarProperty Name="AcftMMS" ColumnName="AcftMMS" />
+                <ScalarProperty Name="AcftRegNum" ColumnName="AcftRegNum" />
+                <ScalarProperty Name="RouteDurationMin" ColumnName="RouteDurationMin" />
+                <ScalarProperty Name="RouteNoLandings" ColumnName="RouteNoLandings" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

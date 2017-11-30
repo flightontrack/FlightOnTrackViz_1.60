@@ -22,16 +22,10 @@ namespace FontNameSpace.Models
         public Nullable<int> PilotID { get; set; }
         public Nullable<int> RouteDurationMin { get; set; }
         public string RouteName { get; set; }
-        public Nullable<int> NoLandings { get; set; }
-        public int FlightID { get; set; }
-        public string FlightName { get; set; }
-        public Nullable<int> FlightDurationMin { get; set; }
         public string Comments { get; set; }
-        public Nullable<int> Points { get; set; }
-        public Nullable<int> GPSLocationID { get; set; }
-        public string order_id { get; set; }
         public string AirportCode { get; set; }
         public decimal longitude { get; set; }
         public decimal latitude { get; set; }
+        public int RouteNoLandings { get; set; }
     }
 }

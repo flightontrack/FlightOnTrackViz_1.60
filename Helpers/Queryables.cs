@@ -82,9 +82,9 @@ namespace FontNameSpace.Helpers
         public IQueryable<vFlightAcftPilot> flightsAllTopNum { get { return db.vFlightAcftPilots.Where(r => r.FlightID > 0).OrderByDescending(row => row.FlightID).Take(_topNumber); } } //.AsNoTracking();
         //var q = db.vFlightAcftPilots.ToList();//.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();//.Where(row => row.IsJunk == false).OrderByDescending(row => row.FlightID);//.Take(TIMESPANFLIGHTS);
         public IQueryable<vPilotLogBook> pilotLogBook { get { return db.vPilotLogBooks.Where(row => row.PilotID == pilotId).OrderByDescending(row => row.RouteID); } }
-        public IQueryable<vVisualPilotLogBook> visualPilotLogBook { get { return db.vVisualPilotLogBook.Where(row => row.PilotID == pilotId).OrderByDescending(row => row.RouteID); } }
+        public IQueryable<vVisualPilotLogBook> visualPilotLogBook { get { return db.vVisualPilotLogBook.Where(row => row.PilotID == pilotId); } }
 
-        public IQueryable<vVisualPilotLogDestinations> vVisualPilotLogDestinations { get { return db.vVisualPilotLogDestinations.Where(row => row.PilotID == pilotId).OrderBy(row => row.FlightID); } }
+        public IQueryable<vVisualPilotLogDestinations> vVisualPilotLogDestination { get { return db.vVisualPilotLogDestinations.Where(row => row.PilotID == pilotId); } }
 
         public Pilot pilotEntity { get { return db.Pilots.Find(pilotId); } }
 
