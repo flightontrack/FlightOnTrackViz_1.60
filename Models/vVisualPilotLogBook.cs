@@ -17,7 +17,6 @@ namespace FontNameSpace.Models
         public int RouteID { get; set; }
         public Nullable<System.DateTime> FlightDate { get; set; }
         public string AcftMMS { get; set; }
-        public string Acft { get; set; }
         public string AcftRegNum { get; set; }
         public Nullable<int> PilotID { get; set; }
         public Nullable<int> RouteDurationMin { get; set; }

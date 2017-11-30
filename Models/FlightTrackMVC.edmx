@@ -394,7 +394,11 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <EntitySet Name="Flight" EntityType="Self.Flight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GpsLocation" EntityType="Self.GpsLocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pilot" EntityType="Self.Pilot" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="vVisualPilotLogBook" EntityType="Self.vVisualPilotLogBook" store:Type="Views" store:Schema="dbo" />
+          <EntitySet Name="vVisualPilotLogBook" EntityType="Self.vVisualPilotLogBook" store:Type="Views" store:Schema="dbo" >
+            <DefiningQuery>
+              SELECT * FROM [dbo].[vVisualPilotLogBook] AS [vVisualPilotLogBook]
+            </DefiningQuery>
+          </EntitySet>
           <EntitySet Name="DimArea" EntityType="Self.DimArea" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DimArea].[AreaID] AS [AreaID], 
