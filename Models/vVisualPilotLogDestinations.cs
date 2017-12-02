@@ -20,6 +20,7 @@ namespace FontNameSpace.Models
         public string AirportCode { get; set; }
         public int flightweight { get; set; }
         public int RouteID { get; set; }
+        public int LineN { get; set; }
         public string RouteName { get; set; }
     }
 }

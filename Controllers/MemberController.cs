@@ -541,13 +541,14 @@ namespace FontNameSpace.Controllers
                         //+ '"' + rec.latitude.ToString() + '"'
                         + Environment.NewLine;
                 }
+                return File(new System.Text.UTF8Encoding().GetBytes(csvVisualPilotLogBook), "text/csv", "VisualPilotLogBook_" + ".csv");
             }
             catch (Exception e)
             {
                 int? r = routeID;
                 csvVisualPilotLogBook = csvVisualPilotLogBook + Environment.NewLine + "LogBook generation failed on RouteID = " + r + Environment.NewLine + "Some fields are null";
             }
-            string csvPilotLogDestinations = "PilotID,RouteID,RouteName,longitude,latitude,AirportCode,flightweight" + Environment.NewLine;
+            string csvPilotLogDestinations = "PilotID,RouteID,LineN,RouteName,longitude,latitude,AirportCode,flightweight" + Environment.NewLine;
             try
             {
                 foreach (var rec in pilotLogDestinations)
@@ -556,9 +557,9 @@ namespace FontNameSpace.Controllers
                     csvPilotLogDestinations = csvPilotLogDestinations
                         + '"' + rec.PilotID.ToString() + '"' + ","
                         + '"' + rec.RouteID.ToString() + '"' + ","
+                        + '"' + rec.LineN.ToString() + '"' + ","
                         + '"' + (rec.RouteName ?? "").ToString() + '"' + ","
                         //+ '"' + rec.FlightID.ToString() + '"' + ","
-                        //+ '"' + rec.flightN.ToString() + '"' + ","
                         + '"' + rec.longitude.ToString() + '"' + ","
                         + '"' + rec.latitude.ToString() + '"' + ","
                         //+ '"' + rec.dest_order_id.ToString() + '"' + ","

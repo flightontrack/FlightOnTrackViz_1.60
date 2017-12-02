@@ -15,6 +15,7 @@ namespace FontNameSpace.Models
     public partial class vVisualPilotLogBook
     {
         public int RouteID { get; set; }
+        public int LineN { get; set; }
         public Nullable<System.DateTime> FlightDate { get; set; }
         public string AcftMMS { get; set; }
         public string AcftRegNum { get; set; }
