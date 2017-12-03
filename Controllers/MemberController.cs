@@ -488,18 +488,39 @@ namespace FontNameSpace.Controllers
         {
             q.pilotId = pid;
             var pilotLogBook = q.pilotLogBook.ToList();
-            string csv = "Date,Acft MMS,Acft,Airports,Landings,Minutes,Comments" + Environment.NewLine;
+            string csv = "Date,Acft MMS,Acft ,From/To,Remarks,Landings,Duration (h)" + Environment.NewLine + Environment.NewLine;
+            int i = 0;
+            int? nlsum = 0;
+            int? nlpp = 0;
+            float? hsumpp = 0;
+            float? hsum = 0;
             foreach (var rec in pilotLogBook)
             {
+                i++;
+                nlpp += rec.NoLandings;
+                var h = rec.FlightDurationMin / 60.0f;
+                hsumpp += h;
                 csv = csv
                     + '"' + rec.FlightDateOnly.ToString() + '"' + ","
                     + '"' + rec.AcftMMS.ToString() + '"' + ","
                     + '"' + rec.Acft.ToString() + '"' + ","
                     + '"' + rec.RouteName.ToString() + '"' + ","
+                    + '"' + rec.Comments == null ? "" : rec.Comments.ToString()+ '"' + ","
                     + '"' + rec.NoLandings.ToString() + '"' + ","
-                    + '"' + rec.FlightDurationMin.ToString() + '"' + ","
-                    + (rec.Comments == null ? "" : rec.Comments.ToString())
+                    + '"' + String.Format("{0:F2}", h) 
                     + Environment.NewLine;
+                if (i % 7 == 0) {
+                    hsum += hsumpp;
+                    nlsum += nlpp;
+                    csv = csv
+                    + Environment.NewLine
+                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Page Total" + "," + nlpp.ToString() + "," + String.Format("{0:F2}", hsumpp) + Environment.NewLine
+                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Amt. Forward" + Environment.NewLine
+                     + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Total To Date" + "," + nlsum.ToString() + "," + String.Format("{0:F2}", hsum)
+                    + Environment.NewLine + Environment.NewLine;
+                    nlpp = 0;
+                    hsumpp = 0;
+                }
             }
             return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "PilotLogBook_" + ".csv");
         }
@@ -541,7 +562,7 @@ namespace FontNameSpace.Controllers
                         //+ '"' + rec.latitude.ToString() + '"'
                         + Environment.NewLine;
                 }
-                return File(new System.Text.UTF8Encoding().GetBytes(csvVisualPilotLogBook), "text/csv", "VisualPilotLogBook_" + ".csv");
+                //return File(new System.Text.UTF8Encoding().GetBytes(csvVisualPilotLogBook), "text/csv", "VisualPilotLogBook_" + ".csv");
             }
             catch (Exception e)
             {
