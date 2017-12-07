@@ -60,6 +60,7 @@ namespace FontNameSpace.Controllers
 
                         //if (p == null) return View("LogBookNotFound");
                         var logBookList = q.pilotLogBook.ToList();
+                        var minLogBookDate = System.Convert.ToDateTime(logBookList.Min(item => item.FlightDateOnly));
 
                         var timeLogBook = logBookList.Sum(item => item.FlightDurationMin) / 60;
                         var timeForward = p.TimeForward;// q.pilotTimeForwarded;
@@ -77,7 +78,7 @@ namespace FontNameSpace.Controllers
 
                         ViewBag.VLBReadyToDownload = (buttonEnable == null ? false : true);
 
-                        return View("MemberLogbook", new vmPilotLogBook(logBookList, pilotid, timeForward, landNumForward));
+                        return View("MemberLogbook", new vmPilotLogBook(logBookList, pilotid, minLogBookDate, timeForward, landNumForward));
                     case 4:
                         return View("MemberFlights", new vmSearchRequestFights(new vmSearchRequest { pilotID = p.PilotID, aicrftID = acftId, isSearchJunk = isSearchJunk },15,10000, sort, sortdir.Equals("ASC") ? SortDirection.Ascending : SortDirection.Descending));
                     default:
@@ -505,18 +506,19 @@ namespace FontNameSpace.Controllers
                     + '"' + rec.AcftMMS.ToString() + '"' + ","
                     + '"' + rec.Acft.ToString() + '"' + ","
                     + '"' + rec.RouteName.ToString() + '"' + ","
-                    + '"' + rec.Comments == null ? "" : rec.Comments.ToString()+ '"' + ","
+                    + '"' + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
                     + '"' + rec.NoLandings.ToString() + '"' + ","
-                    + '"' + String.Format("{0:F2}", h) 
+                    + '"' + String.Format("{0:F2}", h) + '"' + ","
+                    + '"' + rec.RouteID.ToString() + '"' + ","
                     + Environment.NewLine;
                 if (i % 7 == 0) {
                     hsum += hsumpp;
                     nlsum += nlpp;
                     csv = csv
                     + Environment.NewLine
-                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Page Total" + "," + nlpp.ToString() + "," + String.Format("{0:F2}", hsumpp) + Environment.NewLine
-                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Amt. Forward" + Environment.NewLine
-                     + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Total To Date" + "," + nlsum.ToString() + "," + String.Format("{0:F2}", hsum)
+                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Page Total" + "," + nlpp.ToString() + "," + String.Format("{0:F2}", hsumpp) + Environment.NewLine
+                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Amt. Forward" + Environment.NewLine
+                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Total To Date" + "," + nlsum.ToString() + "," + String.Format("{0:F2}", hsum)
                     + Environment.NewLine + Environment.NewLine;
                     nlpp = 0;
                     hsumpp = 0;
@@ -642,10 +644,10 @@ namespace FontNameSpace.Controllers
             ViewBag.LandNumForward = landNumForward;
             ViewBag.LandNumLogBook = landNumLogBook;
             ViewBag.LandNumTotal = landNumForward + landNumLogBook;
-
+            var minLogBookDate = System.Convert.ToDateTime(logBookList.Min(item => item.FlightDateOnly));
             //List<vPilotLogBook> logBookRecords = q_flightsLogBook.ToList();
 
-            var vmpilotlogbook = new vmPilotLogBook(logBookList, q.pilotId, timeForward, landNumForward);
+            var vmpilotlogbook = new vmPilotLogBook(logBookList, q.pilotId, minLogBookDate, timeForward, landNumForward);
 
             return View(vmpilotlogbook);
         }

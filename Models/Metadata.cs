@@ -8,6 +8,7 @@ namespace FontNameSpace.Models
 
         [Display(Name = "Flight Date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FlightDate;
         [Display(Name = "Airport Code")]
         public string AirportCode;

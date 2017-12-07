@@ -187,106 +187,106 @@ namespace FontNameSpace.Controllers
         //    return View(pilot);
         //}
 
-        public ActionResult IndexLogBook()
-        {
-            //ViewBag.FeaturedMessage = "The aircraft tracking system records the GPS locations of your phone while on a flight ";
-            ViewBag.AppTitle = APP_NAME;
-            ViewBag.AppTitleModifier = APP_MODIFIER;
-            //if ( Roles.IsUserInRole("admin")) {
-            //}
-            //var password = user.GetPassword();           
-            if (Request.IsAuthenticated)
-            {
-                try
-                {
-                    ViewBag.Message = MSG_LOGGED;
-                    //Trace.WriteLine("Point0");
-                    var pilotUserName = User.Identity.Name;
-                    var result = db.Pilots.Where(p => p.PilotUserName == pilotUserName).FirstOrDefault();
-                    if (result == null) { return View("AuthError"); }
-                    pilotid = result.PilotID;
-                    //Trace.WriteLine(pilotid);
-                    ViewBag.PilotCode = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().PilotCode;
-                    ViewBag.NameLast = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().NameLast;
-                    ViewBag.NameFirst = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().NameFirst;
-                    string c = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().CertType;
-                    ViewBag.PilotCert = c == null ? c : c.Replace('_', ' ');
-                    //Trace.WriteLine("Point10");
-                    ViewBag.Raiting = "";
-                    ViewBag.BaseAirport = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().BaseAirport;
-                    ViewBag.PilotName = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().PilotName;
-                    ViewBag.PilotID = pilotid;
-                    ViewBag.PilotFlightNum = q_flightsByPilot.Count();
-                    //db.Flights.Where(p => p.PilotID == pilotid).Count();
-                    //var aircraftids = db.Flights.Where(p => p.PilotID == pilotid).Select(p => p.AcftID).Distinct().ToList();
-                    //var aircrafts = db.vAircraftPilots.Where(a => aircraftids.Contains(a.AcftID)).ToList();
-                    var aircrafts = db.vAircraftPilots.Where(p => p.PilotID == pilotid).ToList();
-                    return View("Index_full", aircrafts);
-                }
-                catch (Exception e)
-                {
-                    ViewBag.eMessage = e.Message;
-                    return View("Error");
-                }
-            }
-            else
-            {
-                ViewBag.Message = MSG_NOTLOGGED;
-                var dd = new ListsDD();
-                ViewBag.AircraftsSelList = dd.getAllAcftList();
-                ViewBag.PilotSelList = dd.getAllPilotList();
-                ViewBag.AirportSelList = dd.getAllAirportList();
-                return View();
-            }
-        }
+        //public ActionResult IndexLogBook()
+        //{
+        //    //ViewBag.FeaturedMessage = "The aircraft tracking system records the GPS locations of your phone while on a flight ";
+        //    ViewBag.AppTitle = APP_NAME;
+        //    ViewBag.AppTitleModifier = APP_MODIFIER;
+        //    //if ( Roles.IsUserInRole("admin")) {
+        //    //}
+        //    //var password = user.GetPassword();           
+        //    if (Request.IsAuthenticated)
+        //    {
+        //        try
+        //        {
+        //            ViewBag.Message = MSG_LOGGED;
+        //            //Trace.WriteLine("Point0");
+        //            var pilotUserName = User.Identity.Name;
+        //            var result = db.Pilots.Where(p => p.PilotUserName == pilotUserName).FirstOrDefault();
+        //            if (result == null) { return View("AuthError"); }
+        //            pilotid = result.PilotID;
+        //            //Trace.WriteLine(pilotid);
+        //            ViewBag.PilotCode = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().PilotCode;
+        //            ViewBag.NameLast = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().NameLast;
+        //            ViewBag.NameFirst = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().NameFirst;
+        //            string c = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().CertType;
+        //            ViewBag.PilotCert = c == null ? c : c.Replace('_', ' ');
+        //            //Trace.WriteLine("Point10");
+        //            ViewBag.Raiting = "";
+        //            ViewBag.BaseAirport = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().BaseAirport;
+        //            ViewBag.PilotName = db.Pilots.Where(p => p.PilotID == pilotid).FirstOrDefault().PilotName;
+        //            ViewBag.PilotID = pilotid;
+        //            ViewBag.PilotFlightNum = q_flightsByPilot.Count();
+        //            //db.Flights.Where(p => p.PilotID == pilotid).Count();
+        //            //var aircraftids = db.Flights.Where(p => p.PilotID == pilotid).Select(p => p.AcftID).Distinct().ToList();
+        //            //var aircrafts = db.vAircraftPilots.Where(a => aircraftids.Contains(a.AcftID)).ToList();
+        //            var aircrafts = db.vAircraftPilots.Where(p => p.PilotID == pilotid).ToList();
+        //            return View("Index_full", aircrafts);
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            ViewBag.eMessage = e.Message;
+        //            return View("Error");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Message = MSG_NOTLOGGED;
+        //        var dd = new ListsDD();
+        //        ViewBag.AircraftsSelList = dd.getAllAcftList();
+        //        ViewBag.PilotSelList = dd.getAllPilotList();
+        //        ViewBag.AirportSelList = dd.getAllAirportList();
+        //        return View();
+        //    }
+        //}
 
-        public ActionResult index_member_menu(int menuitem, string msg = null, int pilotid = 0, bool? buttonEnable = null)
-        {
-            if (Request.IsAuthenticated)
-            {
-                q.pilotId = pilotid;
-                var p = q.pilotEntity;
-                ViewBag.Msg = msg;
-                switch (menuitem)
-                {
-                    case 1:
-                        return View("Index_member_pilot", p);
-                    case 2:
-                        return View("Index_member_acft", db.vAircraftPilots.Where(r => r.PilotID == pilotid).ToList());
-                    case 3:
+        //public ActionResult index_member_menu(int menuitem, string msg = null, int pilotid = 0, bool? buttonEnable = null)
+        //{
+        //    if (Request.IsAuthenticated)
+        //    {
+        //        q.pilotId = pilotid;
+        //        var p = q.pilotEntity;
+        //        ViewBag.Msg = msg;
+        //        switch (menuitem)
+        //        {
+        //            case 1:
+        //                return View("Index_member_pilot", p);
+        //            case 2:
+        //                return View("Index_member_acft", db.vAircraftPilots.Where(r => r.PilotID == pilotid).ToList());
+        //            case 3:
 
-                        //if (p == null) return View("LogBookNotFound");
-                        var logBookList = q.pilotLogBook.ToList();
+        //                //if (p == null) return View("LogBookNotFound");
+        //                var logBookList = q.pilotLogBook.ToList();
 
-                        var timeLogBook = logBookList.Sum(item => item.FlightDurationMin) / 60;
-                        var timeForward = p.TimeForward;// q.pilotTimeForwarded;
+        //                var timeLogBook = logBookList.Sum(item => item.FlightDurationMin) / 60;
+        //                var timeForward = p.TimeForward;// q.pilotTimeForwarded;
 
-                        ViewBag.TimeForward = timeForward;
-                        ViewBag.LogBookTimeHours = timeLogBook;
-                        ViewBag.TotalTimeHours = timeForward + timeLogBook;
+        //                ViewBag.TimeForward = timeForward;
+        //                ViewBag.LogBookTimeHours = timeLogBook;
+        //                ViewBag.TotalTimeHours = timeForward + timeLogBook;
 
-                        var landNumForward = p.LandingsForward;// q.pilotLandingsForwarded;
-                        var landNumLogBook = logBookList.Sum(item => item.NoLandings);
+        //                var landNumForward = p.LandingsForward;// q.pilotLandingsForwarded;
+        //                var landNumLogBook = logBookList.Sum(item => item.NoLandings);
 
-                        ViewBag.LandNumForward = landNumForward;
-                        ViewBag.LandNumLogBook = landNumLogBook;
-                        ViewBag.LandNumTotal = landNumForward + landNumLogBook;
+        //                ViewBag.LandNumForward = landNumForward;
+        //                ViewBag.LandNumLogBook = landNumLogBook;
+        //                ViewBag.LandNumTotal = landNumForward + landNumLogBook;
 
-                        ViewBag.VLBReadyToDownload = (buttonEnable==null?false:true);
+        //                ViewBag.VLBReadyToDownload = (buttonEnable==null?false:true);
 
-                        //var vmpilotlogbook = new vmPilotLogBook(logBookList, pilotid, timeForward, landNumForward);
-                        return View("Index_member_logbook", new vmPilotLogBook(logBookList, pilotid, timeForward, landNumForward));
-                    case 4:
-                        ViewBag.PilotFlightNum = q_flightsByPilot.Count();
-                        return View("Index_member_flights", p);
+        //                //var vmpilotlogbook = new vmPilotLogBook(logBookList, pilotid, timeForward, landNumForward);
+        //                return View("Index_member_logbook", new vmPilotLogBook(logBookList, pilotid, timeForward, landNumForward));
+        //            case 4:
+        //                ViewBag.PilotFlightNum = q_flightsByPilot.Count();
+        //                return View("Index_member_flights", p);
 
-                    default:
-                        return View("Index_member_pilot", db.Pilots.Find(pilotid));
-                }
-                    //break;
-            }
-            else return RedirectToAction("Login", "Account");
-        }
+        //            default:
+        //                return View("Index_member_pilot", db.Pilots.Find(pilotid));
+        //        }
+        //            //break;
+        //    }
+        //    else return RedirectToAction("Login", "Account");
+        //}
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
