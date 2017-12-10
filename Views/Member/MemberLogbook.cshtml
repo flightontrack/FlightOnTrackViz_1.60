@@ -85,7 +85,7 @@ $(document).ready(function () {
            footerStyle: "table-pager",
      //rowStyle: "webgrid-row-style",
      columns: grid.Columns(
-     grid.Column(columnName: "FlightDateOnly", header: "Date", style: "text-align-left"),
+     grid.Column(columnName: "FlightDateOnly", header: "Date", style: "text-align-left", format: (item) => item.FlightDateOnly.ToString("MM/dd/yyyy")),
      grid.Column(columnName: "AcftMMS", header: "Acft MMS", style: "text-align-left"),
      grid.Column(columnName: "Acft", header: "Acft", style: "text-align-left"),
      grid.Column(columnName: "RouteName", header: "Airports", style: "text-align-left"),

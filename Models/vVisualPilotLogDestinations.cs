@@ -15,8 +15,8 @@ namespace FontNameSpace.Models
     public partial class vVisualPilotLogDestinations
     {
         public Nullable<int> PilotID { get; set; }
-        public decimal longitude { get; set; }
-        public decimal latitude { get; set; }
+        public Nullable<decimal> longitude { get; set; }
+        public Nullable<decimal> latitude { get; set; }
         public string AirportCode { get; set; }
         public int flightweight { get; set; }
         public int RouteID { get; set; }

@@ -59,8 +59,8 @@ namespace FontNameSpace.Controllers
                     case 3:
 
                         //if (p == null) return View("LogBookNotFound");
-                        var logBookList = q.pilotLogBook.ToList();
-                        var minLogBookDate = System.Convert.ToDateTime(logBookList.Min(item => item.FlightDateOnly));
+                        var minLogBookDate =p.LogBookStartDate??q.pilotLogBook.ToList().Min(item => item.FlightDateOnly);
+                        var logBookList = q.pilotLogBook.Where(item =>  item.FlightDateOnly >= minLogBookDate).OrderBy(row => row.RouteID).ToList();
 
                         var timeLogBook = logBookList.Sum(item => item.FlightDurationMin) / 60;
                         var timeForward = p.TimeForward;// q.pilotTimeForwarded;
@@ -165,9 +165,11 @@ namespace FontNameSpace.Controllers
                                         Pilot p =q.pilotEntity;
                                         p.TimeForward = number1;
                                         p.LandingsForward = number2;
+                                        p.LogBookStartDate = System.Convert.ToDateTime(form["dateBegin"]);
                                         db.Pilots.Attach(p);
                                         db.Entry(p).Property(r => r.TimeForward).IsModified = true;
                                         db.Entry(p).Property(r => r.LandingsForward).IsModified = true;
+                                        db.Entry(p).Property(r => r.LogBookStartDate).IsModified = true;
                                         db.SaveChanges();
                                         successFlg = true;
                                     }
@@ -252,87 +254,6 @@ namespace FontNameSpace.Controllers
             }
             return View(acft);
         }
-
-        //void FlightUpdate(FormCollection form)
-        //{
-        //    if (Request.IsAuthenticated)
-        //    {
-        //        q.pilotUserName = User.Identity.Name;
-        //        //if (Request["submit"] == "Update page")
-        //        if (form["UpdatePage"] != null)
-        //        {
-        //            return;
-        //        }
-        //        if (form["DeleteSelectedFlight"] != null)
-        //        {
-        //            foreach (string id in form)
-        //            {
-        //                if (id.Contains("IsDelete") && form.GetValues(id).Contains("true"))
-        //                {
-        //                    string rowid = id.Remove(0, 8);
-        //                    Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
-        //                    db.Flights.Remove(flight);
-        //                    db.SaveChanges();
-        //                }
-        //            }
-        //            return;
-        //        }
-        //        if (form["SaveChanges"] != null)
-        //        {
-        //            foreach (string id in form)
-        //            {
-        //                if (id.Contains("IsShare"))
-        //                {
-        //                    string rowid = id.Remove(0, id.IndexOf(':') + 1);
-        //                    if (ModelState.IsValid)
-        //                    {
-        //                        Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
-        //                        if (form.GetValues(id).Contains("true") ^ (flight.IsShared.HasValue ? flight.IsShared.Value : false))
-        //                        {
-        //                            flight.IsShared = form.GetValues(id).Contains("true");
-        //                            db.Flights.Attach(flight);
-        //                            db.Entry(flight).Property(p => p.IsShared).IsModified = true;
-        //                            db.SaveChanges();
-        //                        };
-        //                    }
-        //                }
-        //                if (id.Contains("IsJunk"))
-        //                {
-        //                    string rowid = id.Remove(0, id.IndexOf(':') + 1);
-
-        //                    if (ModelState.IsValid)
-        //                    {
-        //                        Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
-        //                        if (form.GetValues(id).Contains("true") ^ (flight.IsJunk.HasValue ? flight.IsJunk.Value : false))
-        //                        {
-        //                            flight.IsJunk = form.GetValues(id).Contains("true");
-        //                            db.Flights.Attach(flight);
-        //                            db.Entry(flight).Property(p => p.IsJunk).IsModified = true;
-        //                            db.SaveChanges();
-        //                        };
-        //                    }
-        //                }
-        //                if (id.Contains("FlightIdDropDown"))
-        //                {
-        //                    string rowid = id.Remove(0, id.IndexOf(':') + 1);
-        //                    if (ModelState.IsValid)
-        //                    {
-        //                        Flight flight = db.Flights.Find(Convert.ToInt32(rowid));
-        //                        Int32 val = Int32.Parse(form.GetValues(id)[0]);
-        //                        if (val != (flight.RouteID.HasValue ? flight.RouteID : flight.FlightID))
-        //                        {
-        //                            flight.RouteID = val;
-        //                            db.Flights.Attach(flight);
-        //                            db.Entry(flight).Property(p => p.RouteID).IsModified = true;
-        //                            db.SaveChanges();
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return;
-        //}
 
         public ActionResult FlightsByAcft(int acftId)
         {
@@ -488,8 +409,11 @@ namespace FontNameSpace.Controllers
         public FileContentResult DownloadLogBookCSV(int pid)
         {
             q.pilotId = pid;
-            var pilotLogBook = q.pilotLogBook.ToList();
-            string csv = "Date,Acft MMS,Acft ,From/To,Remarks,Landings,Duration (h)" + Environment.NewLine + Environment.NewLine;
+            Pilot p = q.pilotEntity;
+            var minLogBookDate = p.LogBookStartDate ?? q.pilotLogBook.ToList().Min(item => item.FlightDateOnly);
+            var pilotLogBook = q.pilotLogBook.Where(item => item.FlightDateOnly >= minLogBookDate).OrderBy(row => row.RouteID).ToList();
+            //var pilotLogBook = q.pilotLogBook.ToList();
+            string csv = "Date,Acft MMS,Acft ,From/To,Remarks,Landings,Dur(hr)" + Environment.NewLine + Environment.NewLine;
             int i = 0;
             int? nlsum = 0;
             int? nlpp = 0;
@@ -502,11 +426,11 @@ namespace FontNameSpace.Controllers
                 var h = rec.FlightDurationMin / 60.0f;
                 hsumpp += h;
                 csv = csv
-                    + '"' + rec.FlightDateOnly.ToString() + '"' + ","
+                    + '"' + rec.FlightDateOnly.ToString("MM/dd/yy") + '"' + ","
                     + '"' + rec.AcftMMS.ToString() + '"' + ","
                     + '"' + rec.Acft.ToString() + '"' + ","
                     + '"' + rec.RouteName.ToString() + '"' + ","
-                    + '"' + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
+                    + '"' + String.Format("{0:F2}", h) + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
                     + '"' + rec.NoLandings.ToString() + '"' + ","
                     + '"' + String.Format("{0:F2}", h) + '"' + ","
                     + '"' + rec.RouteID.ToString() + '"' + ","
@@ -615,9 +539,11 @@ namespace FontNameSpace.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult PilotLogBookMobile(string pilotUserName)
+        public ActionResult PilotLogBookMobile(string pilotUserName, int? acftId = null, bool? buttonEnable = null, bool? successFlg = null, string sort = "", string sortdir = "", int page = 1)
         {
             ViewBag.PilotUserName = pilotUserName;
+            ViewBag.successFlg = successFlg;
+            ViewBag.SortDir = sortdir;
             q.pilotUserName = pilotUserName;
             //var p = db.Pilots.Where(r => r.PilotUserName.Equals(pilotUserName)).FirstOrDefault();
             var p = q.pilotEntity;
@@ -629,7 +555,9 @@ namespace FontNameSpace.Controllers
             ViewBag.ActionBack = "Index";
             //var logBookList = q_flightsLogBook.ToList();
 
-            var logBookList = q.pilotLogBook.ToList();
+            //var logBookList = q.pilotLogBook.ToList();
+            var minLogBookDate = p.LogBookStartDate ?? q.pilotLogBook.ToList().Min(item => item.FlightDateOnly);
+            var logBookList = q.pilotLogBook.Where(item => item.FlightDateOnly >= minLogBookDate).OrderBy(row => row.RouteID).ToList();
             var timeLogBook = logBookList.Sum(item => item.FlightDurationMin) / 60;
             //var timeForward = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().TimeForward;
             var timeForward = p.TimeForward;// q.pilotTimeForwarded;
@@ -637,15 +565,12 @@ namespace FontNameSpace.Controllers
             ViewBag.LogBookTimeHours = timeLogBook;
             ViewBag.TotalTimeHours = timeForward + timeLogBook;
 
-            //var landNumForward = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().LandingsForward; ;
             var landNumForward = p.LandingsForward;// q.pilotLandingsForwarded;
             var landNumLogBook = logBookList.Sum(item => item.NoLandings);
 
             ViewBag.LandNumForward = landNumForward;
             ViewBag.LandNumLogBook = landNumLogBook;
             ViewBag.LandNumTotal = landNumForward + landNumLogBook;
-            var minLogBookDate = System.Convert.ToDateTime(logBookList.Min(item => item.FlightDateOnly));
-            //List<vPilotLogBook> logBookRecords = q_flightsLogBook.ToList();
 
             var vmpilotlogbook = new vmPilotLogBook(logBookList, q.pilotId, minLogBookDate, timeForward, landNumForward);
 
@@ -670,9 +595,11 @@ namespace FontNameSpace.Controllers
                 {
                     pilot.TimeForward = number1;
                     pilot.LandingsForward = number2;
+                    pilot.LogBookStartDate = System.Convert.ToDateTime(form["dateBegin"]);
                     db.Pilots.Attach(pilot);
                     db.Entry(pilot).Property(p => p.TimeForward).IsModified = true;
                     db.Entry(pilot).Property(p => p.LandingsForward).IsModified = true;
+                    db.Entry(pilot).Property(r => r.LogBookStartDate).IsModified = true;
                     db.SaveChanges();
                 }
             }

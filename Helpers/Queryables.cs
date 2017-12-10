@@ -81,7 +81,7 @@ namespace FontNameSpace.Helpers
         public IQueryable<vFlightAcftPilot> flightsGetGarbage { get { return db.vFlightAcftPilots.Where(r => r.IsJunk == true).OrderByDescending(r => r.FlightID); } }
         public IQueryable<vFlightAcftPilot> flightsAllTopNum { get { return db.vFlightAcftPilots.Where(r => r.FlightID > 0).OrderByDescending(row => row.FlightID).Take(_topNumber); } } //.AsNoTracking();
         //var q = db.vFlightAcftPilots.ToList();//.Where(row => row.IsShared == null ? false : (bool)row.IsShared).ToList();//.Where(row => row.IsJunk == false).OrderByDescending(row => row.FlightID);//.Take(TIMESPANFLIGHTS);
-        public IQueryable<vPilotLogBook> pilotLogBook { get { return db.vPilotLogBooks.Where(row => row.PilotID == pilotId).OrderByDescending(row => row.RouteID); } }
+        public IQueryable<vPilotLogBook> pilotLogBook { get { return db.vPilotLogBooks.Where(row => row.PilotID == pilotId); } }
         public IQueryable<vVisualPilotLogBook> visualPilotLogBook { get { return db.vVisualPilotLogBook.Where(row => row.PilotID == pilotId); } }
 
         public IQueryable<vVisualPilotLogDestinations> vVisualPilotLogDestination { get { return db.vVisualPilotLogDestinations.Where(row => row.PilotID == pilotId); } }
