@@ -14,8 +14,8 @@ namespace FontNameSpace.Models
     
     public partial class vVisualPilotLogBook
     {
-        public int RouteID { get; set; }
-        public int LineN { get; set; }
+        public Nullable<int> RouteID { get; set; }
+        public Nullable<int> LineN { get; set; }
         public Nullable<System.DateTime> FlightDate { get; set; }
         public string AcftMMS { get; set; }
         public string AcftRegNum { get; set; }
@@ -24,8 +24,9 @@ namespace FontNameSpace.Models
         public string RouteName { get; set; }
         public string Comments { get; set; }
         public string AirportCode { get; set; }
-        public decimal longitude { get; set; }
-        public decimal latitude { get; set; }
-        public int RouteNoLandings { get; set; }
+        public Nullable<decimal> longitude { get; set; }
+        public Nullable<decimal> latitude { get; set; }
+        public Nullable<int> RouteNoLandings { get; set; }
+        public long PK_ID { get; set; }
     }
 }

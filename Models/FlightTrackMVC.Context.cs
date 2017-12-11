@@ -38,6 +38,7 @@ namespace FontNameSpace.Models
         public virtual DbSet<vFlightAcftPilot> vFlightAcftPilots { get; set; }
         public virtual DbSet<Flight> Flights { get; set; }
         public virtual DbSet<GpsLocation> GpsLocations { get; set; }
+        public virtual DbSet<Pilot> Pilots { get; set; }
         public virtual DbSet<vVisualPilotLogBook> vVisualPilotLogBook { get; set; }
         public virtual DbSet<vVisualPilotLogDestinations> vVisualPilotLogDestinations { get; set; }
         public virtual DbSet<AirportCoordinates> AirportCoordinates { get; set; }
@@ -45,7 +46,6 @@ namespace FontNameSpace.Models
         public virtual DbSet<AircraftGroup> AircraftGroups { get; set; }
         public virtual DbSet<vRoute> vRoutes { get; set; }
         public virtual DbSet<vListAircraft> vListAircrafts { get; set; }
-        public virtual DbSet<Pilot> Pilots { get; set; }
     
         public virtual ObjectResult<Nullable<bool>> get_isArea(Nullable<int> gpsLocationID, Nullable<int> areaID, string radius)
         {

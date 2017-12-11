@@ -59,7 +59,7 @@ namespace FontNameSpace.Controllers
                     case 3:
 
                         //if (p == null) return View("LogBookNotFound");
-                        var minLogBookDate =p.LogBookStartDate??q.pilotLogBook.ToList().Min(item => item.FlightDateOnly);
+                        var minLogBookDate =(System.DateTime)(p.LogBookStartDate??q.pilotLogBook.ToList().Min(item => item.FlightDateOnly));
                         var logBookList = q.pilotLogBook.Where(item =>  item.FlightDateOnly >= minLogBookDate).OrderBy(row => row.RouteID).ToList();
 
                         var timeLogBook = logBookList.Sum(item => item.FlightDurationMin) / 60;
@@ -413,7 +413,7 @@ namespace FontNameSpace.Controllers
             var minLogBookDate = p.LogBookStartDate ?? q.pilotLogBook.ToList().Min(item => item.FlightDateOnly);
             var pilotLogBook = q.pilotLogBook.Where(item => item.FlightDateOnly >= minLogBookDate).OrderBy(row => row.RouteID).ToList();
             //var pilotLogBook = q.pilotLogBook.ToList();
-            string csv = "Date,Acft MMS,Acft ,From/To,Remarks,Landings,Dur(hr)" + Environment.NewLine + Environment.NewLine;
+            string csv = "Date,Acft MMS,Acft ,From/To,Remarks,Landings,Dur(hr),RefNum" + Environment.NewLine + Environment.NewLine;
             int i = 0;
             int? nlsum = 0;
             int? nlpp = 0;
@@ -556,7 +556,7 @@ namespace FontNameSpace.Controllers
             //var logBookList = q_flightsLogBook.ToList();
 
             //var logBookList = q.pilotLogBook.ToList();
-            var minLogBookDate = p.LogBookStartDate ?? q.pilotLogBook.ToList().Min(item => item.FlightDateOnly);
+            var minLogBookDate = (System.DateTime)(p.LogBookStartDate ?? q.pilotLogBook.ToList().Min(item => item.FlightDateOnly));
             var logBookList = q.pilotLogBook.Where(item => item.FlightDateOnly >= minLogBookDate).OrderBy(row => row.RouteID).ToList();
             var timeLogBook = logBookList.Sum(item => item.FlightDurationMin) / 60;
             //var timeForward = db.Pilots.Where(r => r.PilotID == pilotid).FirstOrDefault().TimeForward;
