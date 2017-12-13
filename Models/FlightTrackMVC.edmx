@@ -857,7 +857,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Property Name="SearchHint" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CertType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PilotGuid" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
-          <Property Name="TimeForward" Type="Int32" Nullable="false" DefaultValue="0" />
+          <Property Name="TimeForward" Type="Decimal" Nullable="false" />
           <Property Name="LandingsForward" Type="Int32" Nullable="false" DefaultValue="0" />
           <Property Name="BaseAirportID" Type="Int32" />
           <Property Name="LogBookStartDate" Type="DateTime" Precision="0" />

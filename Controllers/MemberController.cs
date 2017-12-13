@@ -157,9 +157,10 @@ namespace FontNameSpace.Controllers
                                 var pid = q.pilotId;
                                 if (!(form["UpdateForwards"] == null))
                                 {
-                                    int number1, number2;
-                                    if (!(Int32.TryParse(form["timeForward"], out number1) && number1 >= 0)) return RedirectToAction("index_member_menu", new { menuitem = 3, pilotId = pid, buttonEnable = btnEnabl });
-                                    if (!(Int32.TryParse(form["landForward"], out number2) && number2 >= 0)) return RedirectToAction("index_member_menu", new { menuitem = 3, pilotId = pid, buttonEnable = btnEnabl });
+                                    decimal number1;
+                                    int number2;
+                                    if (!(Decimal.TryParse(form["timeForward"], out number1) && number1 >= 0)) return RedirectToAction("indexMember", new { menuitem = 3, pilotId = pid, buttonEnable = btnEnabl });
+                                    if (!(Int32.TryParse(form["landForward"], out number2) && number2 >= 0)) return RedirectToAction("indexMember", new { menuitem = 3, pilotId = pid, buttonEnable = btnEnabl });
                                     if (ModelState.IsValid)
                                     {
                                         Pilot p =q.pilotEntity;
@@ -415,10 +416,10 @@ namespace FontNameSpace.Controllers
             //var pilotLogBook = q.pilotLogBook.ToList();
             string csv = "Date,Acft MMS,Acft ,From/To,Remarks,Landings,Dur(hr),RefNum" + Environment.NewLine + Environment.NewLine;
             int i = 0;
-            int? nlsum = 0;
+            int? nlsum = p.LandingsForward;
             int? nlpp = 0;
             float? hsumpp = 0;
-            float? hsum = 0;
+            float? hsum = (float)p.TimeForward;
             foreach (var rec in pilotLogBook)
             {
                 i++;
@@ -430,19 +431,19 @@ namespace FontNameSpace.Controllers
                     + '"' + rec.AcftMMS.ToString() + '"' + ","
                     + '"' + rec.Acft.ToString() + '"' + ","
                     + '"' + rec.RouteName.ToString() + '"' + ","
-                    + '"' + String.Format("{0:F2}", h) + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
+                    + '"' + String.Format("{0:F2}", h)+"hr " + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
                     + '"' + rec.NoLandings.ToString() + '"' + ","
                     + '"' + String.Format("{0:F2}", h) + '"' + ","
                     + '"' + rec.RouteID.ToString() + '"' + ","
                     + Environment.NewLine;
                 if (i % 7 == 0) {
-                    hsum += hsumpp;
-                    nlsum += nlpp;
+                    //hsum += hsumpp;
+                    //nlsum += nlpp;
                     csv = csv
                     + Environment.NewLine
                     + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Page Total" + "," + nlpp.ToString() + "," + String.Format("{0:F2}", hsumpp) + Environment.NewLine
-                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Amt. Forward" + Environment.NewLine
-                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Total To Date" + "," + nlsum.ToString() + "," + String.Format("{0:F2}", hsum)
+                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Amt. Forward" + "," + nlsum.ToString() + "," + String.Format("{0:F2}", hsum) + "," + Environment.NewLine
+                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Total To Date" + "," + (nlsum += nlpp).ToString() + "," + String.Format("{0:F2}", (hsum += hsumpp))
                     + Environment.NewLine + Environment.NewLine;
                     nlpp = 0;
                     hsumpp = 0;
@@ -588,9 +589,11 @@ namespace FontNameSpace.Controllers
 
                 Pilot pilot = db.Pilots.Find(pid);
                 pilotUserName = pilot.PilotUserName;
-                int number1, number2;
-                if (!(Int32.TryParse(form["timeForward"], out number1) && number1 >= 0)) return RedirectToAction("PilotLogBookMobile", new { pilotUserName = pilotUserName });
+                decimal number1;
+                int number2;
+                if (!(Decimal.TryParse(form["timeForward"], out number1) && number1 >= 0)) return RedirectToAction("PilotLogBookMobile", new { pilotUserName = pilotUserName });
                 if (!(Int32.TryParse(form["landForward"], out number2) && number2 >= 0)) return RedirectToAction("PilotLogBookMobile", new { pilotUserName = pilotUserName });
+
                 if (ModelState.IsValid)
                 {
                     pilot.TimeForward = number1;

@@ -17,7 +17,6 @@ namespace FontNameSpace.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Pilot()
         {
-            this.TimeForward = 0;
             this.LandingsForward = 0;
         }
     
@@ -38,7 +37,7 @@ namespace FontNameSpace.Models
         public string SearchHint { get; set; }
         public string CertType { get; set; }
         public string PilotGuid { get; set; }
-        public int TimeForward { get; set; }
+        public decimal TimeForward { get; set; }
         public int LandingsForward { get; set; }
         public Nullable<int> BaseAirportID { get; set; }
         public Nullable<System.DateTime> LogBookStartDate { get; set; }

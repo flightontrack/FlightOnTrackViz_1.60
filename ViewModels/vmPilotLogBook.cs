@@ -13,12 +13,12 @@ namespace FontNameSpace.ViewModels
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public System.DateTime dateBegin { get; set; }
 
-        [Range(0,99999)] /// the validation is not working for some reason
-        public int timeForward  { get; set; }
+        [Range(0,99999.0)] /// the validation is not working for some reason
+        public decimal timeForward  { get; set; }
         [Range(0, 99999)]
         public int landForward  { get; set; }
 
-        public vmPilotLogBook(List<vPilotLogBook> lb,int pid, System.DateTime dateMin,int tf=0,int lf=0)
+        public vmPilotLogBook(List<vPilotLogBook> lb,int pid, System.DateTime dateMin, decimal tf=0,int lf=0)
         {
             timeForward=tf;
             landForward=lf;
