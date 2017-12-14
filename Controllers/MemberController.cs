@@ -76,7 +76,8 @@ namespace FontNameSpace.Controllers
                         ViewBag.LandNumLogBook = landNumLogBook;
                         ViewBag.LandNumTotal = landNumForward + landNumLogBook;
 
-                        ViewBag.VLBReadyToDownload = (buttonEnable == null ? false : true);
+                        ViewBag.VLBReadyToDownload = (buttonEnable ?? false);
+                        ViewBag.SortDir = "ASC";
 
                         return View("MemberLogbook", new vmPilotLogBook(logBookList, pilotid, minLogBookDate, timeForward, landNumForward));
                     case 4:
@@ -427,11 +428,12 @@ namespace FontNameSpace.Controllers
                 var h = rec.FlightDurationMin / 60.0f;
                 hsumpp += h;
                 csv = csv
-                    + '"' + rec.FlightDateOnly.ToString("MM/dd/yy") + '"' + ","
+                    + '"' + rec.FlightDateOnly.ToString("yy/MM/dd") + '"' + ","
                     + '"' + rec.AcftMMS.ToString() + '"' + ","
                     + '"' + rec.Acft.ToString() + '"' + ","
                     + '"' + rec.RouteName.ToString() + '"' + ","
-                    + '"' + String.Format("{0:F2}", h)+"hr " + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
+                    //+ '"' + String.Format("{0:F2}", h)+"hr " + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
+                    + '"' + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
                     + '"' + rec.NoLandings.ToString() + '"' + ","
                     + '"' + String.Format("{0:F2}", h) + '"' + ","
                     + '"' + rec.RouteID.ToString() + '"' + ","
@@ -475,7 +477,7 @@ namespace FontNameSpace.Controllers
                         + '"' + rec.AcftRegNum.ToString() + '"' + ","
                         + '"' + rec.PilotID.ToString() + '"' + ","
                         + '"' + rec.RouteDurationMin.ToString() + '"' + ","
-                        + '"' + (rec.RouteName == null ? "" : rec.RouteName) + '"' + ","
+                        + '"' + (rec.RouteName?? "") + '"' + ","
                         + '"' + rec.RouteNoLandings.ToString() + '"' + ","
                         //+ '"' + rec.FlightID.ToString() + '"' + ","
                         //+ '"' + (rec.FlightName.ToString() == null ? "" : rec.FlightName) + '"' + ","
@@ -583,7 +585,7 @@ namespace FontNameSpace.Controllers
         {
             string pilotUserName = "";
             int pid = 0;
-            if (!(form["submit"] == null))
+            if (!(form["UpdateForwards"] == null))
             {
                 pid = Int32.Parse(form["pilotId"]);
 

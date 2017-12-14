@@ -90,7 +90,7 @@ $(document).ready(function () {
      grid.Column(columnName: "Acft", header: "Acft", style: "text-align-left"),
      grid.Column(columnName: "RouteName", header: "Airports", style: "text-align-left"),
      grid.Column(columnName: "NoLandings", header: "Landings", style: "text-align-left"),
-     grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
+     grid.Column(columnName: "FlightDurationMin", header: "Duration(hr)", style: "text-align-left", format: (item) => (item.FlightDurationMin / 60.0f).ToString("F2")), //rec.FlightDurationMin / 60.0f
      grid.Column(columnName: "Comments", header: "Comments", style: "text-align-left")
  ))
             <br>
