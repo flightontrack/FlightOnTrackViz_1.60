@@ -1,114 +1,145 @@
 ﻿@model FontNameSpace.ViewModels.vmFlight
-        @{
-            var grid = new WebGrid(
-                Model.GpsLocations,
-                defaultSort: "onSessionPointNum",
-                canPage: true,
-                rowsPerPage: 100
-                );
-            //var hidePanel = grid.PageIndex == 0 ? true : false;
-            var collapsePanel = grid.PageIndex == 0 ? "panel-collapse collapse" : "panel-collapse collapse in";
-        }
-
-<div class="row">
-    <div class="col-sm-4">
-        <ul class="list-group">
-            <li class="list-group-item active">
-                <h4>Flight - @Model.Flightid</h4>
-            </li>
-            <li class="list-group-item">
-                <p class="card-text">Display flight track on Google Maps</p>
-                @Html.ActionLink("Display Flight", "DisplayMyFlightMovingMap", new { id = Model.Flightid, FlightOrRoute = "Flight", linkUp = @ViewBag.ActionBack }, new { @class = "btn btn-primary" })
-            </li>
-            <li class="list-group-item">
-                <p class="card-text">Display the whole route on Google Maps</p>
-                @Html.ActionLink("Display Route", "DisplayMyFlightMovingMap", new { id = Model.Flightid, FlightOrRoute = "Route", linkUp = @ViewBag.ActionBack }, new { @class = "btn btn-primary" })
-            </li>
-            <li class="list-group-item">
-                <p class="card-text">Download flight data file in CSV format</p>
-                @Html.ActionLink("Download CSV", "DownloadFlightCSV", new { id = Model.Flightid }, new { @class = "btn btn-primary" })
-            </li>
-            <li class="list-group-item">
-                <p class="card-text">Download route Google Earth KML file with timeline (3D)</p>
-                @Html.ActionLink("Download KML", "DownloadKMLTimeLine", new { id = Model.Flightid }, new { @class = "btn btn-primary" })
-            </li>
-        </ul>
-    </div>
-</div>
-
-<div class="row">
-    <div class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    @*<a data-toggle="collapse" data-target="#details"><h3>+ Flight Details</h3></a>*@
-                    <h3>Flight Details</h3>
-                    <button type="button" class="btn btn-default active" data-toggle="collapse" data-target="#details">Expand/Collapse Details</button>
-                </div>
-            </div>
-    <div id="details" class='@collapsePanel'>
-    
+@{
+    var errorMsg = "No information on the flight " + Model.Flightid;
+    var grid = new WebGrid(
+        Model.GpsLocations,
+        defaultSort: "onSessionPointNum",
+        canPage: true,
+        rowsPerPage: 100
+        );
+    var collapsePanel = grid.PageIndex == 0 ? "panel-collapse collapse" : "panel-collapse collapse in";
+}
+@if (Model.IsFlightValid)
+{
     <div class="row">
         <div class="col-sm-4">
             <ul class="list-group">
-                <li class="list-group-item active"><h4>Flight Parameters</h4></li>
-                <li class="list-group-item">Flight:  @Model.FlightName</li>
-                @*<li class="list-group-item">Flight GPS Date:  @Model.FlightDate.ToString("d", (new System.Globalization.CultureInfo("ja-JP")).DateTimeFormat) </li>*@
-                <li class="list-group-item">Flight GPS Date:  @Model.FlightDate.ToString() </li>
-                <li class="list-group-item">Aircraft:  @Model.AcftNum</li>
-                <li class="list-group-item">Pilot Callsign:  @Model.FlightPilotName</li>
-                <li class="list-group-item">Interval (sec):  @Model.TrackFreq</li>
-                <li class="list-group-item">Flight Duration (min):  @Model.FlightDuration</li>
-            </ul>
-        </div>
-        <div class="col-sm-4">
-            <ul class="list-group">
-                <li class="list-group-item active"><h4>Table Legend</h4></li>
+                <li class="list-group-item active">
+                    <h4>Flight - @Model.Flightid  <br>Route - @Model.RouteId</h4>
+                </li>
                 <li class="list-group-item">
-                    <ul style="list-style-type:none">
-                        <li><b>TPN</b>      - Map Trackpoint Number</li>
-                        <li><b>LOCAL TIME</b> - GPS Local Time</li>
-                        <li><b>LAT</b>     - Latitude</li>
-                        <li><b>LON</b>     - Longitude</li>
-                        <li><b>ALTM</b>    - Altitude (meter)</li>
-                        <li><b>ALTF</b>    - Altitude (foot)</li>
-                        <li><b>GRSPMPH</b> - Ground Speed (mph)</li>
-                        <li><b>GRSPKNT</b> - Ground Speed (knot)</li>
-                        <li><b>GRSPKMH</b> - Ground Speed (km/h)</li>
-                        <li><b>ARPT</b>   - Airport Code</li>
-                    </ul>
+                    <p class="card-text">Display flight track on Google Maps</p>
+                    @Html.ActionLink("Display Flight", "DisplayMyFlightMovingMap", new { id = Model.Flightid, FlightOrRoute = "Flight", linkUp = @ViewBag.ActionBack }, new { @class = "btn btn-primary" })
+                </li>
+                <li class="list-group-item">
+                    <p class="card-text">Display the whole route on Google Maps</p>
+                    @Html.ActionLink("Display Route", "DisplayMyFlightMovingMap", new { id = Model.Flightid, FlightOrRoute = "Route", linkUp = @ViewBag.ActionBack }, new { @class = "btn btn-primary" })
+                </li>
+                <li class="list-group-item">
+                    <p class="card-text">Download flight data file in CSV format</p>
+                    @Html.ActionLink("Download CSV", "DownloadFlightCSV", new { id = Model.Flightid }, new { @class = "btn btn-primary" })
+                </li>
+                <li class="list-group-item">
+                    <p class="card-text">Download route Google Earth KML file with timeline (3D)</p>
+                    @Html.ActionLink("Download KML", "DownloadKMLTimeLine", new { id = Model.Flightid }, new { @class = "btn btn-primary" })
                 </li>
             </ul>
         </div>
-      </div>
-@*@grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",*@
-        @grid.GetHtml(
-            mode: WebGridPagerModes.All,
-            tableStyle: "webgrid",
-            headerStyle: "webgrid-header",
-            footerStyle: "table-pager",
+    </div>
 
-            columns: grid.Columns(
-            //grid.Column(columnName: "GPSLocationID", header: "GPS Location ID", style: "text-align-left"),
-            grid.Column(columnName: "onSessionPointNum", header: "TPN", style: "text-align-left"),
-            grid.Column(columnName: "gpsTime", header: "LOCAL TIME", style: "text-align-left"),
-            grid.Column(columnName: "latitude", header: "LAT", style: "text-align-left"),
-            grid.Column(columnName: "longitude", header: "LON", style: "text-align-left"),
-            grid.Column(columnName: "AltitudeM", header: "ALTM", style: "text-align-left"),
-            grid.Column(columnName: "AltitudeFt", header: "ALTF", style: "text-align-left"),
-            //grid.Column(columnName: "accuracy", header: "Accuracy M", style: "text-align-left"),
-            grid.Column(columnName: "SpeedMph", header: "GRSPMPH", style: "text-align-left"),
-            grid.Column(columnName: "SpeedKnot", header: "GRSPKNT", style: "text-align-left"),
-            grid.Column(columnName: "SpeedKmph", header: "GRSPKMH", style: "text-align-left"),
-            //grid.Column(columnName: "direction", header: "Direction", style: "text-align-left"),
-            grid.Column(columnName: "AirportCode", header: "ARPT", style: "text-align-left")
-            )
-        )
+    <div class="row">
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        @*<a data-toggle="collapse" data-target="#details"><h3>+ Flight Details</h3></a>*@
+                        <h3>Flight Details</h3>
+                        <button type="button" class="btn btn-default active" data-toggle="collapse" data-target="#details">Expand/Collapse Details</button>
+                    </div>
+                </div>
+                <div id="details" class='@collapsePanel'>
 
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <ul class="list-group">
+                                <li class="list-group-item active">
+                                    <h4>Flight Parameters</h4>
+                                </li>
+                                <li class="list-group-item">Flight:  @Model.FlightName</li>
+                                @*<li class="list-group-item">Flight GPS Date:  @Model.FlightDate.ToString("d", (new System.Globalization.CultureInfo("ja-JP")).DateTimeFormat) </li>*@
+                                <li class="list-group-item">Flight GPS Date:  @Model.FlightDate.ToString() </li>
+                                <li class="list-group-item">Aircraft:  @Model.AcftNum</li>
+                                <li class="list-group-item">Pilot Callsign:  @Model.FlightPilotName</li>
+                                <li class="list-group-item">Interval (sec):  @Model.TrackFreq</li>
+                                <li class="list-group-item">Flight Duration (min):  @Model.FlightDuration</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-4">
+                            <ul class="list-group">
+                                <li class="list-group-item active">
+                                    <h4>Table Legend</h4>
+                                </li>
+                                <li class="list-group-item">
+                                    <ul style="list-style-type:none">
+                                        <li>
+                                            <b>TPN</b>      - Map Trackpoint Number
+                                        </li>
+                                        <li>
+                                            <b>LOCAL TIME</b> - GPS Local Time
+                                        </li>
+                                        <li>
+                                            <b>LAT</b>     - Latitude
+                                        </li>
+                                        <li>
+                                            <b>LON</b>     - Longitude
+                                        </li>
+                                        <li>
+                                            <b>ALTM</b>    - Altitude (meter)
+                                        </li>
+                                        <li>
+                                            <b>ALTF</b>    - Altitude (foot)
+                                        </li>
+                                        <li>
+                                            <b>GRSPMPH</b> - Ground Speed (mph)
+                                        </li>
+                                        <li>
+                                            <b>GRSPKNT</b> - Ground Speed (knot)
+                                        </li>
+                                        <li>
+                                            <b>GRSPKMH</b> - Ground Speed (km/h)
+                                        </li>
+                                        <li>
+                                            <b>ARPT</b>   - Airport Code
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    @*@grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",*@
+                    @grid.GetHtml(
+             mode: WebGridPagerModes.All,
+             tableStyle: "webgrid",
+             headerStyle: "webgrid-header",
+             footerStyle: "table-pager",
+
+             columns: grid.Columns(
+             //grid.Column(columnName: "GPSLocationID", header: "GPS Location ID", style: "text-align-left"),
+             grid.Column(columnName: "onSessionPointNum", header: "TPN", style: "text-align-left"),
+             grid.Column(columnName: "gpsTime", header: "LOCAL TIME", style: "text-align-left"),
+             grid.Column(columnName: "latitude", header: "LAT", style: "text-align-left"),
+             grid.Column(columnName: "longitude", header: "LON", style: "text-align-left"),
+             grid.Column(columnName: "AltitudeM", header: "ALTM", style: "text-align-left"),
+             grid.Column(columnName: "AltitudeFt", header: "ALTF", style: "text-align-left"),
+             //grid.Column(columnName: "accuracy", header: "Accuracy M", style: "text-align-left"),
+             grid.Column(columnName: "SpeedMph", header: "GRSPMPH", style: "text-align-left"),
+             grid.Column(columnName: "SpeedKnot", header: "GRSPKNT", style: "text-align-left"),
+             grid.Column(columnName: "SpeedKmph", header: "GRSPKMH", style: "text-align-left"),
+             //grid.Column(columnName: "direction", header: "Direction", style: "text-align-left"),
+             grid.Column(columnName: "AirportCode", header: "ARPT", style: "text-align-left")
+             )
+         )
+
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div class="validation-summary-errors text-danger"> @errorMsg  </div>
+};
+
 
 
 

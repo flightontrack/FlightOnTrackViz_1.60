@@ -53,8 +53,11 @@ namespace FontNameSpace.Controllers
 
         public ActionResult CheckRouteFlightsCount(int id = 0, string actionBack = "")
         {
-            bool i = db.Flights.Where(row => (row.RouteID == id)).Count() > 1;
-            return RedirectToAction(i ? "GetRouteFlights" : "DisplayFlightData", i ? "PublicFlights" : "Flight", new { id});
+            var recordSet = new Queryables(id, "Route").flightsByRoute.ToList();
+            var c = recordSet.Count();
+            if (c == 1) { id = recordSet[0].FlightID; };
+            //bool i = db.Flights.Where(row => (row.RouteID == id)).Count() > 1;
+            return RedirectToAction(c>1 ? "GetRouteFlights" : "DisplayFlightData", c>1 ? "PublicFlights" : "Flight", new { id});
         }
         
         [HttpGet]

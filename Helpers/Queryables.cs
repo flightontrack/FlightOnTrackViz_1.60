@@ -13,12 +13,17 @@ namespace FontNameSpace.Helpers
         public Entities db;
         int _acftId;
         int _flightId;
+        int _routeId;
         int _topNumber = 100;
         //string _acftNumLocal;
 
         public Queryables() { db = new Entities(); }
 
-        public Queryables(int flightId) { db = new Entities(); _flightId = flightId; }
+        public Queryables(int Id, string idType = "Flight") {
+            db = new Entities();
+            if (idType == "Flight") _flightId = Id;
+            if (idType == "Route") _routeId = Id;
+        }
         public Queryables(Entities dbent) { db = dbent; }
 
         public int topNumber { set { _topNumber = value; } }
@@ -93,6 +98,8 @@ namespace FontNameSpace.Helpers
         public IQueryable<GpsLocation> flightGpsLocationsOrderDesc { get { return db.GpsLocations.Where(row => row.FlightID == _flightId).OrderByDescending(row => row.GPSLocationID);} }
 
         public IQueryable<Flight> flightsJunkNotChecked { get { return db.Flights.Where(row => (row.IsAltitudeChecked.Value == null)); } }
+
+        public IQueryable<Flight> flightsByRoute { get { return db.Flights.Where(row => (row.RouteID == _routeId)); } }
 
         public IQueryable<vFlightAcftPilot> flightsByPilot { get { return db.vFlightAcftPilots.Where(row => row.PilotID == pilotId); } }
 

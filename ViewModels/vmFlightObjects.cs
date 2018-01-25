@@ -9,6 +9,7 @@ namespace FontNameSpace.ViewModels
 {
     public class vmFlight
     {
+        public bool IsFlightValid = false;
         public int Flightid;
         public Flight Flight;
         public List<GpsLocation> GpsLocations;
@@ -19,7 +20,7 @@ namespace FontNameSpace.ViewModels
         public int? TrackFreq;
         public DateTime? FlightDate;
         public int? FlightPltId;
-        public bool? IsShared;
+        public bool? IsShared=true;
         public int? PltId;
         public string FlightPilotCode = String.Empty;
         public string FlightPilotName = String.Empty;
@@ -31,25 +32,29 @@ namespace FontNameSpace.ViewModels
             //var entities = new Entities();
             var q = new Queryables(id);
             Flight = q.flight;
-            FlightName = Flight.FlightName;
-            RouteId = Flight.RouteID ?? id;
-            IsPattern = Flight.IsPattern.HasValue ? "Yes" : "No";
-            FlightDuration = Flight.FlightDurationMin ?? 0;
-            TrackFreq = Flight.FreqSec;
-            FlightDate = Flight.FlightDate;
-            IsShared = Flight.IsShared;
-            //GpsLocations = entities.GpsLocations.Where(row => row.FlightID == id).OrderBy(row => row.onSessionPointNum).ToList();
-            GpsLocations = q.flightGpsLocations.ToList();
-            var pilot = new vmPilot(Flight.PilotID ?? 0);
-            if (pilot.PilotId != null)
+            if (Flight != null)
             {
-                PltId = pilot.PilotId;
-                FlightPilotCode = pilot.PilotCode;
-                FlightPilotName = pilot.PilotName;
+                FlightName = Flight.FlightName;
+                RouteId = Flight.RouteID ?? id;
+                IsPattern = Flight.IsPattern.HasValue ? "Yes" : "No";
+                FlightDuration = Flight.FlightDurationMin ?? 0;
+                TrackFreq = Flight.FreqSec;
+                FlightDate = Flight.FlightDate;
+                IsShared = Flight.IsShared;
+                //GpsLocations = entities.GpsLocations.Where(row => row.FlightID == id).OrderBy(row => row.onSessionPointNum).ToList();
+                GpsLocations = q.flightGpsLocations.ToList();
+                var pilot = new vmPilot(Flight.PilotID ?? 0);
+                if (pilot.PilotId != null)
+                {
+                    PltId = pilot.PilotId;
+                    FlightPilotCode = pilot.PilotCode;
+                    FlightPilotName = pilot.PilotName;
+                }
+                q.acftId = Flight.AcftID ?? 0;
+                //FlightAcftId = Flight.AcftID;
+                AcftNum = q.acftRemote.AcftNum;
+                IsFlightValid = true;
             }
-            q.acftId = Flight.AcftID ?? 0;
-            //FlightAcftId = Flight.AcftID;
-            AcftNum = q.acftRemote.AcftNum;
         }
     }
 
