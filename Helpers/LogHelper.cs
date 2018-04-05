@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using static FontNameSpace.Finals;
 
@@ -9,77 +10,56 @@ namespace FontNameSpace
         public LogHelper()
         {
         }
+        public async void onLog(string source, string text)
+        {
+            var filePathLog = LOG_FILES_PATH + "ConsoleOut.txt";
+            try
+            {
+                Directory.CreateDirectory(LOG_FILES_PATH);
+                using (FileStream filestream = new FileStream(filePathLog, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+                {
+                    string l = "\n";
+                    //l += "---------------------------------------------------------\n";
+                    l += (DateTime.Now.ToString("u")) + "\n";
+                    l += "Log source: " + source + "|" + text + "\n";
+                    l += "---------------------------------------------------------\n";
+                    using (StreamWriter streamwriter = new StreamWriter(filestream))
+                    {
+                        Debug.Print("Streaming >>>>>>>>>>>>>");
+                        await streamwriter.WriteAsync(l);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Print("Dedug+++++++++++++" + ex.Message);
+                Console.WriteLine("Console+++++++++++++" + ex.Message);
+            }
+        }
 
-        public static void onLog(string source, string text)
+        public static void onExceptionLog(string source, Exception e, string parname = "Unknown")
         {
+            var filePathEx = LOG_FILES_PATH + "FailureOut.txt";
             try
             {
-                if (!Directory.Exists(LOG_FILES_PATH)) Directory.CreateDirectory(LOG_FILES_PATH);
-                using (FileStream filestream = new FileStream(LOG_FILES_PATH + "Consoleout.txt", FileMode.Append, FileAccess.Write))
+                Directory.CreateDirectory(LOG_FILES_PATH);
+                using (FileStream filestream = new FileStream(filePathEx, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
                 {
-                    StreamWriter streamwriter = new StreamWriter(filestream);
-                    Console.SetOut(streamwriter);
-                    Console.SetError(streamwriter);
-                    //Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt")+"|Error source: "+source+"|" + e);
-                    Console.WriteLine("\n");
-                    Console.WriteLine("*********************************************************************");
-                    Console.WriteLine(DateTime.Now.ToString("u"));
-                    Console.WriteLine("Log source: " + source + "|" + text);
-                    Console.WriteLine("---------------------------------------------------------------------");
-                    streamwriter.Close();
+                    string l = "\n";
+                    //l += "++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
+                    l += (DateTime.Now.ToString("u")) + "\n";
+                    l += "Log source: " + source + "|" + e.Message + "\n";
+                    l += "++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
+                    using (StreamWriter streamwriter = new StreamWriter(filestream))
+                    {
+                        streamwriter.Write(l);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-            }
-        }
-        public static void onFailureLog(string source, Exception e, string parname = "Unknown")
-        {
-            try
-            {
-                if (!Directory.Exists(LOG_FILES_PATH)) Directory.CreateDirectory(LOG_FILES_PATH);
-                using (FileStream filestream = new FileStream(LOG_FILES_PATH + "ConsoleErrorOut.txt", FileMode.Append, FileAccess.Write))
-                {
-                    StreamWriter streamwriter = new StreamWriter(filestream);
-                    Console.SetOut(streamwriter);
-                    Console.SetError(streamwriter);
-                    //Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt")+"|Error source: "+source+"|" + e);
-                    Console.WriteLine("\n");
-                    Console.WriteLine("*********************************************************************");
-                    Console.WriteLine(DateTime.Now.ToString("u"));
-                    Console.WriteLine("Error source: " + source + "|" + parname + "|" + e);
-                    Console.WriteLine("---------------------------------------------------------------------");
-                    streamwriter.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-        public static void onFailureLog(string source, string error)
-        {
-            try
-            {
-                if (!Directory.Exists(LOG_FILES_PATH)) Directory.CreateDirectory(LOG_FILES_PATH);
-                using (FileStream filestream = new FileStream(LOG_FILES_PATH + "ConsoleErrorOut.txt", FileMode.Append, FileAccess.Write))
-                {
-                    StreamWriter streamwriter = new StreamWriter(filestream);
-                    Console.SetOut(streamwriter);
-                    Console.SetError(streamwriter);
-                    //Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt")+"|Error source: "+source+"|" + e);
-                    Console.WriteLine("\n");
-                    Console.WriteLine("*********************************************************************");
-                    Console.WriteLine(DateTime.Now.ToString("u"));
-                    Console.WriteLine("Error source: " + source + "|" + error);
-                    Console.WriteLine("---------------------------------------------------------------------");
-                    streamwriter.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
+                Debug.Print("Dedug ------ " + ex.Message);
+                Console.WriteLine("Console ------- " + ex.Message);
             }
         }
     }

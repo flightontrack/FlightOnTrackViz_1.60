@@ -44,7 +44,7 @@ namespace FontNameSpace.Controllers
                 catch (MembershipCreateUserException e)
                 {
                     string error = e.Message;
-                    LogHelper.onFailureLog("CreateUserPilot()", e);
+                    LogHelper.onExceptionLog("CreateUserPilot()", e);
                     Response.Write(error);
                     throw;
                 }

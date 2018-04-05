@@ -202,7 +202,7 @@ namespace FontNameSpace.Controllers
                                 else
                                 {
                                     var errors = ModelState.Where(x => x.Value.Errors.Any()).Select(x => new { x.Key, x.Value.Errors }).ToString();
-                                    LogHelper.onFailureLog("CreateUserPilot()", errors);
+                                    new LogHelper().onLog("CreateUserPilot()", errors);
                                     ViewBag.ExceptionErrorMessage = isDebugMode ? errors : "POST GetFlights() error";
                                     return View("ExceptionPage");
                                 }                                

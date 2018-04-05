@@ -27,7 +27,7 @@ namespace FontBing
             set { _querystring=value; }
         }
         static void GetGroundElevationSync() {
-            string key = "Ahv4d_yUG1cZtn8S-GiIDaLYVc_Z35JWEVak4kVBmqsX-_p57MUdY2cUAS0M3IZS";
+            string key = "AtiTcE2c88NLEarx_z_NxmYOhoBSW6hfnR1wrPJtUVXSj8WBT8Pl6v3yLngaG2AW";
             Uri geocodeRequest = new Uri(string.Format("http://dev.virtualearth.net/REST/v1/Elevation/List?points={0}&key={1}", _querystring, key));
             using (WebClient wc = new WebClient())
             {
