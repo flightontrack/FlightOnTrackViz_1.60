@@ -163,7 +163,7 @@ namespace FontNameSpace.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.ExceptionErrorMessage = isDebugMode ? e.Message : "GetRoutes() error";
+                ViewBag.ExceptionErrorMessage = isDebugMode ? e.InnerException.Message : "GetRoutes() error";
                 return View("ExceptionPage");
             }
         }
