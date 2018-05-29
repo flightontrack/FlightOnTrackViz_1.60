@@ -334,6 +334,7 @@
     <Compile Include="ViewModels\vmSearchRequest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="cherokee96_ico.ico" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -458,6 +459,8 @@
     <Content Include="Images\Capture_flight4.PNG" />
     <Content Include="Images\Capture_flight4_data.PNG" />
     <Content Include="Images\chart.PNG" />
+    <Content Include="Images\cherokee96.png" />
+    <Content Include="Images\cherokee_200.png" />
     <Content Include="Images\cherokee_256.jpg" />
     <Content Include="Images\dot_cross.png" />
     <Content Include="Images\dot_green.png" />
