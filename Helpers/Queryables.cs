@@ -3,11 +3,12 @@ using System.Linq;
 using FontNameSpace.Models;
 using System.Activities.Expressions;
 using System.Collections.Generic;
+using System;
 
 namespace FontNameSpace.Helpers
 {
 
-    public class Queryables
+    public class Queryables : IDisposable
     {
 
         public Entities db;
@@ -151,6 +152,11 @@ namespace FontNameSpace.Helpers
             {
                 return db.AirportCoordinates.Where(r => r.Code.Contains(_airportCode));
             }
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)db).Dispose();
         }
     }
 }

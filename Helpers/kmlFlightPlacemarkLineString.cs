@@ -10,7 +10,7 @@ using FontNameSpace.Models;
 
 namespace kmlFlightPlacemarkLineString
 {
-    class FlightPlacemarkLineString
+    class FlightPlacemarkLineString : IDisposable
     {
         private int _flightId;
         private Placemark _placemark;
@@ -49,6 +49,11 @@ namespace kmlFlightPlacemarkLineString
             _placemark.Time = _timestamp;
             _placemark.Id = _flightId.ToString();
             //_placemark.Name = "Flight " + _flightId;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)db).Dispose();
         }
     }
 }

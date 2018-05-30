@@ -100,7 +100,7 @@ namespace FontNameSpace.Controllers
                 //var pid = q.pilotId;
                 bool btnEnabl = false;
                 bool? successFlg = null;
-                bool? successAirpt = null;
+                //bool? successAirpt = null;
                 if (ModelState.IsValid)
                 {
                     try
@@ -213,7 +213,8 @@ namespace FontNameSpace.Controllers
                     catch (Exception e)
                     {
                         successFlg = false;
-                    }
+                        LogHelper.onExceptionLog("indexMember()", e);
+                }
                 }
                 else { successFlg = false; }
                 return RedirectToAction("indexMember", new { isSearchJunk = searchRequest.isSearchJunk, menuitem = i, successFlg = successFlg, buttonEnable = btnEnabl });
@@ -381,6 +382,7 @@ namespace FontNameSpace.Controllers
                 catch(Exception e)
                 {
                     //successFlg = false;
+                    LogHelper.onExceptionLog("FlightEdit()", e);
                     return RedirectToAction("FlightEdit", new { id = flight.FlightID, successFlg = false });
                 }
             }
@@ -495,6 +497,7 @@ namespace FontNameSpace.Controllers
             }
             catch (Exception e)
             {
+                LogHelper.onExceptionLog("GenerateVisualLogbook()", e);
                 int? r = routeID;
                 csvVisualPilotLogBook = csvVisualPilotLogBook + Environment.NewLine + "LogBook generation failed on RouteID = " + r + Environment.NewLine + "Some fields are null";
             }
@@ -520,6 +523,7 @@ namespace FontNameSpace.Controllers
             }
             catch (Exception e)
             {
+                LogHelper.onExceptionLog("GenerateVisualLogbook()", e);
                 int? r = routeID;
                 csvVisualPilotLogBook = csvVisualPilotLogBook + Environment.NewLine + "LogBook Destination generation failed on RouteID = " + r + Environment.NewLine + "Some fields are null";
             }

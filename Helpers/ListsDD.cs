@@ -9,7 +9,7 @@ using FontNameSpace.Models;
 
 namespace FontNameSpace.Helpers
 {
-    public class ListsDD
+    public class ListsDD : IDisposable
     {
         private enum EPilotCertificates { Student_Pilot, Sport_Pilot, Recreational_Pilot, Private_Pilot, Commercial_Pilot, Airline_Transport_Pilot, Other };
         private Entities db = new Entities();
@@ -96,5 +96,9 @@ namespace FontNameSpace.Helpers
             return listItems;
         }
 
+        public void Dispose()
+        {
+            ((IDisposable)db).Dispose();
+        }
     }
 }

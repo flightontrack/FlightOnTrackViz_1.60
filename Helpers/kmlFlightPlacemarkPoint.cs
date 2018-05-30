@@ -11,7 +11,7 @@ using FontNameSpace.Models;
 namespace kmlFlightPlacemarkPoint
 {
  
-    class FlightPlacemarkPoint
+    class FlightPlacemarkPoint : IDisposable
     {
         private int _flightId;
         private System.Uri _styleUrl;
@@ -58,5 +58,9 @@ namespace kmlFlightPlacemarkPoint
             }
         }
 
+        public void Dispose()
+        {
+            ((IDisposable)db).Dispose();
+        }
     }
 }

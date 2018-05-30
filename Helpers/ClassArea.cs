@@ -3,10 +3,11 @@ using System.Linq;
 using FontNameSpace.Models;
 using System.Collections.Generic;
 using static FontNameSpace.Finals;
+using System;
 
 namespace FontNameSpace.Helpers
 {
-    public class ClassArea
+    public class ClassArea : IDisposable
     {
         public Entities db;
         int _areaId;
@@ -54,6 +55,11 @@ namespace FontNameSpace.Helpers
             public decimal? Lat;
             public decimal? Long;
             public string Radius;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)db).Dispose();
         }
     }
 }

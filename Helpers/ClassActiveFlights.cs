@@ -8,7 +8,7 @@ using static FontNameSpace.Finals;
 
 namespace FontNameSpace.Helpers
 {
-    public class ClassActiveFlights
+    public class ClassActiveFlights : IDisposable
     {
         public Entities db;
         int _groupId;
@@ -83,5 +83,9 @@ namespace FontNameSpace.Helpers
             return new ClassArea.AreaCircle { Lat = loc.latitude, Long = loc.longitude, Radius = DEFAULT_AREARADIUS  };
         }
 
+        public void Dispose()
+        {
+            ((IDisposable)db).Dispose();
+        }
     }
 }
