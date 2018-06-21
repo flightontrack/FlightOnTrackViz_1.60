@@ -112,6 +112,11 @@ namespace FontNameSpace.Controllers
             ViewBag.Message = "HelpTableau";
             return View();
         }
+        public ActionResult HelpPrivacyPolicy()
+        {
+            //ViewBag.Message = "HelpTableau";
+            return View();
+        }
         public ActionResult ScreenshotVideo()
         {
             ViewBag.Message = "Screenshots and Videos";

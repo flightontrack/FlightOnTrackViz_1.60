@@ -588,7 +588,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\HelpTableau.cshtml" />
+    <Content Include="Views\Home\HelpPrivacyPolicy.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Views\Shared\_MemberMenu.cshtml" />
@@ -610,6 +610,7 @@
     <Content Include="Views\PublicFlights\SearchByGroup.cshtml" />
     <Content Include="Views\PublicFlights\GetRouteFlights.cshtml" />
     <Content Include="Views\PublicFlights\GetRoutes.cshtml" />
+    <Content Include="Views\Home\HelpTableau.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
