@@ -116,6 +116,49 @@ namespace FontNameSpace.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        public ActionResult RegisterGroupUser()
+        {
+            return View();
+        }
+
+        //
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegisterGroupUser(RegisterGroupUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = new EntityGroupUser
+                {
+                    GroupUserName = model.UserName,
+                    GroupID = Int32.Parse(model.Group),
+                    GroupUserCode = Int32.Parse(model.Group)+'.'+ model.UserName
+                };
+
+                db.EntityGroupUsers.Add(entity);
+                var i = db.SaveChanges();
+                var psw = db.get_UserGUstring(i).ToString();
+
+                // Attempt to register the user
+                try
+                {
+                    WebSecurity.CreateUserAndAccount(model.UserName, psw);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                catch (MembershipCreateUserException e)
+                {
+                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
         // POST: /Account/Disassociate
 
         [HttpPost]

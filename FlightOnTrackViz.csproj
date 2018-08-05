@@ -252,13 +252,16 @@
     <Compile Include="Models\AirportCoordinates.cs">
       <DependentUpon>FlightTrackMVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DimAcftGroup.cs">
-      <DependentUpon>FlightTrackMVC.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\DimAircraftRemote.cs">
       <DependentUpon>FlightTrackMVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DimArea.cs">
+      <DependentUpon>FlightTrackMVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityGroup.cs">
+      <DependentUpon>FlightTrackMVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityGroupUser.cs">
       <DependentUpon>FlightTrackMVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Flight.cs">
@@ -611,6 +614,7 @@
     <Content Include="Views\PublicFlights\GetRouteFlights.cshtml" />
     <Content Include="Views\PublicFlights\GetRoutes.cshtml" />
     <Content Include="Views\Home\HelpTableau.cshtml" />
+    <Content Include="Views\Account\RegisterGroupUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

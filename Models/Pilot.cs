@@ -41,5 +41,6 @@ namespace FontNameSpace.Models
         public int LandingsForward { get; set; }
         public Nullable<int> BaseAirportID { get; set; }
         public Nullable<System.DateTime> LogBookStartDate { get; set; }
+        public Nullable<int> WebSecurityID { get; set; }
     }
 }

@@ -19,11 +19,12 @@
         <EntityTypeShape EntityType="FlightTrackMVCModel.vVisualPilotLogBook" Width="1.5" PointX="3.375" PointY="15.25" />
         <EntityTypeShape EntityType="FlightTrackMVCModel.vVisualPilotLogDestinations" Width="1.5" PointX="1.125" PointY="15.375" />
         <EntityTypeShape EntityType="FlightTrackMVCModel.AirportCoordinates" Width="1.5" PointX="13.375" PointY="8.75" />
-        <EntityTypeShape EntityType="FlightTrackMVCModel.DimAcftGroup" Width="1.5" PointX="3.375" PointY="5.75" />
         <EntityTypeShape EntityType="FlightTrackMVCModel.AircraftGroup" Width="1.5" PointX="13.375" PointY="12.75" />
         <EntityTypeShape EntityType="FlightTrackMVCModel.vRoute" Width="1.5" PointX="8.375" PointY="14.75" />
         <EntityTypeShape EntityType="FlightTrackMVCModel.vListAircraft" Width="1.5" PointX="12.375" PointY="5.75" />
         <EntityTypeShape EntityType="FlightTrackMVCModel.Pilot" Width="1.5" PointX="5.25" PointY="0.875" />
+        <EntityTypeShape EntityType="FlightTrackMVCModel.EntityGroup" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FlightTrackMVCModel.EntityGroupUser" Width="1.5" PointX="14.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

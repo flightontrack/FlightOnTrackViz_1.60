@@ -96,6 +96,14 @@ namespace FontNameSpace.Helpers
             return listItems;
         }
 
+        public IEnumerable<EntityGroup> selList_Group
+        {
+            get
+            {
+                return db.EntityGroups;
+            }
+        }
+
         public void Dispose()
         {
             ((IDisposable)db).Dispose();

@@ -20,7 +20,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AcftID" Type="int" Nullable="false" />
-          <Property Name="AcftNumLocal" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcftNumLocal" Type="varchar" MaxLength="10" />
           <Property Name="AcftName" Type="nvarchar" MaxLength="100" />
           <Property Name="PilotID" Type="int" Nullable="false" />
           <Property Name="CompanyID" Type="int" />
@@ -43,14 +43,6 @@
           <Property Name="AltDecimal" Type="int" />
           <Property Name="GeoLocBuffer" Type="geography" />
         </EntityType>
-        <EntityType Name="DimAcftGroup">
-          <Key>
-            <PropertyRef Name="GroupID" />
-          </Key>
-          <Property Name="GroupID" Type="int" Nullable="false" />
-          <Property Name="GroupName" Type="varchar" MaxLength="100" />
-          <Property Name="GroupType" Type="varchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="DimAircraftRemote">
           <Key>
             <PropertyRef Name="AcftID" />
@@ -61,7 +53,7 @@
           <Property Name="Created" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.DimArea' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DimArea">
           <Key>
             <PropertyRef Name="AreaID" />
@@ -82,6 +74,26 @@ warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primar
           <Property Name="GeoLocBuffer_5" Type="geography" StoreGeneratedPattern="Computed" />
           <Property Name="GeoLocBuffer_10" Type="geography" StoreGeneratedPattern="Computed" />
           <Property Name="GeoLocBuffer_15" Type="geography" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="EntityGroup">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="int" Nullable="false" />
+          <Property Name="GroupName" Type="varchar" MaxLength="100" />
+          <Property Name="GroupType" Type="varchar" MaxLength="50" />
+          <Property Name="Updated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EntityGroupUser">
+          <Key>
+            <PropertyRef Name="EntityGroupUserID" />
+          </Key>
+          <Property Name="EntityGroupUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupUserCode" Type="varchar" MaxLength="50" />
+          <Property Name="GroupUserName" Type="varchar" MaxLength="200" />
+          <Property Name="GroupID" Type="int" />
+          <Property Name="GroupUserGuid" Type="varchar" MaxLength="36" />
+          <Property Name="Updated" Type="datetime" />
         </EntityType>
         <EntityType Name="Flight">
           <Key>
@@ -177,9 +189,10 @@ warning 6002: The table/view 'flighttrack-db.dbo.DimArea' does not have a primar
           <Property Name="TimeForward" Type="numeric" Precision="10" Scale="2" Nullable="false" />
           <Property Name="LandingsForward" Type="int" Nullable="false" />
           <Property Name="LogBookStartDate" Type="date" />
+          <Property Name="WebSecurityID" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.SearchRequest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.SearchRequest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SearchRequest">
           <Key>
             <PropertyRef Name="SearchID" />
@@ -199,7 +212,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.SearchRequest' does not have a 
           <Property Name="GroupName" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vAircraftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vAircraftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vAircraftPilot">
           <Key>
             <PropertyRef Name="ID" />
@@ -215,7 +228,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vAircraftPilot' does not have a
           <Property Name="AcftRegNum" Type="varchar" MaxLength="9" />
           <Property Name="AcftMMS" Type="varchar" MaxLength="57" />
           <Property Name="SerNum" Type="varchar" MaxLength="32" />
-          <Property Name="AcftNumLocal" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcftNumLocal" Type="varchar" MaxLength="10" />
           <Property Name="Created" Type="datetime" />
           <Property Name="FlightTime" Type="numeric" Precision="9" Scale="2" />
           <Property Name="PilotID" Type="int" Nullable="false" />
@@ -223,7 +236,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vAircraftPilot' does not have a
           <Property Name="PilotCode" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vFlightAcftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vFlightAcftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vFlightAcftPilot">
           <Key>
             <PropertyRef Name="FlightID" />
@@ -245,8 +258,8 @@ warning 6002: The table/view 'flighttrack-db.dbo.vFlightAcftPilot' does not have
           <Property Name="Comments" Type="nvarchar" MaxLength="250" />
           <Property Name="AcftRegNum" Type="varchar" MaxLength="9" />
           <Property Name="AcftMMS" Type="varchar" MaxLength="57" />
-          <Property Name="AcftNumLocal" Type="nvarchar" MaxLength="50" />
-          <Property Name="AcftNum" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcftNumLocal" Type="varchar" MaxLength="10" />
+          <Property Name="AcftNum" Type="varchar" MaxLength="10" />
           <Property Name="Acft" Type="nvarchar" MaxLength="100" />
           <Property Name="URLPictures" Type="nvarchar" MaxLength="250" />
           <Property Name="AcftID" Type="int" />
@@ -261,18 +274,18 @@ warning 6002: The table/view 'flighttrack-db.dbo.vFlightAcftPilot' does not have
           <Property Name="AltitudeFt" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vListAircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vListAircraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vListAircraft">
           <Key>
             
             <PropertyRef Name="AcftID" />
           </Key>
-          <Property Name="AcftID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="AcftNumLocal" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcftID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AcftNumLocal" Type="varchar" MaxLength="10" />
           <Property Name="isFilghtExists" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vListAirport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vListAirport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vListAirport">
           <Key>
             <PropertyRef Name="AirportID" />
@@ -281,7 +294,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vListAirport' does not have a p
           <Property Name="AirportCode" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vListPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vListPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vListPilot">
           <Key>
             <PropertyRef Name="PilotID" />
@@ -291,7 +304,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vListPilot' does not have a pri
           <Property Name="c" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vPilotLogBook">
           <Key>
             
@@ -302,8 +315,8 @@ warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a 
           <Property Name="FlightDateOnly" Type="date" Nullable="false" />
           <Property Name="Comments" Type="nvarchar(max)" />
           <Property Name="HTMLToolTip" Type="nvarchar(max)" />
-          <Property Name="AcftMMS" Type="nvarchar" MaxLength="57" />
-          <Property Name="Acft" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcftMMS" Type="varchar" MaxLength="57" />
+          <Property Name="Acft" Type="varchar" MaxLength="10" />
           <Property Name="AcftRegNum" Type="varchar" MaxLength="9" />
           <Property Name="PilotID" Type="int" />
           <Property Name="NoLandings" Type="int" />
@@ -313,7 +326,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vPilotLogBook' does not have a 
           <Property Name="IsShared" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vRoute' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vRoute' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vRoute">
           <Key>
             
@@ -323,8 +336,8 @@ warning 6002: The table/view 'flighttrack-db.dbo.vRoute' does not have a primary
           <Property Name="FlightDateOnly" Type="varchar" MaxLength="10" />
           <Property Name="Comments" Type="nvarchar(max)" />
           <Property Name="HTMLToolTip" Type="nvarchar(max)" />
-          <Property Name="AcftMMS" Type="nvarchar" MaxLength="57" />
-          <Property Name="Acft" Type="nvarchar" MaxLength="50" />
+          <Property Name="AcftMMS" Type="varchar" MaxLength="57" />
+          <Property Name="Acft" Type="nvarchar" MaxLength="100" />
           <Property Name="AcftRegNum" Type="varchar" MaxLength="9" />
           <Property Name="PilotID" Type="int" />
           <Property Name="NoLandings" Type="int" />
@@ -335,7 +348,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vRoute' does not have a primary
           <Property Name="URLPictures" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vVisualPilotLogBook">
           <Key>
             <PropertyRef Name="PK_ID" />
@@ -356,7 +369,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogBook' does not h
           <Property Name="Comments" Type="varchar" MaxLength="250" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestinations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vVisualPilotLogDestinations">
           <Key>
             <PropertyRef Name="flightweight" />
@@ -381,6 +394,9 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Parameter Name="phonenumber" Type="varchar" Mode="In" />
           <Parameter Name="deviceid" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="get_UserGUstring" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="uid" Type="int" Mode="In" />
+        </Function>
         <Function Name="merge_Flights" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="flightsstring" Type="varchar" Mode="In" />
         </Function>
@@ -391,8 +407,9 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <EntitySet Name="AircraftGroup" EntityType="Self.AircraftGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AircraftPilot" EntityType="Self.AircraftPilot" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AirportCoordinates" EntityType="Self.AirportCoordinates" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DimAcftGroup" EntityType="Self.DimAcftGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimAircraftRemote" EntityType="Self.DimAircraftRemote" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EntityGroup" EntityType="Self.EntityGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EntityGroupUser" EntityType="Self.EntityGroupUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flight" EntityType="Self.Flight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GpsLocation" EntityType="Self.GpsLocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pilot" EntityType="Self.Pilot" Schema="dbo" store:Type="Tables" />
@@ -611,13 +628,17 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
             <Parameter Name="pilotId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="AirportCoordinates" EntityType="FlightTrackMVCModel.AirportCoordinates" />
-          <EntitySet Name="DimAcftGroups" EntityType="FlightTrackMVCModel.DimAcftGroup" />
           <EntitySet Name="AircraftGroups" EntityType="FlightTrackMVCModel.AircraftGroup" />
           <FunctionImport Name="merge_Flights">
           <Parameter Name="flightsstring" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="vRoutes" EntityType="FlightTrackMVCModel.vRoute" />
           <EntitySet Name="vListAircrafts" EntityType="FlightTrackMVCModel.vListAircraft" />
+          <EntitySet Name="EntityGroups" EntityType="FlightTrackMVCModel.EntityGroup" />
+          <EntitySet Name="EntityGroupUsers" EntityType="FlightTrackMVCModel.EntityGroupUser" />
+          <FunctionImport Name="get_UserGUstring">
+          <Parameter Name="uid" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="DimArea">
           <Key>
@@ -682,7 +703,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Property Name="AcftName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PilotID" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftNumLocal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CompanyID" Type="Int32" />
           <Property Name="URLPictures" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Updated" Type="DateTime" Nullable="false" Precision="3" />
@@ -704,7 +725,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Property Name="FlightTime" Type="Decimal" Precision="9" Scale="2" />
           <Property Name="PilotID" Type="Int32" Nullable="false" />
           <Property Name="PilotCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftNumLocal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="URLPictures" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="vPilotLogBook">
@@ -714,8 +735,8 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Property Name="RouteID" Type="Int32" Nullable="false" />
           <Property Name="FlightDateOnly"  Type="DateTime" Precision="0" Nullable="false"/>
           <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="true" />
-          <Property Name="Acft" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="false" />
+          <Property Name="Acft" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="PilotID" Type="Int32" />
           <Property Name="NoLandings" Type="Int32" />
           <Property Name="FlightDurationMin" Type="Int32" />
@@ -756,14 +777,14 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Property Name="PilotID" Type="Int32" />
           <Property Name="Updated" Type="DateTime" Precision="3" />
           <Property Name="PilotCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftNumLocal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="AcftName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="isPositionCurrent" Type="Int32" Nullable="false" />
           <Property Name="isInFlight" Type="Int32" Nullable="false" />
           <Property Name="UpdateDelay" Type="Int32" />
           <Property Name="AltitudeFt" Type="Int32" />
           <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="false" />
-          <Property Name="AcftNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftNum" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Pilot" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="URLPictures" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -857,10 +878,11 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Property Name="SearchHint" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CertType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PilotGuid" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
-          <Property Name="TimeForward" Type="Decimal" Nullable="false" />
+          <Property Name="TimeForward" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
           <Property Name="LandingsForward" Type="Int32" Nullable="false" DefaultValue="0" />
           <Property Name="BaseAirportID" Type="Int32" />
           <Property Name="LogBookStartDate" Type="DateTime" Precision="0" />
+          <Property Name="WebSecurityID" Type="Int32" />
         </EntityType>
         <EntityType Name="vVisualPilotLogBook">
           <Key>
@@ -942,14 +964,6 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Property Name="AltDecimal" Type="Int32" />
           <Property Name="GeoLocBuffer" Type="Geography" />
         </EntityType>
-        <EntityType Name="DimAcftGroup">
-          <Key>
-            <PropertyRef Name="GroupID" />
-          </Key>
-          <Property Name="GroupID" Type="Int32" Nullable="false" />
-          <Property Name="GroupName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="GroupType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="AircraftGroup">
           <Key>
             <PropertyRef Name="Id" />
@@ -967,8 +981,8 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Property Name="FlightDateOnly" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="HTMLToolTip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="true" />
-          <Property Name="Acft" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftMMS" Type="String" MaxLength="57" FixedLength="false" Unicode="false" />
+          <Property Name="Acft" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AcftRegNum" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="PilotID" Type="Int32" />
           <Property Name="NoLandings" Type="Int32" />
@@ -982,9 +996,29 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <Key>
             <PropertyRef Name="AcftID" />
           </Key>
-          <Property Name="AcftID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AcftNumLocal" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AcftID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AcftNumLocal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="isFilghtExists" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EntityGroup">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <Property Name="GroupName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="GroupType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="EntityGroupUser">
+          <Key>
+            <PropertyRef Name="EntityGroupUserID" />
+          </Key>
+          <Property Name="EntityGroupUserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupUserCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GroupUserName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="GroupID" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="GroupUserGuid" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1224,6 +1258,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
           <EntitySetMapping Name="Pilots">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.Pilot">
               <MappingFragment StoreEntitySet="Pilot">
+                <ScalarProperty Name="WebSecurityID" ColumnName="WebSecurityID" />
                 <ScalarProperty Name="LogBookStartDate" ColumnName="LogBookStartDate" />
                 <ScalarProperty Name="BaseAirportID" ColumnName="BaseAirportID" />
                 <ScalarProperty Name="LandingsForward" ColumnName="LandingsForward" />
@@ -1300,15 +1335,6 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DimAcftGroups">
-            <EntityTypeMapping TypeName="FlightTrackMVCModel.DimAcftGroup">
-              <MappingFragment StoreEntitySet="DimAcftGroup">
-                <ScalarProperty Name="GroupType" ColumnName="GroupType" />
-                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
-                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AircraftGroups">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.AircraftGroup">
               <MappingFragment StoreEntitySet="AircraftGroup">
@@ -1349,6 +1375,29 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EntityGroups">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.EntityGroup">
+              <MappingFragment StoreEntitySet="EntityGroup">
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="GroupType" ColumnName="GroupType" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EntityGroupUsers">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.EntityGroupUser">
+              <MappingFragment StoreEntitySet="EntityGroupUser">
+                <ScalarProperty Name="GroupUserGuid" ColumnName="GroupUserGuid" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="GroupUserName" ColumnName="GroupUserName" />
+                <ScalarProperty Name="GroupUserCode" ColumnName="GroupUserCode" />
+                <ScalarProperty Name="EntityGroupUserID" ColumnName="EntityGroupUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="get_UserGUstring" FunctionName="FlightTrackMVCModel.Store.get_UserGUstring" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1363,7 +1412,7 @@ warning 6002: The table/view 'flighttrack-db.dbo.vVisualPilotLogDestinations' do
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
         <DesignerProperty Name="UseLegacyProvider" Value="False" />

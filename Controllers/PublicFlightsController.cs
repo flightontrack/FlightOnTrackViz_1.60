@@ -207,7 +207,7 @@ namespace FontNameSpace.Controllers
             //new SelectList(db.vListAircrafts.OrderBy(row => row.AcftNumLocal), "AcftID", "AcftNumLocal");
             ViewBag.PilotSelList = new SelectList(db.vListPilots.OrderBy(row => row.PilotCode), "PilotID", "PilotCode");
             ViewBag.AirportSelList = new SelectList(db.vListAirports.OrderBy(row => row.AirportCode), "AirportID", "AirportCode");
-            ViewBag.GroupSelList = new SelectList(db.DimAcftGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName");
+            ViewBag.GroupSelList = new SelectList(db.EntityGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName");
             ViewBag.PublicSearch = true;
             ViewBag.Message = message;
             return View("SearchByCriteria");
@@ -313,7 +313,7 @@ namespace FontNameSpace.Controllers
         [HttpGet]
         public ActionResult SearchByGroup(int? id = null, string message = "")
         {
-            ViewBag.GroupSelList = new SelectList(db.DimAcftGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName", id);
+            ViewBag.GroupSelList = new SelectList(db.EntityGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName", id);
             ViewBag.Message = message;
             return View();
         }

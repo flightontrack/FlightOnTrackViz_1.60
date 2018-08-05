@@ -12,10 +12,11 @@ namespace FontNameSpace.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DimAcftGroup
+    public partial class EntityGroup
     {
         public int GroupID { get; set; }
         public string GroupName { get; set; }
         public string GroupType { get; set; }
+        public Nullable<System.DateTime> Updated { get; set; }
     }
 }

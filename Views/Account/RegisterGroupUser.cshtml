@@ -1,0 +1,37 @@
+﻿@model FontNameSpace.Models.RegisterGroupUserModel
+@{
+    ViewBag.Title = "Register";
+    //var ddList = new FontNameSpace.Helpers.Queryables().selList_Group;
+    var ddList = new SelectList(new FontNameSpace.Helpers.ListsDD().selList_Group, "GroupID", "GroupName");
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>Create a new account.</h2>
+</hgroup>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Group)
+                @Html.DropDownListFor(m => m.Group, @ddList, "Select Group")
+            </li>
+        </ol>
+        <input type="submit" value="Register" />
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

@@ -42,10 +42,11 @@ namespace FontNameSpace.Models
         public virtual DbSet<vVisualPilotLogBook> vVisualPilotLogBook { get; set; }
         public virtual DbSet<vVisualPilotLogDestinations> vVisualPilotLogDestinations { get; set; }
         public virtual DbSet<AirportCoordinates> AirportCoordinates { get; set; }
-        public virtual DbSet<DimAcftGroup> DimAcftGroups { get; set; }
         public virtual DbSet<AircraftGroup> AircraftGroups { get; set; }
         public virtual DbSet<vRoute> vRoutes { get; set; }
         public virtual DbSet<vListAircraft> vListAircrafts { get; set; }
+        public virtual DbSet<EntityGroup> EntityGroups { get; set; }
+        public virtual DbSet<EntityGroupUser> EntityGroupUsers { get; set; }
     
         public virtual ObjectResult<Nullable<bool>> get_isArea(Nullable<int> gpsLocationID, Nullable<int> areaID, string radius)
         {
@@ -122,6 +123,15 @@ namespace FontNameSpace.Models
                 new ObjectParameter("flightsstring", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("merge_Flights", flightsstringParameter);
+        }
+    
+        public virtual ObjectResult<string> get_UserGUstring(Nullable<int> uid)
+        {
+            var uidParameter = uid.HasValue ?
+                new ObjectParameter("uid", uid) :
+                new ObjectParameter("uid", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("get_UserGUstring", uidParameter);
         }
     }
 }

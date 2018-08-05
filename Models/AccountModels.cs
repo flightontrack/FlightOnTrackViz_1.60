@@ -88,6 +88,18 @@ namespace FontNameSpace.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class RegisterGroupUserModel
+    {
+        [Required]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Group")]
+        public string Group { get; set; }
+       
+    }
     public class ExternalLogin
     {
         public string Provider { get; set; }

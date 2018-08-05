@@ -264,7 +264,7 @@ namespace FontNameSpace.Controllers
             ViewBag.AircraftsSelList = new SelectList(db.vListAircrafts.OrderBy(row => row.AcftNumLocal), "AcftID", "AcftNumLocal");
             ViewBag.PilotSelList = new SelectList(db.vListPilots.OrderBy(row => row.PilotCode), "PilotID", "PilotCode");
             ViewBag.AirportSelList = new SelectList(db.vListAirports.OrderBy(row => row.AirportCode), "AirportID", "AirportCode");
-            ViewBag.GroupSelList = new SelectList(db.DimAcftGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName");
+            ViewBag.GroupSelList = new SelectList(db.EntityGroups.OrderBy(row => row.GroupName), "GroupID", "GroupName");
             ViewBag.Message = message;
             ViewBag.PublicSearch = false;
             return View("SearchByCriteria");
