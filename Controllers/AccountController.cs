@@ -11,6 +11,7 @@ using WebMatrix.WebData;
 using FontNameSpace.Filters;
 using FontNameSpace.Models;
 using static FontNameSpace.Finals;
+using System.Diagnostics;
 
 namespace FontNameSpace.Controllers
 {
@@ -139,13 +140,20 @@ namespace FontNameSpace.Controllers
                 };
 
                 db.EntityGroupUsers.Add(entity);
-                var i = db.SaveChanges();
+                try
+                {
+                    var i = db.SaveChanges();
                 var psw = db.get_UserGUstring(i).ToString();
+                }
+                catch (Exception e)
+                {
+                    Debug.Print(e.Message);
+                };
 
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, psw);
+                   // WebSecurity.CreateUserAndAccount(model.UserName, psw);
 
                     return RedirectToAction("Index", "Home");
                 }

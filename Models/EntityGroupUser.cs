@@ -17,8 +17,8 @@ namespace FontNameSpace.Models
         public int EntityGroupUserID { get; set; }
         public string GroupUserCode { get; set; }
         public string GroupUserName { get; set; }
-        public Nullable<int> GroupID { get; set; }
-        public Nullable<System.DateTime> Updated { get; set; }
+        public int GroupID { get; set; }
         public string GroupUserGuid { get; set; }
+        public Nullable<System.DateTime> Updated { get; set; }
     }
 }

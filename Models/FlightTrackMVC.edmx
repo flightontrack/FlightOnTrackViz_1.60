@@ -89,11 +89,11 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.DimArea' does not have a p
             <PropertyRef Name="EntityGroupUserID" />
           </Key>
           <Property Name="EntityGroupUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="GroupUserCode" Type="varchar" MaxLength="50" />
-          <Property Name="GroupUserName" Type="varchar" MaxLength="200" />
-          <Property Name="GroupID" Type="int" />
-          <Property Name="GroupUserGuid" Type="varchar" MaxLength="36" />
-          <Property Name="Updated" Type="datetime" />
+          <Property Name="GroupUserCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GroupUserName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="GroupID" Type="int" Nullable="false" />
+          <Property Name="GroupUserGuid" Type="varchar" MaxLength="36" StoreGeneratedPattern="Computed" />
+          <Property Name="Updated" Type="datetime" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Flight">
           <Key>
@@ -635,10 +635,10 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
           <EntitySet Name="vRoutes" EntityType="FlightTrackMVCModel.vRoute" />
           <EntitySet Name="vListAircrafts" EntityType="FlightTrackMVCModel.vListAircraft" />
           <EntitySet Name="EntityGroups" EntityType="FlightTrackMVCModel.EntityGroup" />
-          <EntitySet Name="EntityGroupUsers" EntityType="FlightTrackMVCModel.EntityGroupUser" />
-          <FunctionImport Name="get_UserGUstring">
+          <FunctionImport Name="get_UserGUstring" ReturnType="Collection(String)">
           <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="EntityGroupUsers" EntityType="FlightTrackMVCModel.EntityGroupUser" />
         </EntityContainer>
         <EntityType Name="DimArea">
           <Key>
@@ -1014,11 +1014,11 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
             <PropertyRef Name="EntityGroupUserID" />
           </Key>
           <Property Name="EntityGroupUserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="GroupUserCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="GroupUserName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="GroupID" Type="Int32" />
-          <Property Name="Updated" Type="DateTime" Precision="3" />
-          <Property Name="GroupUserGuid" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="GroupUserCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GroupUserName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <Property Name="GroupUserGuid" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Updated" Type="DateTime" Precision="3" Nullable="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1385,11 +1385,12 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="get_UserGUstring" FunctionName="FlightTrackMVCModel.Store.get_UserGUstring" />
           <EntitySetMapping Name="EntityGroupUsers">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.EntityGroupUser">
               <MappingFragment StoreEntitySet="EntityGroupUser">
-                <ScalarProperty Name="GroupUserGuid" ColumnName="GroupUserGuid" />
                 <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="GroupUserGuid" ColumnName="GroupUserGuid" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
                 <ScalarProperty Name="GroupUserName" ColumnName="GroupUserName" />
                 <ScalarProperty Name="GroupUserCode" ColumnName="GroupUserCode" />
@@ -1397,7 +1398,6 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="get_UserGUstring" FunctionName="FlightTrackMVCModel.Store.get_UserGUstring" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1412,7 +1412,7 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
         <DesignerProperty Name="UseLegacyProvider" Value="False" />
