@@ -92,7 +92,9 @@ border: 3px;
 .navbar-inverse .navbar-nav > li > a {
     color: #d4d4d4;
 }
-
+th {
+  text-align:center;
+}
 .nav-header_ex {
     color:#2ea27c;
 }

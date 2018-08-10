@@ -89,7 +89,7 @@ width:20px;
 .webgrid th, .webgrid td 
 {
      /*width: 60%;*/
-     white-space: nowrap;
+     /*white-space: nowrap;*/
      border: 1px solid #7ac0da;
      padding: 5px;
      /*text-align: left;*/
