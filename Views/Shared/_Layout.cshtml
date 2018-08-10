@@ -57,13 +57,13 @@
                     {
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Flights <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu_ex">
                                 <li>&nbsp;</li>
-                                <li class="nav-header">&nbsp;&nbsp;Public Flights</li>
+                                <li class="nav-header nav-header_ex">&nbsp;&nbsp;Public Flights</li>
                                 <li>@Html.ActionLink("All Recent", "GetLatestRoutes", "PublicFlights")</li>
                                 <li>@Html.ActionLink("Search", "SearchByCriteria", "PublicFlights")</li>
-                                <li class="divider"></li>
-                                <li class="nav-header">&nbsp;&nbsp;Real Time Tracking</li>
+                                <li class="divider nav-header_ex"></li>
+                                <li class="nav-header nav-header_ex">&nbsp;&nbsp;Real Time Tracking</li>
                                 <li>@Html.ActionLink("Area Flights", "SearchByArea", "PublicFlights")</li>
                                 <li>@Html.ActionLink("Group Flying", "SearchByGroup", "PublicFlights")</li>
                             </ul>

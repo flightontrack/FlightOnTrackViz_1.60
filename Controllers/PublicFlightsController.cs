@@ -230,9 +230,9 @@ namespace FontNameSpace.Controllers
         #endregion
         #region Area Flights
         [HttpGet]
-        public ActionResult SearchByArea(int? id = null, string message = "")
+        public ActionResult SearchByArea(int? areaId = null, string message = "")
         {
-            ViewBag.AreaSelList = new SelectList(db.DimAreas.OrderBy(row => row.AreaName), "AreaID", "AreaName", id);
+            ViewBag.AreaSelList = new SelectList(db.DimAreas.OrderBy(row => row.AreaName), "AreaID", "AreaName", areaId);
             ViewBag.Message = message;
             return View();
         }

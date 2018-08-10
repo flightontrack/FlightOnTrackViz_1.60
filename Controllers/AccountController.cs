@@ -140,15 +140,15 @@ namespace FontNameSpace.Controllers
                 };
 
                 db.EntityGroupUsers.Add(entity);
-                try
-                {
-                    var i = db.SaveChanges();
+                //try
+                //{
+                var i = db.SaveChanges();
                 var psw = db.get_UserGUstring(i).ToString();
-                }
-                catch (Exception e)
-                {
-                    Debug.Print(e.Message);
-                };
+                //}
+                //catch (Exception e)
+                //{
+                //    Debug.Print(e.Message);
+                //};
 
                 // Attempt to register the user
                 try
