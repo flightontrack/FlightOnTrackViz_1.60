@@ -12,13 +12,9 @@ namespace FontNameSpace.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class EntityGroupUser
+    public partial class webpages_Roles
     {
-        public int EntityGroupUserID { get; set; }
-        public string GroupUserCode { get; set; }
-        public string GroupUserName { get; set; }
-        public int GroupID { get; set; }
-        public string GroupUserGuid { get; set; }
-        public Nullable<System.DateTime> Updated { get; set; }
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
     }
 }

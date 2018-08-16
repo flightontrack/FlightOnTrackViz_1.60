@@ -11,13 +11,17 @@ namespace FontNameSpace.Models
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class EntityGroup
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    public partial class EntityUser
     {
+        public int EntityUserID { get; set; }
+        public string UserCode { get; set; }
+        public string UserName { get; set; }
         public int GroupID { get; set; }
-        public string GroupName { get; set; }
-        public string GroupType { get; set; }
-        public Nullable<System.DateTime> Updated { get; set; }
-        public string RoleName { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string UserGuid { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime? Updated { get; set; }
     }
 }

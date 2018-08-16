@@ -1,6 +1,7 @@
 ﻿@model FontNameSpace.Models.RegisterModel
 @{
     ViewBag.Title = "Register";
+    var ddList = new SelectList(new FontNameSpace.Helpers.ListsDD().selList_Role, "RoleName", "RoleName");
 }
 
 <hgroup class="title">
@@ -8,7 +9,8 @@
     <h2>Create a new account.</h2>
 </hgroup>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
@@ -19,13 +21,17 @@
                 @Html.LabelFor(m => m.UserName)
                 @Html.TextBoxFor(m => m.UserName)
             </li>
+            @*<li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                    @Html.PasswordFor(m => m.ConfirmPassword)
+                </li>*@
             <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
+                @Html.LabelFor(m => m.RoleName)
+                @Html.DropDownListFor(m => m.RoleName, @ddList, "Select Role")
             </li>
         </ol>
         <input type="submit" value="Register" />

@@ -46,7 +46,8 @@ namespace FontNameSpace.Models
         public virtual DbSet<vRoute> vRoutes { get; set; }
         public virtual DbSet<vListAircraft> vListAircrafts { get; set; }
         public virtual DbSet<EntityGroup> EntityGroups { get; set; }
-        public virtual DbSet<EntityGroupUser> EntityGroupUsers { get; set; }
+        public virtual DbSet<EntityUser> EntityUsers { get; set; }
+        public virtual DbSet<webpages_Roles> webpages_Roles { get; set; }
     
         public virtual ObjectResult<Nullable<bool>> get_isArea(Nullable<int> gpsLocationID, Nullable<int> areaID, string radius)
         {
