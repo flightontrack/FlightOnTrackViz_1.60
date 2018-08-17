@@ -1,7 +1,6 @@
 ﻿@model FontNameSpace.Models.RegisterGroupUserModel
 @{
-    ViewBag.Title = "Register";
-    //var ddList = new FontNameSpace.Helpers.Queryables().selList_Group;
+    ViewBag.Title = "RegisterGroupUser";
     var ddList = new SelectList(new FontNameSpace.Helpers.ListsDD().selList_Group, "GroupID", "GroupName");
 }
 
@@ -23,8 +22,8 @@
                 @Html.TextBoxFor(m => m.UserName)
             </li>
             <li>
-                @Html.LabelFor(m => m.Group)
-                @Html.DropDownListFor(m => m.Group, @ddList, "Select Group")
+                @Html.LabelFor(m => m.GroupID)
+                @Html.DropDownListFor(m => m.GroupID, @ddList, "Select Group")
             </li>
         </ol>
         <input type="submit" value="Register" />

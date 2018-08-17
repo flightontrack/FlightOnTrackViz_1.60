@@ -18,5 +18,6 @@ namespace FontNameSpace.Models
         public string GroupName { get; set; }
         public string GroupType { get; set; }
         public Nullable<System.DateTime> Updated { get; set; }
+        public string RoleName { get; set; }
     }
 }

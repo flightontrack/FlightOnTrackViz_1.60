@@ -261,7 +261,7 @@
     <Compile Include="Models\EntityGroup.cs">
       <DependentUpon>FlightTrackMVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EntityGroupUser.cs">
+    <Compile Include="Models\EntityUser.cs">
       <DependentUpon>FlightTrackMVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Flight.cs">
@@ -324,6 +324,9 @@
       <DependentUpon>FlightTrackMVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vVisualPilotLogDestinations.cs">
+      <DependentUpon>FlightTrackMVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\webpages_Roles.cs">
       <DependentUpon>FlightTrackMVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

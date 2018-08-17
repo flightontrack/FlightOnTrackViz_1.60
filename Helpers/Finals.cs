@@ -15,7 +15,7 @@ namespace FontNameSpace
         public const int TIMESPANDAYS = -10;
         public const int TIMESPANFLIGHTS = 40;
         public const int TRACKPOINTS = 5;
-        public const string DEFAULT_AREARADIUS = "3";
+        public const string DEFAULT_AREARADIUS = "15";
         public const string SELECTSOMTHING = "You have to select something";
         public const string MSG_SAVESUCCESS = "The changes have been saved successfully.";
         public const string MSG_SAVEFAIL = "Failed to save changes.";

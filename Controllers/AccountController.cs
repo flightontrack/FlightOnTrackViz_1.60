@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+//using System.Data;
 using System.Linq;
 using System.Transactions;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DotNetOpenAuth.AspNet;
@@ -42,22 +42,24 @@ namespace FontNameSpace.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (model.UserName.Equals("9784934810.0139")) 
-                //73974
-                {
-                    //MembershipUser user = Membership.GetUser(model.UserName);
-                    //var password = user.GetPassword();
-
-                    if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
-                    {
-                        return RedirectToLocal(returnUrl,"Admin");
-                    }
-                }
-            var result = db.Pilots.Where(p => p.PilotUserName == model.UserName).FirstOrDefault();
-            if (!(result == null)) {
+            if (model.UserName.Equals("9784934810.0139"))
+            //73974
+            {
                 //MembershipUser user = Membership.GetUser(model.UserName);
                 //var password = user.GetPassword();
- 
+
+                if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+                {
+                    return RedirectToLocal(returnUrl, "Admin");
+                }
+            }
+            //if Roles..IsUserInRole("admin")
+            var result = db.Pilots.Where(p => p.PilotUserName == model.UserName).FirstOrDefault();
+            if (!(result == null))
+            {
+                //MembershipUser user = Membership.GetUser(model.UserName);
+                //var password = user.GetPassword();
+
                 if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
                 {
                     return RedirectToLocal(returnUrl);
@@ -90,6 +92,52 @@ namespace FontNameSpace.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        [RequireHttps]
+        public ActionResult LoginUser(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Message = MSG_LOGINHINT;
+            return View();
+        }
+
+        //
+        // POST: /Account/LoginGroup
+
+        [HttpPost]
+        [RequireHttps]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult LoginUser(LoginModel model, string returnUrl)
+        {
+            if (model.UserName.Equals("9784934810.0139"))
+            //73974
+            {
+                //MembershipUser user = Membership.GetUser(model.UserName);
+                //var password = user.GetPassword();
+
+                if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+                {
+                    return RedirectToLocal(returnUrl, "Admin");
+                }
+            }
+            var result = db.Pilots.Where(p => p.PilotUserName == model.UserName).FirstOrDefault();
+            if (!(result == null))
+            {
+                //MembershipUser user = Membership.GetUser(model.UserName);
+                //var password = user.GetPassword();
+
+                if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+                {
+                    return RedirectToLocal(returnUrl);
+                }
+            }
+            // If we got this far, something failed, redisplay form
+            ModelState.AddModelError("", "The user name or password provided is incorrect or the pilot id does not exist.");
+            ViewBag.Message = "Use the account from your Flight On Track app (Settings screen) to log in.";
+            return View(model);
+        }
+
         //
         // POST: /Account/Register
 
@@ -100,11 +148,24 @@ namespace FontNameSpace.Controllers
         {
             if (ModelState.IsValid)
             {
+                string userCode = "font" + "." + model.UserName;
+                var entity = new EntityUser
+                {
+                    UserName = model.UserName,
+                    UserCode = userCode
+                };
+
+                db.EntityUsers.Add(entity);
+                db.SaveChanges();
+                var id = entity.EntityUserID;
+                var psw = db.get_UserGUstring(id).First();
+                Debug.Print("Psw: " + psw);
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(userCode, psw);
+                    Roles.AddUserToRole(userCode, model.RoleName);
+                    WebSecurity.Login(userCode, psw);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
@@ -132,29 +193,34 @@ namespace FontNameSpace.Controllers
         {
             if (ModelState.IsValid)
             {
-                var entity = new EntityGroupUser
+                string userCode = model.GroupID.ToString() + "." + model.UserName;
+                var roleName = db.EntityGroups.FirstOrDefault(e => e.GroupID == model.GroupID).RoleName;
+                var entity = new EntityUser
                 {
-                    GroupUserName = model.UserName,
-                    GroupID = Int32.Parse(model.Group),
-                    GroupUserCode = Int32.Parse(model.Group)+'.'+ model.UserName
+                    UserName = model.UserName,
+                    GroupID = model.GroupID,
+                    //RoleName = db.EntityGroups.First(e => e.GroupID == groupID).RoleId,
+                    UserCode = userCode
                 };
 
-                db.EntityGroupUsers.Add(entity);
-                try
-                {
-                    var i = db.SaveChanges();
-                var psw = db.get_UserGUstring(i).ToString();
-                }
-                catch (Exception e)
-                {
-                    Debug.Print(e.Message);
-                };
+                db.EntityUsers.Add(entity);
+                //try
+                //{
+                db.SaveChanges();
+                var id = entity.EntityUserID;
+                var psw = db.get_UserGUstring(id).ToString();
+                //}
+                //catch (Exception e)
+                //{
+                //    Debug.Print(e.Message);
+                //};
 
                 // Attempt to register the user
+                //var r = Roles..get
                 try
                 {
-                   // WebSecurity.CreateUserAndAccount(model.UserName, psw);
-
+                    WebSecurity.CreateUserAndAccount(userCode, psw);
+                    Roles.AddUserToRole(userCode, roleName);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
@@ -169,31 +235,31 @@ namespace FontNameSpace.Controllers
 
         // POST: /Account/Disassociate
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Disassociate(string provider, string providerUserId)
-        {
-            string ownerAccount = OAuthWebSecurity.GetUserName(provider, providerUserId);
-            ManageMessageId? message = null;
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Disassociate(string provider, string providerUserId)
+        //{
+        //    string ownerAccount = OAuthWebSecurity.GetUserName(provider, providerUserId);
+        //    ManageMessageId? message = null;
 
-            // Only disassociate the account if the currently logged in user is the owner
-            if (ownerAccount == User.Identity.Name)
-            {
-                // Use a transaction to prevent the user from deleting their last login credential
-                using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
-                {
-                    bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-                    if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
-                    {
-                        OAuthWebSecurity.DeleteAccount(provider, providerUserId);
-                        scope.Complete();
-                        message = ManageMessageId.RemoveLoginSuccess;
-                    }
-                }
-            }
+        //    // Only disassociate the account if the currently logged in user is the owner
+        //    if (ownerAccount == User.Identity.Name)
+        //    {
+        //        // Use a transaction to prevent the user from deleting their last login credential
+        //        using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
+        //        {
+        //            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+        //            if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
+        //            {
+        //                OAuthWebSecurity.DeleteAccount(provider, providerUserId);
+        //                scope.Complete();
+        //                message = ManageMessageId.RemoveLoginSuccess;
+        //            }
+        //        }
+        //    }
 
-            return RedirectToAction("Manage", new { Message = message });
-        }
+        //    return RedirectToAction("Manage", new { Message = message });
+        //}
 
         //
         // GET: /Account/Manage
@@ -404,7 +470,7 @@ namespace FontNameSpace.Controllers
         }
 
         #region Helpers
-        private ActionResult RedirectToLocal(string returnUrl,string redirectController=null)
+        private ActionResult RedirectToLocal(string returnUrl, string redirectController = null)
         {
             if (Url.IsLocalUrl(returnUrl))
             {
@@ -412,7 +478,7 @@ namespace FontNameSpace.Controllers
             }
             else
             {
-                if (redirectController==null) return RedirectToAction("Index", "Home");
+                if (redirectController == null) return RedirectToAction("Index", "Home");
                 else return RedirectToAction("Index", redirectController);
             }
         }

@@ -149,7 +149,7 @@ if (isFlightList ?? false)
         }
         //---------------------------------------------------------------
         function buttonback() {
-            var url = @(!isFlightList)?'@Html.Raw(@Url.Action("GetListAreaActiveFlights", new { areaId = areaId }))':'@Html.Raw(@Url.Action("GetListActiveFlights", new { flightsSer="", groupId = groupId }))';
+            var url = @(!isFlightList)?'@Html.Raw(@Url.Action("SearchByArea", new { areaId = areaId }))':'@Html.Raw(@Url.Action("GetListActiveFlights", new { flightsSer="", groupId = groupId }))';
             window.location.assign(url);
         }
         function buttonAutoRefresh() {

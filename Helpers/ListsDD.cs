@@ -42,7 +42,7 @@ namespace FontNameSpace.Helpers
         public IEnumerable<SelectListItem> getAllAirportList()
         {
             //var values = db.GpsLocations.Where(r => r.AirportCode != null).Select(r => new {r.AirportCode }).Distinct().ToList();
-            var values =  db.vListAirports.ToList();
+            var values = db.vListAirports.ToList();
 
             IEnumerable<SelectListItem> listItems =
                                             from value in values
@@ -91,7 +91,7 @@ namespace FontNameSpace.Helpers
 
             listItems.Add(new SelectListItem { Text = "3", Value = "3", Selected = (selected == "3") });
             listItems.Add(new SelectListItem { Text = "5", Value = "5", Selected = (selected == "5") });
-            listItems.Add(new SelectListItem { Text = "10", Value = "10", Selected=(selected=="10") });
+            listItems.Add(new SelectListItem { Text = "10", Value = "10", Selected = (selected == "10") });
             listItems.Add(new SelectListItem { Text = "15", Value = "15", Selected = (selected == "15") });
             return listItems;
         }
@@ -104,6 +104,13 @@ namespace FontNameSpace.Helpers
             }
         }
 
+        public IEnumerable<webpages_Roles> selList_Role
+        {
+            get
+            {
+                return db.webpages_Roles;
+            }
+        }
         public void Dispose()
         {
             ((IDisposable)db).Dispose();

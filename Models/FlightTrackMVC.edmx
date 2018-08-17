@@ -82,17 +82,18 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.DimArea' does not have a p
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="GroupName" Type="varchar" MaxLength="100" />
           <Property Name="GroupType" Type="varchar" MaxLength="50" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" />
           <Property Name="Updated" Type="datetime" />
         </EntityType>
-        <EntityType Name="EntityGroupUser">
+        <EntityType Name="EntityUser">
           <Key>
-            <PropertyRef Name="EntityGroupUserID" />
+            <PropertyRef Name="EntityUserID" />
           </Key>
-          <Property Name="EntityGroupUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="GroupUserCode" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="GroupUserName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="EntityUserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="GroupID" Type="int" Nullable="false" />
-          <Property Name="GroupUserGuid" Type="varchar" MaxLength="36" StoreGeneratedPattern="Computed" />
+          <Property Name="UserGuid" Type="varchar" MaxLength="36" StoreGeneratedPattern="Computed" />
           <Property Name="Updated" Type="datetime" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Flight">
@@ -210,6 +211,13 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.SearchRequest' does not ha
           <Property Name="AreaID" Type="int" />
           <Property Name="GroupID" Type="int" />
           <Property Name="GroupName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'flighttrack-db-test.dbo.vAircraftPilot' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -409,10 +417,11 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
           <EntitySet Name="AirportCoordinates" EntityType="Self.AirportCoordinates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimAircraftRemote" EntityType="Self.DimAircraftRemote" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EntityGroup" EntityType="Self.EntityGroup" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EntityGroupUser" EntityType="Self.EntityGroupUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EntityUser" EntityType="Self.EntityUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flight" EntityType="Self.Flight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GpsLocation" EntityType="Self.GpsLocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pilot" EntityType="Self.Pilot" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimArea" EntityType="Self.DimArea" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DimArea].[AreaID] AS [AreaID], 
@@ -638,7 +647,8 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
           <FunctionImport Name="get_UserGUstring" ReturnType="Collection(String)">
           <Parameter Name="uid" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="EntityGroupUsers" EntityType="FlightTrackMVCModel.EntityGroupUser" />
+          <EntitySet Name="EntityUsers" EntityType="FlightTrackMVCModel.EntityUser" />
+          <EntitySet Name="webpages_Roles" EntityType="FlightTrackMVCModel.webpages_Roles" />
         </EntityContainer>
         <EntityType Name="DimArea">
           <Key>
@@ -1008,17 +1018,25 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
           <Property Name="GroupName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="GroupType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="RoleName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="EntityGroupUser">
+        <EntityType Name="EntityUser">
           <Key>
-            <PropertyRef Name="EntityGroupUserID" />
+            <PropertyRef Name="EntityUserID" />
           </Key>
-          <Property Name="EntityGroupUserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="GroupUserCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="GroupUserName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="EntityUserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="GroupID" Type="Int32" Nullable="false" />
-          <Property Name="GroupUserGuid" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="true" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="Updated" Type="DateTime" Precision="3" Nullable="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="UserGuid" Type="String" MaxLength="36" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Updated" Type="DateTime" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1378,6 +1396,7 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
           <EntitySetMapping Name="EntityGroups">
             <EntityTypeMapping TypeName="FlightTrackMVCModel.EntityGroup">
               <MappingFragment StoreEntitySet="EntityGroup">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
                 <ScalarProperty Name="Updated" ColumnName="Updated" />
                 <ScalarProperty Name="GroupType" ColumnName="GroupType" />
                 <ScalarProperty Name="GroupName" ColumnName="GroupName" />
@@ -1386,15 +1405,23 @@ warning 6002: The table/view 'flighttrack-db-test.dbo.vVisualPilotLogDestination
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="get_UserGUstring" FunctionName="FlightTrackMVCModel.Store.get_UserGUstring" />
-          <EntitySetMapping Name="EntityGroupUsers">
-            <EntityTypeMapping TypeName="FlightTrackMVCModel.EntityGroupUser">
-              <MappingFragment StoreEntitySet="EntityGroupUser">
+          <EntitySetMapping Name="EntityUsers">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.EntityUser">
+              <MappingFragment StoreEntitySet="EntityUser">
                 <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="GroupUserGuid" ColumnName="GroupUserGuid" />
+                <ScalarProperty Name="UserGuid" ColumnName="UserGuid" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
-                <ScalarProperty Name="GroupUserName" ColumnName="GroupUserName" />
-                <ScalarProperty Name="GroupUserCode" ColumnName="GroupUserCode" />
-                <ScalarProperty Name="EntityGroupUserID" ColumnName="EntityGroupUserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserCode" ColumnName="UserCode" />
+                <ScalarProperty Name="EntityUserID" ColumnName="EntityUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Roles">
+            <EntityTypeMapping TypeName="FlightTrackMVCModel.webpages_Roles">
+              <MappingFragment StoreEntitySet="webpages_Roles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
