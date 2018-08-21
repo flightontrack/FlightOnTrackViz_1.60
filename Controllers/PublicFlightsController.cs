@@ -443,7 +443,7 @@ namespace FontNameSpace.Controllers
             var gpslocationsActive = new List<GpsLocation>();
             var classActiveFlights = new ClassActiveFlights();
             /// get all currently active flights
-            var flightsActive = classActiveFlights.inflightFlights.Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal }).ToList();
+            var flightsActive = classActiveFlights.inflightFlights.Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal, r.FlightDurationMin }).ToList();
                 //q_flightsActive.ToList().Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal });
             foreach (var flight in flightsActive)
             {
@@ -457,7 +457,10 @@ namespace FontNameSpace.Controllers
             /// join back to active flights to get acft and if position current
             var gpslocations = from l in activeLocInArea
                                join f in flightsActive on l.FlightID equals f.FlightID
-                               select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.AcftNumLocal };
+                               select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.AcftNumLocal,
+                                   f.FlightDurationMin,
+                                   durHhMm = string.Format("{0}:{1}", f.FlightDurationMin / 60, f.FlightDurationMin % 60)
+                               };
             var area = new ClassArea(areaId, areaRadius);
             var jsonObj = new { centerRadius = area.circle, gpslocations = gpslocations };
             return this.Json(jsonObj, JsonRequestBehavior.AllowGet);
@@ -469,7 +472,7 @@ namespace FontNameSpace.Controllers
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             var classActiveFlights = new ClassActiveFlights();
             classActiveFlights.flightIdList = serializer.Deserialize<int[]>(fs).ToList();
-            var flightsActive = classActiveFlights.flightsFlights.Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal }).ToList();
+            var flightsActive = classActiveFlights.flightsFlights.Select(r => new { r.FlightID, r.isPositionCurrent, r.AcftNumLocal, r.FlightDurationMin }).ToList();
             var gpslocationsActive = new List<GpsLocation>();
             foreach (var flight in flightsActive)
             {
@@ -478,7 +481,9 @@ namespace FontNameSpace.Controllers
             }
             var gpslocations = from l in gpslocationsActive
                                join f in flightsActive on l.FlightID equals f.FlightID
-                               select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.AcftNumLocal };
+                               select new { l.GPSLocationID, l.FlightID, l.SpeedKnot, l.SpeedKmpH, l.gpsTimeOnly, l.AltitudeFt, l.AltitudeM, l.latitude, l.longitude, f.isPositionCurrent, f.AcftNumLocal,f.FlightDurationMin,
+                                   durHhMm = string.Format("{0}:{1}", f.FlightDurationMin / 60, f.FlightDurationMin % 60)
+                               };
             var groupCenterRadius = classActiveFlights.getFlightsMapCircle();
             var jsonObj = new { centerRadius = groupCenterRadius, gpslocations = gpslocations };
             return this.Json(jsonObj, JsonRequestBehavior.AllowGet);
