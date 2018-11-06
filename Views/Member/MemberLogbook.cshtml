@@ -31,6 +31,9 @@ $(document).ready(function () {
             @Html.AntiForgeryToken();
             @Html.HiddenFor(model => model.pilotId)
             @Html.Hidden("menuitem", menuitem)
+            <p>
+                <i>To update totals, change the forwarded values if needed and click [Save changes] button.</i>
+            </p>
             @*<input type="hidden" name="menuitem" value="3" />
             <input type="hidden" name="pilotId" value=@pilotid />*@
                 @*<div class="col-sm-5">*@

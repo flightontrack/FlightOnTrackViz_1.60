@@ -407,14 +407,14 @@ namespace FontNameSpace.Controllers
         {
             //areaId = aId;
             //var areaCenter = q_getAreaCenter.Select(r => new { r.CenterLat, r.CenterLong }).ToList()[0];
-            ViewBag.areaId = aId;
-            ViewBag.groupId = gId;
-            ViewBag.Flights = fs;
-            ViewBag.AreaCenterLat = areaCenterLat;
-            ViewBag.AreaCenterLong = areaCenterLong;
-            ViewBag.RadiusSelList = ListsDD.getRadius(aRadius);
-            ViewBag.ARadius = Int32.Parse(aRadius);
-            ViewBag.isFlightList = (aId==null);
+            //ViewBag.areaId = aId;
+            //ViewBag.groupId = gId;
+            //ViewBag.Flights = fs;
+            //ViewBag.AreaCenterLat = areaCenterLat;
+            //ViewBag.AreaCenterLong = areaCenterLong;
+            //ViewBag.RadiusSelList = ListsDD.getRadius(aRadius);
+            //ViewBag.ARadius = Int32.Parse(aRadius);
+            //ViewBag.isFlightList = (aId==null);
 
             ViewBag.model = new
             {

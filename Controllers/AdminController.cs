@@ -197,15 +197,15 @@ namespace FontNameSpace.Controllers
 
             ViewBag.AircraftsSelList = new SelectList(q.selList_vAircraftPilot.ToList(), "ID", "AcftNumLocal", selectedID);
             ViewBag.PhoneSelList = new SelectList(q.selList_Pilot.ToList(), "PilotID", "PilotUserName", selectedPilotID);
-            ViewBag.FlightSelList = new SelectList(q.selList_FlightsByPilot.ToList(), "FlightID", "FlightID", flight.RouteID == null ? flight.FlightID : flight.RouteID);
-
+            //ViewBag.FlightSelList = new SelectList(q.selList_FlightsByPilot.ToList(), "FlightID", "FlightID", flight.RouteID == null ? flight.FlightID : flight.RouteID);
+            ViewBag.RouteSelList = new SelectList(q.selList_RoutesByPilot.OrderByDescending(r => r.RouteID), "RouteID", "RouteID", flight.RouteID ?? flight.FlightID);
             ViewBag.selectedPilotID = selectedPilotID;
             return View(flight);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FlightEditAdm(Flight flight, string AircraftsSelList,string PhoneSelList, int FlightSelList)
+        public ActionResult FlightEditAdm(Flight flight, string AircraftsSelList,string PhoneSelList, int RouteSelList)
         {
             //bool? successFlg;
             //if (Request.IsAuthenticated)
@@ -218,7 +218,7 @@ namespace FontNameSpace.Controllers
                         db.Flights.Attach(flight);
                         DateTime timeUtcNow = DateTime.UtcNow;
                         flight.Updated = timeUtcNow;
-                        flight.RouteID = FlightSelList;
+                        flight.RouteID = RouteSelList;
                         int phoneID;
                         int.TryParse(PhoneSelList, out phoneID);
                         if (phoneID > 0)

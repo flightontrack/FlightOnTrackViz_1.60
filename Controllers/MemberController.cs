@@ -340,20 +340,20 @@ namespace FontNameSpace.Controllers
             {
                 return HttpNotFound();
             }
-                var pilotID = flight.PilotID;
-                int? selectedAcftPilotID = flight.AcftPilotID;
-
-                ViewBag.AircraftsSelList = new SelectList(db.vAircraftPilots.Where(row => (row.PilotID == pilotID)).OrderBy(row => row.AcftNumLocal), "ID", "AcftNumLocal", selectedAcftPilotID);
-                ViewBag.FlightSelList = new SelectList(db.Flights.Where(row => (row.PilotID == pilotID)).OrderByDescending(row => row.FlightID), "FlightID", "FlightID", flight.RouteID == null ? flight.FlightID : flight.RouteID);
-                ViewBag.Page = page;
-                return View(flight);
+            //var pilotID = flight.PilotID;
+            //int? selectedAcftPilotID = flight.AcftPilotID;
+            ViewBag.AircraftsSelList = new SelectList(q.selList_vAircraftPilot.ToList(), "ID", "AcftNumLocal", flight.AcftPilotID);
+            //ViewBag.AircraftsSelList = new SelectList(db.vAircraftPilots.Where(row => (row.PilotID == pilotID)).OrderBy(row => row.AcftNumLocal), "ID", "AcftNumLocal", selectedAcftPilotID);
+            ViewBag.RouteSelList = new SelectList(q.selList_RoutesByPilot.OrderByDescending(r => r.RouteID), "RouteID", "RouteID", flight.RouteID ?? flight.FlightID);
+            ViewBag.Page = page;
+            return View(flight);
             //}
             //else return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FlightEdit(Flight flight, string AircraftsSelList,int FlightSelList,int page)
+        public ActionResult FlightEdit(Flight flight, string AircraftsSelList,int RouteSelList, int page)
         {
             //bool? successFlg;
             //if (Request.IsAuthenticated)
@@ -368,7 +368,7 @@ namespace FontNameSpace.Controllers
                     flight.AcftPilotID = acftPilotID;
                     //var acftId = db.AircraftPilots.Where(row => row.ID == int.Parse(AircraftsSelList)).First().AcftID;
                     flight.AcftID = db.AircraftPilots.Where(row => (row.ID == acftPilotID)).First().AcftID;
-                    flight.RouteID = FlightSelList;
+                    flight.RouteID = RouteSelList;
                     db.Flights.Attach(flight);
                     db.Entry(flight).Property(f => f.AcftID).IsModified = true;
                     db.Entry(flight).Property(f => f.AcftPilotID).IsModified = true;

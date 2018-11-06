@@ -52,7 +52,7 @@
                 grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left"),
                 grid.Column(columnName: "FlightID", header: "Flight ID", style: "text-align-left", format: (item) => Html.ActionLink((string)item.FlightID.ToString(), "DisplayFlightData", "Flight", new { id = item.FlightID, actionBack = @ViewBag.ActionBack }, null)),
                 //grid.Column(columnName: "RouteID", header: "Route ID", style: "text-align-left", format: (item) => Html.DropDownList("flightList[" + rowIndex + "].RouteID", new SelectList(Model.flightList.OrderByDescending(m => m.FlightID), "FlightID", "FlightID", item.RouteID == null ? item.FlightID : item.RouteID))),
-                grid.Column(columnName: "FlightName", header: "Flight/Arpt", style: "text-align-left"),
+                grid.Column(columnName: "FlightName", header: "Flight or Arpt", style: "text-align-left"),
                 grid.Column(columnName: "FlightTimeStart", header: "Start Time Local", style: "text-align-left"),
                 grid.Column(columnName: "FlightDurationMin", header: "Minutes", style: "text-align-left"),
                 grid.Column(columnName: "Points", header: "Points", style: "text-align-left"),

@@ -226,6 +226,7 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\PilotUserController.cs" />
     <Compile Include="Controllers\PublicFlightsController.cs" />
+    <Compile Include="Entity\EntityRoute.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -1,20 +1,23 @@
 ﻿
 @{  @*Layout = null;*@
-var areaId = ViewBag.AreaId;
-var groupId =ViewBag.groupId;
-var flights = ViewBag.Flights;
-var isArea = ViewBag.IsArea;
-var isFlightList = ViewBag.isFlightList;
-var methodBack = ViewBag.backUrl;
-string urlMethod = "GetAreaFlightsJson";
-object urlMethodPar = new { areaId = ViewBag.AreaId };
-var mod = ViewBag.model;
+    //var areaId = ViewBag.AreaId;
+    var mod = ViewBag.model;
+    //var groupId = ViewBag.groupId;
+    var groupId =mod.groupId;
+    var flights = mod.Flights;
+    var areaId = mod.areaId;
+    //var isArea = ViewBag.IsArea;
+    var isFlightList = mod.isFlightList;
+    //var methodBack = ViewBag.backUrl;
+    string urlMethod = "GetAreaFlightsJson";
+    //object urlMethodPar = new { areaId = ViewBag.AreaId };
+    object urlMethodPar = new { areaId = mod.areaId };
 
-if (isFlightList ?? false)
-{
-    urlMethod = "GetMultipleFlightsDataJson";
-    urlMethodPar = new { fs = @ViewBag.Flights };
-}
+    if (isFlightList ?? false)
+    {
+        urlMethod = "GetMultipleFlightsDataJson";
+        urlMethodPar = new { fs = @ViewBag.Flights };
+    }
 }
 
 <!DOCTYPE html>
@@ -31,8 +34,8 @@ if (isFlightList ?? false)
     <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/googlemap.css" rel="stylesheet" type="text/css" />*@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="~/Scripts/getDrawActveFlights.js" type="text/javascript"></script>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAIm-QyYK0jc3jyTMA6rgCTnx-9nWILiiQ"></script>
+    <script src="~/Scripts/getDrawActveFlights.js" type="text/javascript"></script>
 
     <script>
 

@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using FontNameSpace.Models;
+using FontNameSpace.Entity;
 using System.Activities.Expressions;
 using System.Collections.Generic;
 using System;
@@ -69,7 +70,7 @@ namespace FontNameSpace.Helpers
         public Flight flight {
             get { return db.Flights.Find(_flightId); }
         }
-     
+
         public DimAircraftRemote acftRemote
         {
             get { return db.DimAircraftRemotes.Find(_acftId); }
@@ -96,7 +97,7 @@ namespace FontNameSpace.Helpers
 
         public IQueryable<GpsLocation> flightGpsLocations { get { return db.GpsLocations.Where(row => row.FlightID == _flightId); } }
 
-        public IQueryable<GpsLocation> flightGpsLocationsOrderDesc { get { return db.GpsLocations.Where(row => row.FlightID == _flightId).OrderByDescending(row => row.GPSLocationID);} }
+        public IQueryable<GpsLocation> flightGpsLocationsOrderDesc { get { return db.GpsLocations.Where(row => row.FlightID == _flightId).OrderByDescending(row => row.GPSLocationID); } }
 
         public IQueryable<Flight> flightsJunkNotChecked { get { return db.Flights.Where(row => (row.IsAltitudeChecked.Value == null)); } }
 
@@ -123,7 +124,7 @@ namespace FontNameSpace.Helpers
         public IQueryable<vListAircraft> selList_vAircraftDistinctWithFlightsPublic
         {
             get
-            { return db.vListAircrafts.Where(r=>r.isFilghtExists==1).OrderBy(r => r.AcftNumLocal); }
+            { return db.vListAircrafts.Where(r => r.isFilghtExists == 1).OrderBy(r => r.AcftNumLocal); }
         }
         public IQueryable<vAircraftPilot> selList_vAircraftPilotAll
         {
@@ -135,7 +136,7 @@ namespace FontNameSpace.Helpers
         {
             get
             {
-                return db.Pilots.OrderBy(p=>p.PilotUserName);
+                return db.Pilots.OrderBy(p => p.PilotUserName);
             }
         }
 
@@ -143,7 +144,14 @@ namespace FontNameSpace.Helpers
         {
             get
             {
-                return db.Flights.OrderByDescending(f => f.FlightID).Where(f => f.PilotID == pilotId);
+                return db.Flights.Where(f => f.PilotID == pilotId); //.OrderByDescending(f => f.FlightID);
+            }
+        }
+        public IQueryable<EntityRoute> selList_RoutesByPilot
+        {
+            get
+            {
+                return  db.Flights.Where(f => f.PilotID == pilotId).Select(row => new EntityRoute() { RouteID = row.RouteID }).Distinct(); 
             }
         }
         public IQueryable<AirportCoordinates> airportEntity
@@ -153,6 +161,8 @@ namespace FontNameSpace.Helpers
                 return db.AirportCoordinates.Where(r => r.Code.Contains(_airportCode));
             }
         }
+
+        public int? RouteID { get; private set; }
 
         public void Dispose()
         {

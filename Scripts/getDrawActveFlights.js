@@ -61,7 +61,7 @@ function getDrawActveFlights(jsonFlights, centerPosition) {
             var popupWindowText = "<table border=0 style=\"font-size:95%;font-family:arial,helvetica,sans-serif;\">"
                 + "<tr><td align=left>N<b>&nbsp&nbsp" + $(this).attr('AcftNumLocal') + "</b></td></tr>"
                 + "<tr><td align=left>#<b>&nbsp&nbsp" + $(this).attr('FlightID') + "</b></td></tr>"
-                + "<tr><td align=left>Ft<b>&nbsp" + $(this).attr('AltitudeFt') + "</b></td></tr>"
+                + "<tr><td align=left>A<b>&nbsp&nbsp" + $(this).attr('AltitudeFt') + "</b></td></tr>"
                 + "<tr><td align=left>T<b>&nbsp&nbsp" + $(this).attr('durHhMm') + "</b></td></tr>";
 
             // array of trackpoint for markers and their infowindows and icons

@@ -1,70 +1,27 @@
 ﻿@model FontNameSpace.ViewModels.vmPilotLogBook
 
 @{
-    //Layout = null;
-    var menuitem = 3;
+    Layout = null;
+    //var menuitem = 3;
     var successFlg = ViewBag.successFlg;
     string msg = ViewBag.Msg;
     bool sortdirAsc = ViewBag.SortDir == "ASC";
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/bootstrap")
 }
 @*<h2>Pilot LogBook</h2>*@
     <div class="row">
-        @Html.Partial("_MemberMenu", new { menuitem = menuitem })
+        @*@Html.Partial("_MemberMenu", new { menuitem = menuitem })*@
 
-        <div class="col-sm-5 col-sm-offset-1">
+        <div class="col-sm-5">
             @{
                 var grid = new WebGrid(Model.flightsLogBook, defaultSort: "RouteID", canPage: true, rowsPerPage: 20);
                 grid.SortDirection = sortdirAsc ? SortDirection.Ascending : SortDirection.Descending;
             }
 
-
             @using (Html.BeginForm())
             {
-                @Html.AntiForgeryToken();
-                @Html.HiddenFor(model => model.pilotId)
-                @Html.Hidden("menuitem", menuitem)
-                <p>
-                    <i>
-                        To update totals, change the forwarded values if needed and click [Save changes] button.
-                    </i>
-                </p>
-                @*<p>
-                    <div class="row">
 
-                        <div class="col-sm-5">
-                            @Html.Label("Time Forwarded (hr) :", new { @style = "display:inline-block" })
-                            @Html.EditorFor(model => model.timeForward, new { htmlAttributes = new { @class = "form-control  input-sm" } })
-                        </div>
-                        <div class="col-sm-5">
-                            @Html.Label("Landings Forwarded :", new { @style = "display:inline-block" })
-                            @Html.EditorFor(model => model.landForward, new { htmlAttributes = new { @class = "form-control  input-sm" } })
-                        </div>
-                    </div>
-                </p>*@
-                <div class="form-group">
-                    @Html.Label("Date Started", new { @class = "col-sm-3 control-label" })
-                    @Html.EditorFor(model => model.dateBegin, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <div class="form-group">
-                    @Html.Label("Flight Time Forwarded (hr)", new { @class = "col-sm-3  control-label" })
-                    @Html.EditorFor(model => model.timeForward, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <div class="form-group">
-                    @Html.Label("Landings Forwarded", new { @class = "col-sm-3 control-label" })
-                    @Html.EditorFor(model => model.landForward, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <p>
-                    <input type="submit" class="btn btn-default active" name="UpdateForwards" value="Save changes" />
-                    @if (successFlg != null)
-                    {
-                        if ((bool)successFlg)
-                        {<i>@msg</i> }
-                        else if (!(bool)successFlg)
-                        {
-                            <div class="validation-summary-errors text-danger"> @msg  </div>
-                        }
-                    }
-                </p>
                 <div>
                     @Html.Label("Logbook Time (hr):", new { @style = "display:inline-block" })
                     <div style="display:inline-block">@ViewBag.LogBookTimeHours</div> <b>\</b>
