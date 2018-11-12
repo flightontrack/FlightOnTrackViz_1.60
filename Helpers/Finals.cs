@@ -17,8 +17,8 @@ namespace FontNameSpace
         public const int TRACKPOINTS = 5;
         public const string DEFAULT_AREARADIUS = "15";
         public const string SELECTSOMTHING = "You have to select something";
-        public const string MSG_SAVESUCCESS = "The changes have been saved successfully.";
-        public const string MSG_SAVEFAIL = "Failed to save changes.";
+        public const string MSG_SAVESUCCESS = "The changes have been saved successfully";
+        public const string MSG_FAILED = "Operation failed. Check log for details.";
 
         public const string MSG_ARPTNOTFOUND = "The airport is not found in the directory.";
         public const string MSG_ARPTNOTFOUNDMULTIPLE = "There are multiple airports matching your criteria. <br>Please select one: ";

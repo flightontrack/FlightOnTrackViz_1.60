@@ -35,7 +35,7 @@ namespace FontNameSpace.Controllers
             //{
                 q.pilotUserName = User.Identity.Name;
                 var p = q.pilotEntity;
-                if(successFlg.HasValue) ViewBag.Msg = ((bool)successFlg? MSG_SAVESUCCESS: MSG_SAVEFAIL);
+                if(successFlg.HasValue) ViewBag.Msg = ((bool)successFlg? MSG_SAVESUCCESS: MSG_FAILED);
                 //if (successAirpt.HasValue) {
                 //    q.airportCode = p.BaseAirport;
                 //    if (q.airportId == null)
@@ -135,7 +135,7 @@ namespace FontNameSpace.Controllers
                                     }
                                     if (successFlg.HasValue)
                                     {
-                                        ViewBag.Msg = MSG_SAVEFAIL;
+                                        ViewBag.Msg = MSG_FAILED;
                                         return View("MemberPilot", pilot);
                                     }
                                 }
@@ -178,8 +178,8 @@ namespace FontNameSpace.Controllers
                                 }
                                 else if (!(form["DownloadFlightCSV"] == null))
                                 {
-
-                                    return DownloadLogBookCSV(pid);
+                                    var csv = DownloadLogBookCSV(pid);
+                                    return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "PilotLogBook_" + ".csv");
                                 }
                                 else if (!(form["RequestVisualLogBook"] == null))
                                 {
@@ -214,7 +214,7 @@ namespace FontNameSpace.Controllers
                     {
                         successFlg = false;
                         LogHelper.onExceptionLog("indexMember()", e);
-                }
+                    }
                 }
                 else { successFlg = false; }
                 return RedirectToAction("indexMember", new { isSearchJunk = searchRequest.isSearchJunk, menuitem = i, successFlg = successFlg, buttonEnable = btnEnabl });
@@ -333,7 +333,7 @@ namespace FontNameSpace.Controllers
             //{
             q.pilotUserName = User.Identity.Name;
             Flight flight = db.Flights.Find(id);
-            if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
+            if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_FAILED);
             ViewBag.successFlg = successFlg;
 
             if (flight == null)
@@ -391,69 +391,74 @@ namespace FontNameSpace.Controllers
             //else return RedirectToAction("Login", "Account");
         }
 
-        public FileContentResult DownloadLogBookCSV(FormCollection form)
-        {
-            q.pilotId = form["pilotId"] == null ? 0 : Int32.Parse(form["pilotId"]);
-            var pilotLogBook = q.pilotLogBook.ToList();
-            string csv = "Date,Acft MMS,Acft,Airports,Landings,Minutes,Comments" + Environment.NewLine;
-            foreach (var rec in pilotLogBook)
-            {
-                csv = csv
-                    + '"' + rec.FlightDateOnly.ToString() + '"' + ","
-                    + '"' + rec.AcftMMS.ToString() + '"' + ","
-                    + '"' + rec.Acft.ToString() + '"' + ","
-                    + '"' + rec.RouteName.ToString() + '"' + ","
-                    + '"' + rec.NoLandings.ToString() + '"' + ","
-                    + '"' + rec.FlightDurationMin.ToString() + '"' + ","
-                    + (rec.Comments == null ? "" : rec.Comments.ToString())
-                    + Environment.NewLine;
-            }
-            return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "PilotLogBook_" + ".csv");
-        }
-        public FileContentResult DownloadLogBookCSV(int pid)
+        //public FileContentResult DownloadLogBookCSV(FormCollection form)
+        //{
+        //    q.pilotId = form["pilotId"] == null ? 0 : Int32.Parse(form["pilotId"]);
+        //    var pilotLogBook = q.pilotLogBook.ToList();
+        //    string csv = "Date,Acft MMS,Acft,Airports,Landings,Minutes,Comments" + Environment.NewLine;
+        //    foreach (var rec in pilotLogBook)
+        //    {
+        //        csv = csv
+        //            + '"' + rec.FlightDateOnly.ToString() + '"' + ","
+        //            + '"' + rec.AcftMMS.ToString() + '"' + ","
+        //            + '"' + rec.Acft.ToString() + '"' + ","
+        //            + '"' + rec.RouteName.ToString() + '"' + ","
+        //            + '"' + rec.NoLandings.ToString() + '"' + ","
+        //            + '"' + rec.FlightDurationMin.ToString() + '"' + ","
+        //            + (rec.Comments == null ? "" : rec.Comments.ToString())
+        //            + Environment.NewLine;
+        //    }
+        //    return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "PilotLogBook_" + ".csv");
+        //}
+        //public FileContentResult DownloadLogBookCSV(int pid)
+        public string DownloadLogBookCSV(int pid)
         {
             q.pilotId = pid;
             Pilot p = q.pilotEntity;
             var minLogBookDate = p.LogBookStartDate ?? q.pilotLogBook.ToList().Min(item => item.FlightDateOnly);
             var pilotLogBook = q.pilotLogBook.Where(item => item.FlightDateOnly >= minLogBookDate).OrderBy(row => row.RouteID).ToList();
-            //var pilotLogBook = q.pilotLogBook.ToList();
             string csv = "Date,Acft MMS,Acft ,From/To,Remarks,Landings,Dur(hr),RefNum" + Environment.NewLine + Environment.NewLine;
             int i = 0;
             int? nlsum = p.LandingsForward;
             int? nlpp = 0;
             float? hsumpp = 0;
             float? hsum = (float)p.TimeForward;
-            foreach (var rec in pilotLogBook)
-            {
-                i++;
-                nlpp += rec.NoLandings;
-                var h = rec.FlightDurationMin / 60.0f;
-                hsumpp += h;
-                csv = csv
-                    + '"' + rec.FlightDateOnly.ToString("yy/MM/dd") + '"' + ","
-                    + '"' + rec.AcftMMS.ToString() + '"' + ","
-                    + '"' + rec.Acft.ToString() + '"' + ","
-                    + '"' + rec.RouteName.ToString() + '"' + ","
-                    //+ '"' + String.Format("{0:F2}", h)+"hr " + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
-                    + '"' + (rec.Comments == null ? "" : rec.Comments.ToString())+ '"' + ","
-                    + '"' + rec.NoLandings.ToString() + '"' + ","
-                    + '"' + String.Format("{0:F2}", h) + '"' + ","
-                    + '"' + rec.RouteID.ToString() + '"' + ","
-                    + Environment.NewLine;
-                if (i % 7 == 0) {
-                    //hsum += hsumpp;
-                    //nlsum += nlpp;
+            try {
+                foreach (var rec in pilotLogBook)
+                {
+                    i++;
+                    nlpp += rec.NoLandings;
+                    var h = rec.FlightDurationMin / 60.0f;
+                    hsumpp += h;
                     csv = csv
-                    + Environment.NewLine
-                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Page Total" + "," + nlpp.ToString() + "," + String.Format("{0:F2}", hsumpp) + Environment.NewLine
-                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Amt. Forward" + "," + nlsum.ToString() + "," + String.Format("{0:F2}", hsum) + "," + Environment.NewLine
-                    + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Total To Date" + "," + (nlsum += nlpp).ToString() + "," + String.Format("{0:F2}", (hsum += hsumpp))
-                    + Environment.NewLine + Environment.NewLine;
-                    nlpp = 0;
-                    hsumpp = 0;
+                        + '"' + rec.FlightDateOnly.ToString("yy/MM/dd") + '"' + ","
+                        + '"' + (rec.AcftMMS ?? String.Empty).ToString() + '"' + ","
+                        + '"' + (rec.Acft ?? String.Empty).ToString() + '"' + ","
+                        + '"' + (rec.RouteName??String.Empty).ToString() + '"' + ","
+                        + '"' + (rec.Comments ?? String.Empty).ToString() + '"' + ","
+                        + '"' + rec.NoLandings.ToString() + '"' + ","
+                        + '"' + String.Format("{0:F2}", h) + '"' + ","
+                        + '"' + rec.RouteID.ToString() + '"' + ","
+                        + Environment.NewLine;
+                    if (i % 7 == 0) {
+                        csv = csv
+                        + Environment.NewLine
+                        + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Page Total" + "," + nlpp.ToString() + "," + String.Format("{0:F2}", hsumpp) + Environment.NewLine
+                        + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Amt. Forward" + "," + nlsum.ToString() + "," + String.Format("{0:F2}", hsum) + "," + Environment.NewLine
+                        + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + '"' + '"' + "," + "Total To Date" + "," + (nlsum += nlpp).ToString() + "," + String.Format("{0:F2}", (hsum += hsumpp))
+                        + Environment.NewLine + Environment.NewLine;
+                        nlpp = 0;
+                        hsumpp = 0;
+                    }
                 }
             }
-            return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", "PilotLogBook_" + ".csv");
+            catch (Exception e)
+            {
+                LogHelper.onExceptionLog("DownloadLogBookCSV(int pid)", e);
+                throw;
+            }
+
+            return csv;
         }
 
         public FileContentResult GenerateVisualLogbook(int pid)

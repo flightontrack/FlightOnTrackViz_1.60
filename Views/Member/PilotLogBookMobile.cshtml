@@ -6,39 +6,50 @@
     var successFlg = ViewBag.successFlg;
     string msg = ViewBag.Msg;
     bool sortdirAsc = ViewBag.SortDir == "ASC";
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/bootstrap")
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
 }
-@*<h2>Pilot LogBook</h2>*@
-    <div class="row">
-        @*@Html.Partial("_MemberMenu", new { menuitem = menuitem })*@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="row">
+    @*@Html.Partial("_MemberMenu", new { menuitem = menuitem })*@
 
-        <div class="col-sm-5">
-            @{
-                var grid = new WebGrid(Model.flightsLogBook, defaultSort: "RouteID", canPage: true, rowsPerPage: 20);
-                grid.SortDirection = sortdirAsc ? SortDirection.Ascending : SortDirection.Descending;
-            }
+    <div class="col-sm-5">
+        @{
+            var grid = new WebGrid(Model.flightsLogBook, defaultSort: "RouteID", canPage: true, rowsPerPage: 20);
+            grid.SortDirection = sortdirAsc ? SortDirection.Ascending : SortDirection.Descending;
+        }
 
-            @using (Html.BeginForm())
+        @using (Html.BeginForm())
             {
 
-                <div>
-                    @Html.Label("Logbook Time (hr):", new { @style = "display:inline-block" })
-                    <div style="display:inline-block">@ViewBag.LogBookTimeHours</div> <b>\</b>
-                    @Html.Label("Logbook Landings:", new { @style = "display:inline-block" })
-                    <div style="display:inline-block">@ViewBag.LandNumLogBook</div>
+            <div>
+                @Html.Label("Logbook Time (hr):", new { @style = "display:inline-block" })
+                <div style="display:inline-block">@ViewBag.LogBookTimeHours</div> <b>\</b>
+                @Html.Label("Logbook Landings:", new { @style = "display:inline-block" })
+                <div style="display:inline-block">@ViewBag.LandNumLogBook</div>
 
-                    <br>
-                    @Html.Label("Total Time To Date (hr):", new { @style = "display:inline-block" })
-                    <div style="display:inline-block">@ViewBag.TotalTimeHours</div> <b>\</b>
-                    @Html.Label("Total Landings To Date:", new { @style = "display:inline-block" })
-                    <div style="display:inline-block">@ViewBag.LandNumTotal</div>
+                <br>
+                @Html.Label("Total Time To Date (hr):", new { @style = "display:inline-block" })
+                <div style="display:inline-block">@ViewBag.TotalTimeHours</div> <b>\</b>
+                @Html.Label("Total Landings To Date:", new { @style = "display:inline-block" })
+                <div style="display:inline-block">@ViewBag.LandNumTotal</div>
 
-                    @*<input type="hidden" id="pilotid" name="pilotid" value="@Model.pilotId" />*@
-                </div>
-                //}
+                @*<input type="hidden" id="pilotid" name="pilotid" value="@Model.pilotId" />*@
+            </div>
+            //}
 
-                @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
+            @grid.GetHtml(tableStyle: "webgrid", headerStyle: "webgrid-header", //rowStyle: "webgrid-row-style",
      columns: grid.Columns(
      grid.Column(columnName: "FlightDateOnly", header: "Date", style: "text-align-left", format: (item) => item.FlightDateOnly.ToString("MM/dd/yyyy")),
      grid.Column(columnName: "AcftMMS", header: "Acft MMS", style: "text-align-left"),
@@ -48,6 +59,9 @@
      grid.Column(columnName: "FlightDurationMin", header: "Duration(hr)", style: "text-align-left", format: (item) => (item.FlightDurationMin / 60.0f).ToString("F2")), //rec.FlightDurationMin / 60.0f
      grid.Column(columnName: "Comments", header: "Comments", style: "text-align-left")
  ))
-            }
-        </div>
+        }
     </div>
+</div>
+</body>
+</html>
+

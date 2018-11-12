@@ -181,7 +181,7 @@ namespace FontNameSpace.Controllers
 
         public ActionResult FlightEditAdm(int id = 0, bool? successFlg = null)
         {
-            if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_SAVEFAIL);
+            if (successFlg.HasValue) ViewBag.Msg = ((bool)successFlg ? MSG_SAVESUCCESS : MSG_FAILED);
             ViewBag.successFlg = successFlg;
 
             Flight flight = db.Flights.Find(id);
