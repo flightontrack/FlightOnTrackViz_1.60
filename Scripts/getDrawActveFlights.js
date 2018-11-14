@@ -1,5 +1,5 @@
 ﻿//function MarkersUpdate(jsonFlights) {
-function getDrawActveFlights(jsonFlights,centerPosition) {
+function getDrawActveFlights(jsonFlights, centerPosition) {
     var pointList = [];
     var uniqueFligts = [];
     var iconimage;
@@ -59,14 +59,13 @@ function getDrawActveFlights(jsonFlights,centerPosition) {
 
             //set point infowindow
             var popupWindowText = "<table border=0 style=\"font-size:95%;font-family:arial,helvetica,sans-serif;\">"
-                + "<tr><td align=left>N:<b>" + $(this).attr('AcftNumLocal') + "</b></td></tr>"
-                + "<tr><td align=left>A ft:<b>" + $(this).attr('AltitudeFt') + "</b></td></tr>"
-                + "<tr><td align=left>F:<b>" + $(this).attr('FlightID') + "</b></td></tr>"
-                + "<tr><td align=left>T:<b>" + $(this).attr('FlightDurationMin') + "</b></td></tr>"
-                + "<tr><td align=left>h:m<b>" + $(this).attr('durHhMm') + "</b></td></tr>";
+                + "<tr><td align=left>N<b>&nbsp&nbsp" + $(this).attr('AcftNumLocal') + "</b></td></tr>"
+                + "<tr><td align=left>#<b>&nbsp&nbsp" + $(this).attr('FlightID') + "</b></td></tr>"
+                + "<tr><td align=left>A<b>&nbsp&nbsp" + $(this).attr('AltitudeFt') + "</b></td></tr>"
+                + "<tr><td align=left>T<b>&nbsp&nbsp" + $(this).attr('durHhMm') + "</b></td></tr>";
 
             // array of trackpoint for markers and their infowindows and icons
-            pointList[key] = new LatLng($(this).attr('latitude'), $(this).attr('longitude'), iconimage, "Flight"+$(this).attr('FlightID'), popupWindowText, $(this).attr('FlightID'), isPushpin);
+            pointList[key] = new LatLng($(this).attr('latitude'), $(this).attr('longitude'), iconimage, "Flight" + $(this).attr('FlightID'), popupWindowText, $(this).attr('FlightID'), isPushpin);
             if (isPushpin) {
                 var connectionLine = [
                     centerPosition,
@@ -88,25 +87,25 @@ function getDrawActveFlights(jsonFlights,centerPosition) {
         function (p, i) {
             var marker = new google.maps.Marker(
                 {
-                position: p,
-                icon: p.micon,
-                title: p.title
+                    position: p,
+                    icon: p.micon,
+                    title: p.title
                 }
               );
             //var aa = marker.showInfoWindow;
-            p.ispushpin ? markersStore.push(marker):null;// : markersStore.push(null);
+            p.ispushpin ? markersStore.push(marker) : null;// : markersStore.push(null);
             var infowindow = new google.maps.InfoWindow({
                 content: p.infow,
                 disableAutoPan: true
                 //maxWidth: 55
             });
-            p.ispushpin ? infowindowStore.push(infowindow) :null // infowindowStore.push(null);
+            p.ispushpin ? infowindowStore.push(infowindow) : null // infowindowStore.push(null);
         });
 
         //build store array for lines separately
         uniqueFligts.forEach(function drawPoly(value, j) {
             var flight = value;
-            var flightPointList = pointList.filter(function getPoly(val) { return (val.flightid == flight)? true: false; })
+            var flightPointList = pointList.filter(function getPoly(val) { return (val.flightid == flight) ? true : false; })
             var flightPath = new google.maps.Polyline({
                 path: flightPointList,
                 strokeColor: "#0000FF",
@@ -144,7 +143,7 @@ LatLng = function (rawLat, rawLng, micon, title, infow, flightid, isPushpin) { /
 };
 
 function setMapOnAll(p_map) {
-// Sets  all markers in the store along with infowindow.
+    // Sets  all markers in the store along with infowindow.
     for (var i = 0; i < markersStore.length; i++) {
         markersStore[i].setMap(p_map);
         if (infowindowStore[i] != null) {
